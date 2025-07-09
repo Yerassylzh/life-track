@@ -1,0 +1,54 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["reactNative"]
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./app.db"
+}
+
+model Task {
+  id          String    @id @default(uuid())
+  name        String
+  createdAt   DateTime  @default(now())
+  targetDate  DateTime
+  completedAt DateTime? // nullable
+  reminder    DateTime? // nullable
+}
+
+model Habit {
+  id          String            @id @default(uuid())
+  name        String
+  description String
+  color       String
+  repeatType  RepeatType
+  daysOfWeek  String // stringified array, e.g., '["Mon", "Wed"]'
+  weeklyFreq  Int // used if repeatType is "weekly"
+  monthlyDays String // stringified array of day numbers, e.g., "[1,15,30]"
+  reminder    String? // time string like "08:30", nullable
+  completions HabitCompletion[]
+}
+
+model HabitCompletion {
+  id          String   @id @default(uuid())
+  habit       Habit    @relation(fields: [habitId], references: [id])
+  habitId     String
+  completedAt DateTime @default(now())
+}
+
+model Note {
+  id        String   @id @default(uuid())
+  title     String
+  content   String
+  createdAt DateTime @default(now())
+  editedAt  DateTime @updatedAt
+  images    String // stores stringified array of image URLs or paths (e.g., '["url1", "url2"]')
+  color     String
+}
+
+enum RepeatType {
+  daily
+  weekly
+  monthly
+}
