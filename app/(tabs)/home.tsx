@@ -4,10 +4,14 @@ import Header from "@/features/home/components/Header";
 import React from "react";
 
 export default function Home() {
+  const [selectedDate, setSelectedDate] = React.useState<Date>(
+    () => new Date()
+  );
+
   return (
     <AppBackground>
       <Header dateString="Today" />
-      <DatePicker onDateSelected={() => {}} />
+      <DatePicker onDateSelected={setSelectedDate} />
     </AppBackground>
   );
 }
