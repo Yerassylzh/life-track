@@ -1,25 +1,26 @@
 import { usePreferredColorTheme } from "@/context/PrefferedColorTheme";
 import { cn } from "@/lib/tailwindClasses";
 import React from "react";
-import { Text, TextProps } from "react-native";
+import { TextProps } from "react-native";
+import Animated from "react-native-reanimated";
 
-export default function InterText({
+export default function AnimatedInterText({
   className,
-  style,
   children,
   ...rest
 }: TextProps) {
   const { theme } = usePreferredColorTheme();
 
   return (
-    <Text
+    <Animated.Text
       className={cn(
         "font-inter",
         theme === "dark" ? "text-white" : "text-black",
         className
       )}
+      {...rest}
     >
       {children}
-    </Text>
+    </Animated.Text>
   );
 }

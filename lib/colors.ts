@@ -14,3 +14,16 @@ export const Colors = {
   "gray-900": "#111827",
   "gray-950": "#030712",
 };
+
+export const ColorPalette = [
+  "#0095B6",
+  "#10B981",
+  "#0EA5E9",
+  "#F97316",
+  "#8B5CF6",
+  "#F43F5E",
+  "#EAB308",
+  "#EF4444",
+  "#14B8A6",
+  "#6366F1",
+];

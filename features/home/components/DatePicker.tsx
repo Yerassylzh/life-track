@@ -1,13 +1,9 @@
+import { usePreferredColorTheme } from "@/context/PrefferedColorTheme";
 import { Colors } from "@/lib/colors";
+import { cn } from "@/lib/tailwindClasses";
 import { FlashList } from "@shopify/flash-list";
 import moment, { Moment } from "moment"; // Import Moment type
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import React, { useCallback, useMemo, useRef, useState } from "react";
 import { Dimensions, Text, TouchableWithoutFeedback, View } from "react-native";
 
 const { width } = Dimensions.get("window");
@@ -20,6 +16,7 @@ interface DatePickerProps {
 const DatePicker: React.FC<DatePickerProps> = ({ onDateSelected }) => {
   const [selectedDate, setSelectedDate] = useState<Moment>(() => moment());
   const ref = useRef<FlashList<Moment>>(null);
+  const { theme } = usePreferredColorTheme();
 
   const dates = useMemo(() => {
     const dates: Moment[] = [];
@@ -38,16 +35,6 @@ const DatePicker: React.FC<DatePickerProps> = ({ onDateSelected }) => {
     }
     return dates;
   }, []);
-
-  useEffect(() => {
-    setTimeout(() => {
-      ref.current?.scrollToIndex({
-        index: 30,
-        animated: false,
-        viewPosition: 0.5,
-      });
-    }, 300);
-  }, [dates]);
 
   const handleDatePress = useCallback(
     (date: Moment): void => {
@@ -71,21 +58,40 @@ const DatePicker: React.FC<DatePickerProps> = ({ onDateSelected }) => {
       return (
         <TouchableWithoutFeedback onPress={() => handleDatePress(item)}>
           <View
-            className="items-center justify-center py-2 mx-1.5 rounded-xl bg-gray-200"
+            className={cn(
+              "items-center justify-center py-2 mx-1.5 rounded-xl",
+              theme === "light" ? "bg-gray-200" : "bg-gray-800"
+            )}
             style={{
               width: ITEM_WIDTH,
-              backgroundColor: isSelected ? Colors.primary : Colors["gray-200"],
+              backgroundColor: isSelected
+                ? Colors.primary
+                : theme === "light"
+                  ? Colors["gray-200"]
+                  : Colors["gray-800"],
             }}
           >
             <Text
               className="text-sm font-medium mb-1"
-              style={{ color: isSelected ? "white" : Colors["gray-600"] }}
+              style={{
+                color: isSelected
+                  ? "white"
+                  : theme === "light"
+                    ? Colors["gray-600"]
+                    : Colors["gray-400"],
+              }}
             >
               {item.format("ddd")}
             </Text>
             <Text
               className="text-2xl font-bold"
-              style={{ color: isSelected ? "white" : Colors["gray-800"] }}
+              style={{
+                color: isSelected
+                  ? "white"
+                  : theme === "light"
+                    ? Colors["gray-600"]
+                    : Colors["gray-400"],
+              }}
             >
               {item.format("D")}
             </Text>
@@ -93,7 +99,7 @@ const DatePicker: React.FC<DatePickerProps> = ({ onDateSelected }) => {
         </TouchableWithoutFeedback>
       );
     },
-    [handleDatePress, selectedDate]
+    [handleDatePress, selectedDate, theme]
   );
 
   return (
@@ -105,7 +111,8 @@ const DatePicker: React.FC<DatePickerProps> = ({ onDateSelected }) => {
         estimatedItemSize={60}
         horizontal
         showsHorizontalScrollIndicator={false}
-        extraData={selectedDate}
+        extraData={[selectedDate, theme]}
+        initialScrollIndex={30}
       />
     </View>
   );
