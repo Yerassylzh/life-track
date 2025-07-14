@@ -34,11 +34,16 @@
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
         }
-      ],
-      "@prisma/react-native"
+      ]
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "7b9996ff-57e9-4414-a545-79c22a32b0f0"
+      }
     }
   }
 }

@@ -19,6 +19,10 @@ type NewHabitContextType = {
   monthlyDays: number[];
   setMonthlyDays: React.Dispatch<React.SetStateAction<number[]>>;
   colorPickerSheetRef: React.RefObject<BottomSHeetGorhom | null>;
+  reminder: string | null;
+  setReminder: React.Dispatch<React.SetStateAction<string | null>>;
+  titleError: string | undefined;
+  setTitleError: React.Dispatch<React.SetStateAction<string | undefined>>;
 };
 
 const NewHabitContext = React.createContext<NewHabitContextType | undefined>(
@@ -29,7 +33,13 @@ export const NewHabitProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [title, setTitle] = React.useState("");
+  const [titleError, setTitleError] = React.useState<string | undefined>(
+    undefined
+  );
   const [description, setDescription] = React.useState("");
+  // const [descriptionError, setDescriptionError] = React.useState<string | null>(
+  //   null
+  // ); >>> Desctiption is optional
   const [colorIndex, setColorIndex] = React.useState(0);
   const [repeatType, setRepeatType] = React.useState<
     "daily" | "weekly" | "monthly"
@@ -40,6 +50,8 @@ export const NewHabitProvider: React.FC<{ children: React.ReactNode }> = ({
   const [weeklyFreq, setWeeklyFreq] = React.useState<number>(3);
   const [monthlyDays, setMonthlyDays] = React.useState<number[]>([1]);
   const colorPickerSheetRef = useRef<BottomSHeetGorhom>(null);
+
+  const [reminder, setReminder] = React.useState<string | null>("08:00");
 
   const data = {
     title,
@@ -57,6 +69,10 @@ export const NewHabitProvider: React.FC<{ children: React.ReactNode }> = ({
     monthlyDays,
     setMonthlyDays,
     colorPickerSheetRef,
+    reminder,
+    setReminder,
+    titleError,
+    setTitleError,
   };
 
   return (

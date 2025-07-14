@@ -6,6 +6,7 @@ const {
 
 const config = getDefaultConfig(__dirname);
 
+config.resolver.sourceExts.push("sql"); // For drizzle
 module.exports = wrapWithReanimatedMetroConfig(
   withNativeWind(config, { input: "./global.css" })
 );

@@ -1,4 +1,5 @@
 import InterText from "@/components/InterText";
+import { usePreferredColorTheme } from "@/context/PrefferedColorTheme";
 import { ColorPalette, Colors } from "@/lib/colors";
 import React, { useCallback } from "react";
 import {
@@ -30,6 +31,7 @@ const TOTAL_DAYS = 31;
 const NUM_COLUMNS = 7;
 
 function SimpleCalendar() {
+  const { theme } = usePreferredColorTheme();
   const { monthlyDays, setMonthlyDays, colorIndex } = useNewHabit();
 
   const toggleDay = useCallback(
@@ -58,7 +60,9 @@ function SimpleCalendar() {
             {
               backgroundColor: isSelected
                 ? ColorPalette[colorIndex]
-                : Colors["gray-100"],
+                : theme === "light"
+                  ? Colors["gray-100"]
+                  : Colors["gray-700"],
             },
           ]}
           onPress={() => {
@@ -70,7 +74,7 @@ function SimpleCalendar() {
         </Pressable>
       );
     },
-    [toggleDay, monthlyDays, colorIndex]
+    [toggleDay, monthlyDays, colorIndex, theme]
   );
 
   const days = Array.from({ length: TOTAL_DAYS }, (_, i) => i + 1);

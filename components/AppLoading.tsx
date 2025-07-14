@@ -1,10 +1,11 @@
 import React from "react";
-import { ActivityIndicator, View } from "react-native";
+import { ActivityIndicator } from "react-native";
+import AppBackground from "./AppBackground";
 
 export default function AppLoading() {
   return (
-    <View className="flex-1 items-center justify-center">
+    <AppBackground className="flex-1 items-center justify-center">
       <ActivityIndicator size={100} />
-    </View>
+    </AppBackground>
   );
 }

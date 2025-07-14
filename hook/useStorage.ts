@@ -28,8 +28,7 @@ export function useStorage<T>(
       try {
         setStoredValue(value);
         await AsyncStorage.setItem(key, JSON.stringify(value));
-      } catch (err) {
-        console.log(err);
+      } catch {
         console.log("Error while writing data to storage with key", key);
       }
     },
