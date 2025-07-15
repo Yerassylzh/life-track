@@ -1,5 +1,5 @@
 import BottomSheetGorhom from "@gorhom/bottom-sheet";
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { HabitIconNameType } from "../lib/icons";
 
 type NewHabitContextType = {
@@ -27,6 +27,10 @@ type NewHabitContextType = {
   iconName: HabitIconNameType;
   setIconName: React.Dispatch<React.SetStateAction<HabitIconNameType>>;
   iconPickerSheetRef: React.RefObject<BottomSheetGorhom | null>;
+  unit: string;
+  setUnit: React.Dispatch<React.SetStateAction<string>>;
+  unitError: string | undefined;
+  setUnitError: React.Dispatch<React.SetStateAction<string | undefined>>;
 };
 
 const NewHabitContext = React.createContext<NewHabitContextType | undefined>(
@@ -57,6 +61,9 @@ export const NewHabitProvider: React.FC<{ children: React.ReactNode }> = ({
   const [iconName, setIconName] = React.useState<HabitIconNameType>("Album");
   const iconPickerSheetRef = useRef<BottomSheetGorhom>(null);
 
+  const [unit, setUnit] = useState<string>("");
+  const [unitError, setUnitError] = useState<string | undefined>("");
+
   const data = {
     title,
     setTitle,
@@ -80,6 +87,10 @@ export const NewHabitProvider: React.FC<{ children: React.ReactNode }> = ({
     iconName,
     setIconName,
     iconPickerSheetRef,
+    unit,
+    setUnit,
+    unitError,
+    setUnitError,
   };
 
   return (

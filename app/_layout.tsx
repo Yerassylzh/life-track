@@ -37,7 +37,13 @@ export default function RootLayout() {
                 <HabitProvider>
                   <BottomSheetModalProvider>
                     <SafeScreenView>
-                      <Stack screenOptions={{ headerShown: false }} />
+                      <Stack
+                        screenOptions={{
+                          headerShown: false,
+                          animation: "fade_from_bottom",
+                          animationDuration: 100,
+                        }}
+                      />
                     </SafeScreenView>
                   </BottomSheetModalProvider>
                 </HabitProvider>

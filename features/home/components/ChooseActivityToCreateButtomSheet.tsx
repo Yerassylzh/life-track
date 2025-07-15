@@ -18,8 +18,7 @@ const flow: ActivityStep[] = [
           "Mark whether you did the habit or not. Best for simple goals like meditating, waking up early, or avoiding sugar.",
         iconName: "CheckSquare",
         next: {
-          redirectTo: "/habit/create_habit/",
-          redirectParams: { type: "checkbox" },
+          redirectTo: "/habit/create_habit/checkbox",
         },
       },
       {
@@ -28,8 +27,7 @@ const flow: ActivityStep[] = [
           "Track how much, how long, or how many times you do something. Ideal for habits like reading pages, drinking water, or running kilometers.",
         iconName: "BarChart2",
         next: {
-          redirectTo: "/habit/create_habit/",
-          redirectParams: { type: "numeric" },
+          redirectTo: "/habit/create_habit/numeric",
         },
       },
     ],

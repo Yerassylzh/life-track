@@ -50,7 +50,7 @@ export default function TasksAndHabits() {
       // soon
     }
     return habitsEmpty && tasksEmpty;
-  }, [includeHabits, includeTasks]);
+  }, [includeHabits, includeTasks, habits]);
 
   return (
     <View className="flex-1 relative px-[15px] gap-[20px]">

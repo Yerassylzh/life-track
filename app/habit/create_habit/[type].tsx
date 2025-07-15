@@ -52,11 +52,28 @@ function CreateHabit() {
     monthlyDays,
     reminder,
     titleError,
+    unit,
+    setUnit,
+    unitError,
+    setUnitError,
   } = useNewHabit();
+  const { type } = useLocalSearchParams();
 
-  const onPress = useCallback(async () => {
+  const validateFormData = useCallback(() => {
     if (title.length === 0) {
       setTitleError("Enter habit name");
+      return false;
+    }
+
+    if (type === "numeric" && unit.length === 0) {
+      setUnitError("Enter unit");
+      return false;
+    }
+    return true;
+  }, [title, unit, setUnitError, setTitleError, type]);
+
+  const onPress = useCallback(async () => {
+    if (!validateFormData()) {
       return;
     }
 
@@ -75,6 +92,7 @@ function CreateHabit() {
     const data = await createHabit(
       title,
       description,
+      unit,
       colorIndex,
       repeatType,
       daysOfWeek,
@@ -96,10 +114,11 @@ function CreateHabit() {
     monthlyDays,
     reminder,
     repeatType,
-    setTitleError,
     title,
     weeklyFreq,
     showMessage,
+    validateFormData,
+    unit,
   ]);
 
   return (
@@ -115,7 +134,7 @@ function CreateHabit() {
         bounces={true}
         overScrollMode="always"
         style={{ flex: 1 }}
-        contentContainerStyle={{ gap: 10, paddingBottom: 100 }}
+        contentContainerStyle={{ gap: 10, paddingBottom: 200 }}
       >
         <Input
           onChangeText={setTitle}
@@ -126,8 +145,16 @@ function CreateHabit() {
         <LongInput
           onChangeText={setDescription}
           value={description}
-          placeholder="Description"
+          placeholder="Description (optional)"
         />
+        {type === "numeric" && (
+          <Input
+            onChangeText={setUnit}
+            value={unit}
+            placeholder="Unit (e.g: miles, mins)"
+            error={unitError}
+          />
+        )}
         <View className="flex-row gap-3">
           <ColorPicker />
           <IconPicker />
