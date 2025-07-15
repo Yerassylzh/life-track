@@ -17,6 +17,7 @@ export const habitTable = sqliteTable("habit", {
   name: text("name").notNull(),
   description: text("description").notNull(),
   unit: text("unit"),
+  iconName: text("iconName").notNull(),
   color: text("color").notNull(),
   repeatType: text("repeatType", {
     enum: ["daily", "weekly", "monthly"],

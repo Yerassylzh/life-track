@@ -8,7 +8,8 @@ import { v4 as uuid } from "uuid";
 export async function createHabit(
   title: string,
   description: string,
-  unit: string,
+  unit: string | null,
+  iconName: string,
   colorIndex: number,
   repeatType: "daily" | "weekly" | "monthly",
   daysOfWeek: number[],
@@ -16,6 +17,9 @@ export async function createHabit(
   monthlyDays: number[],
   reminderIds: string | null
 ) {
+  if (unit?.length === 0) {
+    unit = null;
+  }
   try {
     const newHabit = {
       id: uuid(),
@@ -28,6 +32,7 @@ export async function createHabit(
       monthlyDays: JSON.stringify(monthlyDays),
       reminder: reminderIds,
       unit,
+      iconName,
     };
     await db.insert(habitTable).values(newHabit);
     const habit = await db.query.habitTable.findFirst({

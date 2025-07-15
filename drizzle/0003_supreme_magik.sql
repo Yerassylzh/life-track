@@ -1,0 +1,1 @@
+ALTER TABLE `habit` ADD `iconName` text NOT NULL;

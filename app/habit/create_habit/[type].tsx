@@ -56,6 +56,7 @@ function CreateHabit() {
     setUnit,
     unitError,
     setUnitError,
+    iconName,
   } = useNewHabit();
   const { type } = useLocalSearchParams();
 
@@ -93,6 +94,7 @@ function CreateHabit() {
       title,
       description,
       unit,
+      iconName,
       colorIndex,
       repeatType,
       daysOfWeek,
@@ -119,6 +121,7 @@ function CreateHabit() {
     showMessage,
     validateFormData,
     unit,
+    iconName,
   ]);
 
   return (

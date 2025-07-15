@@ -1,6 +1,7 @@
 import InterText from "@/components/InterText";
 import { usePreferredColorTheme } from "@/context/PrefferedColorTheme";
 import { Habit } from "@/db/schema";
+import DynamicIcon from "@/features/habits/components/DynamicIcon";
 import { hexToRgba } from "@/lib/hex";
 import { cn } from "@/lib/tailwindClasses";
 import React from "react";
@@ -33,11 +34,16 @@ export default function HabitBox({
       )}
     >
       <View className="flex-row gap-4 items-center justify-between">
-        <View className="w-[40px] h-[40px] bg-gray-100 rounded-xl" />
+        <View
+          className={cn(
+            "w-[40px] h-[40px] bg-gray-100 rounded-xl items-center justify-center",
+            theme === "dark" && "bg-gray-900"
+          )}
+        >
+          <DynamicIcon color={habit.color} size={22} name={habit.iconName} />
+        </View>
         <View className="flex flex-col justify-between items-start h-[37px]">
-          <InterText className={cn(`text-[${habit.color}]`, "text-md")}>
-            {habit.name}
-          </InterText>
+          <InterText className={cn("text-md")}>{habit.name}</InterText>
           <HabitLabel color={habit.color} />
         </View>
       </View>

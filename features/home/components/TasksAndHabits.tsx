@@ -79,7 +79,14 @@ export default function TasksAndHabits() {
               color={Colors.primary}
             />
             <InterText className="text-lg font-semibold">
-              No activities for today
+              No{" "}
+              {(() => {
+                if (includeHabits && includeTasks) {
+                  return "activities";
+                }
+                return includeHabits ? "habits" : "tasks";
+              })()}{" "}
+              for today
             </InterText>
             <InterText className={cn("text-gray-500")}>
               Hit the button at the corner to create one

@@ -18,6 +18,7 @@ export const habitIcons = [
   "BrushCleaning",
   "Radical",
   "Trees",
+  "GlassWater",
 ] as const;
 
 export type HabitIconNameType = (typeof habitIcons)[number];
