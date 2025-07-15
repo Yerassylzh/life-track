@@ -95,7 +95,7 @@ function Option({
           <InterText
             style={{ flex: 1, flexWrap: "wrap" }}
             className={cn(
-              "text-sm text-gray-400",
+              "text-sm text-gray-500",
               theme === "dark" && "text-gray-400"
             )}
           >
