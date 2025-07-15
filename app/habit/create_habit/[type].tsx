@@ -1,4 +1,5 @@
 import AppBackground from "@/components/AppBackground";
+import AppLoading from "@/components/AppLoading";
 import BackHeader from "@/components/BackHeader";
 import Input from "@/components/Input";
 import InterText from "@/components/InterText";
@@ -17,11 +18,18 @@ import {
 } from "@/features/habits/context/NewHabitContext";
 import { createHabit } from "@/features/habits/lib/create";
 import { scheduleNotification } from "@/lib/notifications";
+import { useLocalSearchParams } from "expo-router";
 import { navigate } from "expo-router/build/global-state/routing";
 import React, { useCallback } from "react";
 import { ScrollView, View } from "react-native";
 
 export default function Wrapper() {
+  const { type } = useLocalSearchParams();
+  if (type !== "numeric" && type !== "checkbox") {
+    console.log("invalid params for create_habit:", type);
+    return <AppLoading />;
+  }
+
   return (
     <NewHabitProvider>
       <CreateHabit />

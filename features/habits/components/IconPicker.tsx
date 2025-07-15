@@ -1,15 +1,14 @@
 import InterText from "@/components/InterText";
 import { usePreferredColorTheme } from "@/context/PrefferedColorTheme";
-import { ColorPalette } from "@/lib/colors";
 import { cn } from "@/lib/tailwindClasses";
 import React from "react";
 import { View } from "react-native";
 import { useNewHabit } from "../context/NewHabitContext";
-import ColorButton from "./ColorButton";
+import IconPickerButton from "./IconPickerButton";
 
-export default function ColorPicker() {
+export default function IconPicker() {
   const { theme } = usePreferredColorTheme();
-  const { colorPickerSheetRef, colorIndex } = useNewHabit();
+  const { iconPickerSheetRef, iconName } = useNewHabit();
 
   return (
     <View
@@ -18,10 +17,10 @@ export default function ColorPicker() {
         theme === "light" ? "bg-white" : "bg-gray-900"
       )}
     >
-      <InterText className="text-lg font-semibold">Color</InterText>
-      <ColorButton
-        backgroundColor={ColorPalette[colorIndex]}
-        onPress={() => colorPickerSheetRef.current?.expand()}
+      <InterText className="text-lg font-semibold">Icon</InterText>
+      <IconPickerButton
+        iconName={iconName}
+        onPress={() => iconPickerSheetRef.current?.expand()}
       />
     </View>
   );

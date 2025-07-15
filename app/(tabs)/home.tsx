@@ -20,7 +20,7 @@ function Home() {
   const { setSelectedDate } = useDate();
 
   return (
-    <AppBackground>
+    <AppBackground className="gap-2">
       <Header />
       <DatePicker onDateSelected={setSelectedDate} />
       <TasksAndHabits />

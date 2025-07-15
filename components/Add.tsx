@@ -1,18 +1,18 @@
 import { cn } from "@/lib/tailwindClasses";
-import AntDesign from "@expo/vector-icons/AntDesign";
 import React from "react";
-import { TouchableOpacity, TouchableOpacityProps } from "react-native";
+import { Text, TouchableOpacity, TouchableOpacityProps } from "react-native";
 
 export default function Add({ className, ...rest }: TouchableOpacityProps) {
   return (
     <TouchableOpacity
       {...rest}
       className={cn(
-        "absolute bottom-2 right-2 bg-primary p-5 rounded-xl shadow-xl",
+        "absolute bottom-2 right-2 bg-primary w-[53px] h-[53px] items-center justify-center rounded-xl shadow-xl",
         className
       )}
     >
-      <AntDesign name="plus" size={20} color="white" />
+      <Text className="font-inter font-bold text-3xl text-white">+</Text>
+      {/* <AntDesign name="plus" size={20} color="white" /> */}
     </TouchableOpacity>
   );
 }

@@ -31,27 +31,18 @@ export class HabitCompletionsManager {
     for (const completion of this.completions) {
       this.completionData.set(completion, CompletionStatus.Completed);
     }
+
     this.processCompletions();
+    // console.log(this.completionData);
   }
 
-  isHabitCompletedAt(
-    year: number,
-    month: number,
-    day: number
-  ): boolean | undefined {
-    const keyString = dateToYMD(new Date(year, month, day));
-    return this.completionData.get(keyString) === CompletionStatus.Completed;
+  isHabitCompletedAt(dateYMD: string): boolean | undefined {
+    return this.completionData.get(dateYMD) === CompletionStatus.Completed;
   }
 
-  isHabitDoesntNeedToCompleteAt(
-    year: number,
-    month: number,
-    day: number
-  ): boolean | undefined {
-    const keyString = dateToYMD(new Date(year, month, day));
+  isHabitDoesntNeedToCompleteAt(dateYMD: string): boolean | undefined {
     return (
-      this.completionData.get(keyString) ===
-      CompletionStatus.DoesntNeedToComplete
+      this.completionData.get(dateYMD) === CompletionStatus.DoesntNeedToComplete
     );
   }
 

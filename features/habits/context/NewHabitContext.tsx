@@ -1,5 +1,6 @@
-import BottomSHeetGorhom from "@gorhom/bottom-sheet";
+import BottomSheetGorhom from "@gorhom/bottom-sheet";
 import React, { useRef } from "react";
+import { HabitIconNameType } from "../lib/icons";
 
 type NewHabitContextType = {
   title: string;
@@ -18,11 +19,14 @@ type NewHabitContextType = {
   setWeeklyFreq: React.Dispatch<React.SetStateAction<number>>;
   monthlyDays: number[];
   setMonthlyDays: React.Dispatch<React.SetStateAction<number[]>>;
-  colorPickerSheetRef: React.RefObject<BottomSHeetGorhom | null>;
+  colorPickerSheetRef: React.RefObject<BottomSheetGorhom | null>;
   reminder: string | null;
   setReminder: React.Dispatch<React.SetStateAction<string | null>>;
   titleError: string | undefined;
   setTitleError: React.Dispatch<React.SetStateAction<string | undefined>>;
+  iconName: HabitIconNameType;
+  setIconName: React.Dispatch<React.SetStateAction<HabitIconNameType>>;
+  iconPickerSheetRef: React.RefObject<BottomSheetGorhom | null>;
 };
 
 const NewHabitContext = React.createContext<NewHabitContextType | undefined>(
@@ -37,9 +41,6 @@ export const NewHabitProvider: React.FC<{ children: React.ReactNode }> = ({
     undefined
   );
   const [description, setDescription] = React.useState("");
-  // const [descriptionError, setDescriptionError] = React.useState<string | null>(
-  //   null
-  // ); >>> Desctiption is optional
   const [colorIndex, setColorIndex] = React.useState(0);
   const [repeatType, setRepeatType] = React.useState<
     "daily" | "weekly" | "monthly"
@@ -49,9 +50,12 @@ export const NewHabitProvider: React.FC<{ children: React.ReactNode }> = ({
   ]);
   const [weeklyFreq, setWeeklyFreq] = React.useState<number>(3);
   const [monthlyDays, setMonthlyDays] = React.useState<number[]>([1]);
-  const colorPickerSheetRef = useRef<BottomSHeetGorhom>(null);
+  const colorPickerSheetRef = useRef<BottomSheetGorhom>(null);
 
   const [reminder, setReminder] = React.useState<string | null>("08:00");
+
+  const [iconName, setIconName] = React.useState<HabitIconNameType>("Album");
+  const iconPickerSheetRef = useRef<BottomSheetGorhom>(null);
 
   const data = {
     title,
@@ -73,6 +77,9 @@ export const NewHabitProvider: React.FC<{ children: React.ReactNode }> = ({
     setReminder,
     titleError,
     setTitleError,
+    iconName,
+    setIconName,
+    iconPickerSheetRef,
   };
 
   return (

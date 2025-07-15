@@ -13,6 +13,17 @@ export const Colors = {
   "gray-800": "#1f2937",
   "gray-900": "#111827",
   "gray-950": "#030712",
+  "green-50": "#f0fdf4",
+  "green-100": "#dcfce7",
+  "green-200": "#bbf7d0",
+  "green-300": "#86efac",
+  "green-400": "#4ade80",
+  "green-500": "#22c55e",
+  "green-600": "#16a34a",
+  "green-700": "#15803d",
+  "green-800": "#166534",
+  "green-900": "#14532d",
+  "green-950": "#052e16",
 };
 
 export const ColorPalette = [

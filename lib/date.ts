@@ -52,7 +52,7 @@ export function addDaystoDate(date: Date, cntDays: number) {
 /** Converts Date object to YYYY-MM-DD like string. Ignores the time. */
 export function dateToYMD(date: Date) {
   const year = date.getFullYear();
-  const month = date.getMonth();
+  const month = date.getMonth() + 1;
   const day = date.getDate();
   return `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
 }
@@ -60,5 +60,5 @@ export function dateToYMD(date: Date) {
 /** Converts YYYY-MM-DD formatted date string to Date object. */
 export function YMDToDate(ymd: string): Date {
   const [year, month, day] = ymd.split("-").map((str) => Number(str));
-  return new Date(year, month, day);
+  return new Date(year, month - 1, day);
 }

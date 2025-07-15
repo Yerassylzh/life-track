@@ -37,7 +37,7 @@ export default function TabBarButton({
     <TouchableWithoutFeedback {...rest} className="flex-1">
       <Animated.View
         style={gapStyle}
-        className="flex-1 items-center justify-center py-[15px]"
+        className="flex-1 items-center justify-center py-[10px]"
       >
         {icon(isFocused ? Colors.primary : Colors["gray-500"])}
         {isFocused && (
@@ -45,6 +45,7 @@ export default function TabBarButton({
             style={{
               color: isFocused ? Colors.primary : Colors["gray-500"],
             }}
+            className="text-sm"
           >
             {label}
           </Text>

@@ -16,6 +16,7 @@ export const habitTable = sqliteTable("habit", {
   id: text("id").primaryKey().notNull(),
   name: text("name").notNull(),
   description: text("description").notNull(),
+  unit: text("unit"),
   color: text("color").notNull(),
   repeatType: text("repeatType", {
     enum: ["daily", "weekly", "monthly"],
@@ -40,6 +41,7 @@ export const habitCompletionTable = sqliteTable("habit_completion", {
   habitId: text("habitId").references(() => habitTable.id, {
     onDelete: "cascade",
   }),
+  unitValue: integer("unitValue"),
   completedAt: integer("completedAt", { mode: "timestamp" }).notNull(),
 });
 

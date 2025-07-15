@@ -1,20 +1,22 @@
 import { usePreferredColorTheme } from "@/context/PrefferedColorTheme";
 import { Colors } from "@/lib/colors";
-import BottomSheetGorhom, {
+import {
   BottomSheetBackdrop,
   BottomSheetBackdropProps,
+  BottomSheetModal,
+  BottomSheetScrollView,
   BottomSheetView,
 } from "@gorhom/bottom-sheet";
 import React, { RefObject, useCallback } from "react";
 
-export type BottomSheetProps = {
-  ref?: RefObject<BottomSheetGorhom | null>;
+export type ModalBottomSheetProps = {
+  ref?: RefObject<BottomSheetModal | null>;
   children?: React.ReactNode;
 };
 
-const BottomSheet = ({ children, ref }: BottomSheetProps) => {
+const ModalBottomSheet = ({ children, ref }: ModalBottomSheetProps) => {
   const { theme } = usePreferredColorTheme();
-  // const snapPoints = useMemo(() => ["40%"], []);
+  // const snapPoints = useMemo(() => [300], []);
 
   const renderBackdrop = useCallback(
     (props: BottomSheetBackdropProps) => (
@@ -29,11 +31,11 @@ const BottomSheet = ({ children, ref }: BottomSheetProps) => {
   );
 
   return (
-    <BottomSheetGorhom
+    <BottomSheetModal
       ref={ref}
-      index={-1}
       enablePanDownToClose
       enableContentPanningGesture={true}
+      enableDynamicSizing={true}
       backdropComponent={renderBackdrop}
       backgroundStyle={{
         borderRadius: 24,
@@ -44,9 +46,11 @@ const BottomSheet = ({ children, ref }: BottomSheetProps) => {
           theme === "light" ? Colors["gray-400"] : Colors["gray-600"],
       }}
     >
-      <BottomSheetView className="px-4 py-10">{children}</BottomSheetView>
-    </BottomSheetGorhom>
+      <BottomSheetScrollView>
+        <BottomSheetView className="px-4 py-10">{children}</BottomSheetView>
+      </BottomSheetScrollView>
+    </BottomSheetModal>
   );
 };
 
-export default BottomSheet;
+export default ModalBottomSheet;

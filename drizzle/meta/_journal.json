@@ -15,6 +15,13 @@
       "when": 1752417643316,
       "tag": "0001_chemical_zarda",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1752561148107,
+      "tag": "0002_cultured_whistler",
+      "breakpoints": true
     }
   ]
 }

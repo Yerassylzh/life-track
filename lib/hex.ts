@@ -1,4 +1,4 @@
-export function hexToRgba(hex: string, alpha: number): string {
+export function hexToRgba(hex: string, alpha: number = 1): string {
   // Remove leading #
   hex = hex.replace(/^#/, "");
 
@@ -14,5 +14,5 @@ export function hexToRgba(hex: string, alpha: number): string {
   const g = parseInt(hex.substring(2, 4), 16);
   const b = parseInt(hex.substring(4, 6), 16);
 
-  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+  return `rgba(${r},${g},${b},${alpha})`;
 }

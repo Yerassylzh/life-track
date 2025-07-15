@@ -1,14 +1,14 @@
 import AppLoading from "@/components/AppLoading";
-import { Habit } from "@/db/schema";
+import { db } from "@/db/db";
 import { HabitWithCompletions } from "@/db/types";
-import { getHabits } from "@/features/habits/lib/get";
+import { HabitCompletionsManager } from "@/features/habits/lib/HabitCompletionsManager";
+import { getFirstDayOfWeek } from "@/lib/date";
+import { useLiveQuery } from "drizzle-orm/expo-sqlite";
 import React, { createContext, useContext, useEffect, useState } from "react";
 
 interface ContextType {
-  habits: Habit[];
-  setHabits: React.Dispatch<
-    React.SetStateAction<HabitWithCompletions[] | null>
-  >;
+  habits: HabitWithCompletions[];
+  habitsCompletionsManager: Map<string, HabitCompletionsManager>;
 }
 
 const HabitContext = createContext<ContextType | undefined>(undefined);
@@ -18,31 +18,47 @@ export default function HabitProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const [habits, setHabits] = useState<HabitWithCompletions[] | null>(null);
+  const completionsData = useLiveQuery(
+    db.query.habitCompletionTable.findMany()
+  );
+
+  const { data } = useLiveQuery(
+    db.query.habitTable.findMany({
+      with: {
+        completions: true,
+      },
+    }),
+    [completionsData.data]
+  );
+
+  const [habitsCompletionsManager, setHabitsCompletionsManager] = useState<Map<
+    string,
+    HabitCompletionsManager
+  > | null>(null);
 
   useEffect(() => {
-    const wrapper = async () => {
-      const data = await getHabits();
-      if (!data.success) {
-        // showMessage()
-      } else {
-        setHabits(data.habits as unknown as HabitWithCompletions[]);
-      }
-    };
+    (async () => {
+      const firstDayOfWeek = (await getFirstDayOfWeek()) as "mon" | "sun";
+      setHabitsCompletionsManager(
+        new Map(
+          data.map((habit) => [
+            habit.id,
+            new HabitCompletionsManager(habit, firstDayOfWeek),
+          ])
+        )
+      );
+    })();
+  }, [data]);
 
-    wrapper();
-  }, []);
-
-  if (habits === null) {
+  if (habitsCompletionsManager === null) {
     return <AppLoading />;
   }
 
-  const data = {
-    habits: habits,
-    setHabits: setHabits,
-  };
-
-  return <HabitContext.Provider value={data}>{children}</HabitContext.Provider>;
+  return (
+    <HabitContext.Provider value={{ habits: data, habitsCompletionsManager }}>
+      {children}
+    </HabitContext.Provider>
+  );
 }
 
 export const useHabits = () => {

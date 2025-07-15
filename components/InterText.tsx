@@ -3,21 +3,27 @@ import { cn } from "@/lib/tailwindClasses";
 import React from "react";
 import { Text, TextProps } from "react-native";
 
+type Props = {
+  customColor?: string;
+} & TextProps;
+
 export default function InterText({
+  customColor,
   className,
   style,
   children,
   ...rest
-}: TextProps) {
+}: Props) {
   const { theme } = usePreferredColorTheme();
 
   return (
     <Text
       className={cn(
         "font-inter",
-        theme === "dark" ? "text-white" : "text-black",
+        !customColor && (theme === "dark" ? "text-white" : "text-black"),
         className
       )}
+      style={[customColor ? { color: customColor } : {}, style]}
     >
       {children}
     </Text>

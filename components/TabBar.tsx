@@ -35,7 +35,7 @@ export default function TabBar({
         flexDirection: "row",
       }}
       className={cn(
-        "absolute bottom-[25px] items-center justify-between mx-[15px] rounded-full shadow-md",
+        "absolute bottom-[25px] items-center justify-evenly mx-[25px] rounded-full shadow-md",
         "bg-gray-900",
         theme === "light" && "bg-white"
       )}
