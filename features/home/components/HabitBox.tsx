@@ -2,10 +2,10 @@ import InterText from "@/components/InterText";
 import { usePreferredColorTheme } from "@/context/PrefferedColorTheme";
 import { Habit } from "@/db/schema";
 import DynamicIcon from "@/features/habits/components/DynamicIcon";
-import { hexToRgba } from "@/lib/hex";
 import { cn } from "@/lib/tailwindClasses";
 import React from "react";
 import { Pressable, View } from "react-native";
+import ActivityLabel from "./ActivityLabel";
 import CompleteButtom from "./CompleteButtom";
 
 type Props = {
@@ -44,23 +44,10 @@ export default function HabitBox({
         </View>
         <View className="flex flex-col justify-between items-start h-[37px]">
           <InterText className={cn("text-md")}>{habit.name}</InterText>
-          <HabitLabel color={habit.color} />
+          <ActivityLabel color={habit.color} text={"Habit"} />
         </View>
       </View>
       <CompleteButtom isCompleted={isCompleted} />
     </Pressable>
-  );
-}
-
-function HabitLabel({ color }: { color: string }) {
-  return (
-    <View
-      style={{ backgroundColor: hexToRgba(color, 0.15) }}
-      className={cn("py-[1px] px-1 rounded-md")}
-    >
-      <InterText className={cn("text-xs")} customColor={hexToRgba(color)}>
-        Habit
-      </InterText>
-    </View>
   );
 }

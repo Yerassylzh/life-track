@@ -1,22 +1,32 @@
 import { usePreferredColorTheme } from "@/context/PrefferedColorTheme";
 import { Colors } from "@/lib/colors";
+import { cn } from "@/lib/tailwindClasses";
 import {
   BottomSheetBackdrop,
   BottomSheetBackdropProps,
   BottomSheetModal,
+  BottomSheetModalProps,
   BottomSheetScrollView,
   BottomSheetView,
 } from "@gorhom/bottom-sheet";
-import React, { RefObject, useCallback } from "react";
+import React, { ReactNode, RefObject, useCallback } from "react";
 
-export type ModalBottomSheetProps = {
+export interface ModalBottomSheetProps
+  extends Omit<BottomSheetModalProps, "children"> {
   ref?: RefObject<BottomSheetModal | null>;
-  children?: React.ReactNode;
-};
+  children?: ReactNode | ReactNode[];
+  paddingY?: number;
+}
 
-const ModalBottomSheet = ({ children, ref }: ModalBottomSheetProps) => {
+const ModalBottomSheet = ({
+  children,
+  ref,
+  paddingY,
+  handleIndicatorStyle,
+  backgroundStyle,
+  ...rest
+}: ModalBottomSheetProps) => {
   const { theme } = usePreferredColorTheme();
-  // const snapPoints = useMemo(() => [300], []);
 
   const renderBackdrop = useCallback(
     (props: BottomSheetBackdropProps) => (
@@ -33,21 +43,35 @@ const ModalBottomSheet = ({ children, ref }: ModalBottomSheetProps) => {
   return (
     <BottomSheetModal
       ref={ref}
-      enablePanDownToClose
       enableContentPanningGesture={true}
       enableDynamicSizing={true}
+      android_keyboardInputMode="adjustResize"
+      keyboardBehavior="interactive"
       backdropComponent={renderBackdrop}
-      backgroundStyle={{
-        borderRadius: 24,
-        backgroundColor: theme === "light" ? "white" : Colors["gray-900"],
-      }}
-      handleIndicatorStyle={{
-        backgroundColor:
-          theme === "light" ? Colors["gray-400"] : Colors["gray-600"],
-      }}
+      enablePanDownToClose={false}
+      backgroundStyle={[
+        {
+          borderRadius: 24,
+          backgroundColor: theme === "light" ? "white" : Colors["gray-900"],
+        },
+        backgroundStyle,
+      ]}
+      handleIndicatorStyle={[
+        {
+          backgroundColor:
+            theme === "light" ? Colors["gray-400"] : Colors["gray-600"],
+        },
+        handleIndicatorStyle,
+      ]}
+      {...rest}
     >
       <BottomSheetScrollView>
-        <BottomSheetView className="px-4 py-10">{children}</BottomSheetView>
+        <BottomSheetView
+          className={cn("px-4")}
+          style={{ paddingVertical: paddingY !== undefined ? paddingY : 40 }}
+        >
+          {children}
+        </BottomSheetView>
       </BottomSheetScrollView>
     </BottomSheetModal>
   );

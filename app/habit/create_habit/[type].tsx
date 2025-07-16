@@ -64,12 +64,17 @@ function CreateHabit() {
     if (title.length === 0) {
       setTitleError("Enter habit name");
       return false;
+    } else {
+      setTitleError(undefined);
     }
 
     if (type === "numeric" && unit.length === 0) {
       setUnitError("Enter unit");
       return false;
+    } else {
+      setUnitError(undefined);
     }
+
     return true;
   }, [title, unit, setUnitError, setTitleError, type]);
 

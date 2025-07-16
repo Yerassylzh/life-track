@@ -4,14 +4,16 @@ import { and, eq, gte, lt } from "drizzle-orm";
 import "react-native-get-random-values";
 import { v4 as uuid } from "uuid";
 
-export async function markHabitAsCompleted(habitId: string) {
+export async function markHabitAsCompleted(
+  habitId: string,
+  unitValue: number | null
+) {
   await db.insert(habitCompletionTable).values({
     id: uuid(),
     habitId,
     completedAt: new Date(),
+    unitValue,
   });
-  // await db.delete(habitCompletionTable);
-  // console.log(await db.query.habitCompletionTable.findMany());
 }
 
 export async function markHabitAsUncompleted(habitId: string, date: string) {
