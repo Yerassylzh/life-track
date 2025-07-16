@@ -5,10 +5,10 @@ import Input from "@/components/Input";
 import InterText from "@/components/InterText";
 import LongInput from "@/components/LongInput";
 import PrimaryButton from "@/components/PrimaryButton";
+import ReminderInput from "@/components/ReminderInput";
 import { useModalMessage } from "@/context/ModalMessageContext";
 import ColorPicker from "@/features/habits/components/ColorPicker";
 import ColorPickerBottomSheet from "@/features/habits/components/ColorPickerBottomSheet";
-import HabitReminder from "@/features/habits/components/HabitReminder";
 import HabitRepeat from "@/features/habits/components/HabitRepeat";
 import IconPicker from "@/features/habits/components/IconPicker";
 import IconPickerBottomSheet from "@/features/habits/components/IconPickerBottomSheet";
@@ -17,9 +17,8 @@ import {
   useNewHabit,
 } from "@/features/habits/context/NewHabitContext";
 import { createHabit } from "@/features/habits/lib/create";
-import { scheduleNotification } from "@/lib/notifications";
-import { useLocalSearchParams } from "expo-router";
-import { navigate } from "expo-router/build/global-state/routing";
+import { scheduleNotification } from "@/features/habits/lib/notifications";
+import { router, useLocalSearchParams } from "expo-router";
 import React, { useCallback } from "react";
 import { ScrollView, View } from "react-native";
 
@@ -57,6 +56,7 @@ function CreateHabit() {
     unitError,
     setUnitError,
     iconName,
+    setReminder,
   } = useNewHabit();
   const { type } = useLocalSearchParams();
 
@@ -109,7 +109,7 @@ function CreateHabit() {
     );
     if (data.success) {
       console.log("Created successfully");
-      navigate("/(tabs)/home");
+      router.replace("/(tabs)/home");
     } else {
       console.log("Error occured");
       showMessage(`Error occured while creating habit. Logs: ${data.error}`);
@@ -168,7 +168,7 @@ function CreateHabit() {
           <IconPicker />
         </View>
         <HabitRepeat />
-        <HabitReminder />
+        <ReminderInput reminder={reminder} setReminder={setReminder} />
       </ScrollView>
       <PrimaryButton
         label="Save"

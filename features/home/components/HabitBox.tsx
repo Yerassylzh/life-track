@@ -27,7 +27,7 @@ export default function HabitBox({
     <Pressable
       onPress={onPress}
       className={cn(
-        "flex flex-row items-center justify-between py-3",
+        "flex flex-row items-center justify-between py-3.5",
         hasBottomBorder && "border-b",
         hasBottomBorder &&
           (theme === "light" ? "border-b-gray-200" : "border-b-gray-800")

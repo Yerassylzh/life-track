@@ -17,7 +17,7 @@ export default function HabitsAndTasksFilter({
   currentFilter,
 }: Props) {
   return (
-    <View className="w-full flex flex-row gap-2 items-center justify-start">
+    <View className="w-full flex flex-row gap-2 items-center justify-start px-[15px]">
       {["all", "habit", "task"].map((filterText, index) => (
         <Filter
           key={index}

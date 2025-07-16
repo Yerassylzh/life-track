@@ -2,15 +2,14 @@ import { useHabits } from "@/context/HabitContext";
 import { HabitWithCompletions } from "@/db/types";
 import { markHabitAsUncompleted } from "@/features/habits/lib/update";
 import { dateToYMD, YMDToDate } from "@/lib/date";
-import React, { useCallback } from "react";
+import React, { useCallback, useMemo } from "react";
+import { useDate } from "../context/SelectedDateContext";
 import HabitBox from "./HabitBox";
 
-type Props = {
-  date: string;
-};
-
-export default function CompletedHabits({ date }: Props) {
+export default function CompletedHabits() {
   const { habits, habitsCompletionsManager } = useHabits();
+  const { selectedDate } = useDate();
+  const date = useMemo(() => dateToYMD(selectedDate), [selectedDate]);
 
   const filterFunc = useCallback(
     (habit: HabitWithCompletions) => {

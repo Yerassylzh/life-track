@@ -7,45 +7,46 @@ import {
   DateTimePickerAndroid,
   DateTimePickerEvent,
 } from "@react-native-community/datetimepicker";
-import React, { useCallback, useMemo } from "react";
+import React, { SetStateAction, useCallback } from "react";
 import { Pressable, View } from "react-native";
-import { useNewHabit } from "../context/NewHabitContext";
 
-export default function HabitReminder() {
+export type ReminderInputProps = {
+  reminder: string | null;
+  setReminder: React.Dispatch<SetStateAction<string | null>>;
+};
+
+export default function ReminderInput({
+  reminder,
+  setReminder,
+}: ReminderInputProps) {
   const { theme } = usePreferredColorTheme();
-  const { reminder, setReminder } = useNewHabit();
-
-  const reminderValue = useMemo(() => {
-    if (reminder === null) {
-      return new Date(2025, 0, 1, 8, 0); // 8AM
-    }
-    return new Date(
-      2025,
-      0,
-      0,
-      Number(reminder.split(":")[0]),
-      Number(reminder.split(":")[1])
-    );
-  }, [reminder]);
 
   const onReminderChange = useCallback(
     (event: DateTimePickerEvent, selectedDate?: Date) => {
-      if (selectedDate === undefined) {
-        return;
-      }
-      setReminder(getFormattedTimeString(selectedDate));
+      selectedDate && setReminder(getFormattedTimeString(selectedDate));
     },
     [setReminder]
   );
 
   const onReminderPress = useCallback(() => {
+    const reminderDate =
+      reminder === null
+        ? new Date(2025, 0, 1, 8, 0)
+        : new Date(
+            2025,
+            0,
+            1,
+            Number(reminder.split(":")[0]),
+            Number(reminder.split(":")[1])
+          );
+
     DateTimePickerAndroid.open({
-      value: reminderValue,
+      value: reminderDate,
       onChange: onReminderChange,
       mode: "time",
       is24Hour: true,
     });
-  }, [reminderValue, onReminderChange]);
+  }, [reminder, onReminderChange]);
 
   return (
     <View

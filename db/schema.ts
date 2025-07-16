@@ -4,10 +4,12 @@ import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
 export const taskTable = sqliteTable("task", {
   id: text("id").primaryKey().notNull(),
   name: text("name").notNull(),
-  createdAt: integer("createdAt", { mode: "timestamp" }).notNull(),
+  createdAt: integer("createdAt", { mode: "timestamp" })
+    .notNull()
+    .default(sql`(strftime('%s', 'now'))`),
   targetDate: integer("targetDate", { mode: "timestamp" }).notNull(),
   completedAt: integer("completedAt", { mode: "timestamp" }),
-  reminder: integer("reminder", { mode: "timestamp" }),
+  reminder: text("reminder"),
 });
 
 export type Task = typeof taskTable.$inferSelect;

@@ -1,7 +1,6 @@
 import { db } from "@/db/db";
 import { habitTable } from "@/db/schema";
 import { ColorPalette } from "@/lib/colors";
-import { eq } from "drizzle-orm";
 import "react-native-get-random-values";
 import { v4 as uuid } from "uuid";
 
@@ -35,16 +34,8 @@ export async function createHabit(
       iconName,
     };
     await db.insert(habitTable).values(newHabit);
-    const habit = await db.query.habitTable.findFirst({
-      where: eq(habitTable.id, newHabit.id),
-      with: {
-        completions: true,
-      },
-    });
-
     return {
       success: true,
-      habit,
     };
   } catch (err) {
     return {

@@ -12,6 +12,7 @@ export function getReadableDate(date: Date): string {
     : m.format("MMMM D, YYYY"); // e.g., "November 7, 2025"
 }
 
+// E.g: 08:00, 19:23
 export function getFormattedTimeString(date: Date) {
   let hours = date.getHours().toString();
   if (hours.length === 1) {

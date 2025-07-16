@@ -11,17 +11,16 @@ import { Colors } from "@/lib/colors";
 import { dateToYMD, YMDToDate } from "@/lib/date";
 import { cn } from "@/lib/tailwindClasses";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useMemo, useRef, useState } from "react";
 import { Dimensions, Pressable, View } from "react-native";
+import { useDate } from "../context/SelectedDateContext";
 import ActivityLabel from "./ActivityLabel";
 import HabitBox from "./HabitBox";
 
-type Props = {
-  date: string;
-};
-
-export default function UncompletedHabits({ date }: Props) {
+export default function UncompletedHabits() {
   const { habits, habitsCompletionsManager } = useHabits();
+  const { selectedDate } = useDate();
+  const date = useMemo(() => dateToYMD(selectedDate), [selectedDate]);
 
   const filter = useCallback(
     (habit: HabitWithCompletions) => {
