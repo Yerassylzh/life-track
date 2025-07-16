@@ -6,6 +6,7 @@ export function getReadableDate(date: Date): string {
 
   if (m.isSame(moment(), "day")) return "Today";
   if (m.isSame(moment().subtract(1, "day"), "day")) return "Yesterday";
+  if (m.isSame(moment().add(1, "day"), "day")) return "Tomorrow";
 
   return m.isSame(moment(), "year")
     ? m.format("MMMM D") // e.g., "June 8"

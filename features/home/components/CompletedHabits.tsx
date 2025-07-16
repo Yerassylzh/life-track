@@ -1,5 +1,5 @@
-import { useHabits } from "@/context/HabitContext";
 import { HabitWithCompletions } from "@/db/types";
+import { useHabits } from "@/features/habits/context/HabitsContext";
 import { markHabitAsUncompleted } from "@/features/habits/lib/update";
 import { dateToYMD, YMDToDate } from "@/lib/date";
 import React, { useCallback, useMemo } from "react";
@@ -31,6 +31,7 @@ export default function CompletedHabits() {
       key={index}
       hasBottomBorder={true}
       isCompleted={true}
+      date={dateToYMD(selectedDate)}
       habit={habit}
       onPress={async () => {
         if (date !== dateToYMD(new Date())) {

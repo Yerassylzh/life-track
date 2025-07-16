@@ -11,9 +11,9 @@ interface ContextType {
   habitsCompletionsManager: Map<string, HabitCompletionsManager>;
 }
 
-const HabitContext = createContext<ContextType | undefined>(undefined);
+const HabitsContext = createContext<ContextType | undefined>(undefined);
 
-export default function HabitProvider({
+export default function HabitsProvider({
   children,
 }: {
   children: React.ReactNode;
@@ -55,14 +55,14 @@ export default function HabitProvider({
   }
 
   return (
-    <HabitContext.Provider value={{ habits: data, habitsCompletionsManager }}>
+    <HabitsContext.Provider value={{ habits: data, habitsCompletionsManager }}>
       {children}
-    </HabitContext.Provider>
+    </HabitsContext.Provider>
   );
 }
 
 export const useHabits = () => {
-  const context = useContext(HabitContext);
+  const context = useContext(HabitsContext);
   if (!context) {
     throw new Error("useHabits must be called within HabitsProvider");
   }

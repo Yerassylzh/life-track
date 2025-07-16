@@ -9,7 +9,7 @@ type Props = {
   isCompleted?: boolean;
 };
 
-export default function CompleteButtom({ isCompleted }: Props) {
+export default function CompleteButton({ isCompleted }: Props) {
   const { theme } = usePreferredColorTheme();
 
   return (

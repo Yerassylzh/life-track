@@ -1,9 +1,10 @@
 import { RequireNotificationPermission } from "@/components/RequireNotificationPermission";
 import SafeScreenView from "@/components/SafeScreenView";
-import HabitProvider from "@/context/HabitContext";
 import { ModalMessageProvider } from "@/context/ModalMessageContext";
 import { PreferredColorThemeProvider } from "@/context/PrefferedColorTheme";
 import { expoDb } from "@/db/db";
+import HabitsProvider from "@/features/habits/context/HabitsContext";
+import TasksProvider from "@/features/tasks/context/TasksContext";
 import "@/global.css";
 import DbMigrator from "@/layouts/DbMigrator";
 import FontLayout from "@/layouts/Font";
@@ -34,19 +35,21 @@ export default function RootLayout() {
           <ModalMessageProvider>
             <RequireNotificationPermission>
               <DbMigrator>
-                <HabitProvider>
-                  <BottomSheetModalProvider>
-                    <SafeScreenView>
-                      <Stack
-                        screenOptions={{
-                          headerShown: false,
-                          animation: "fade_from_bottom",
-                          animationDuration: 100,
-                        }}
-                      />
-                    </SafeScreenView>
-                  </BottomSheetModalProvider>
-                </HabitProvider>
+                <HabitsProvider>
+                  <TasksProvider>
+                    <BottomSheetModalProvider>
+                      <SafeScreenView>
+                        <Stack
+                          screenOptions={{
+                            headerShown: false,
+                            animation: "fade_from_bottom",
+                            animationDuration: 100,
+                          }}
+                        />
+                      </SafeScreenView>
+                    </BottomSheetModalProvider>
+                  </TasksProvider>
+                </HabitsProvider>
               </DbMigrator>
             </RequireNotificationPermission>
           </ModalMessageProvider>

@@ -1,18 +1,20 @@
+import CompleteButton from "@/components/CompleteButton";
 import InterText from "@/components/InterText";
 import { usePreferredColorTheme } from "@/context/PrefferedColorTheme";
-import { Habit } from "@/db/schema";
+import { HabitWithCompletions } from "@/db/types";
 import DynamicIcon from "@/features/habits/components/DynamicIcon";
+import { addDaystoDate, YMDToDate } from "@/lib/date";
 import { cn } from "@/lib/tailwindClasses";
 import React from "react";
 import { Pressable, View } from "react-native";
-import ActivityLabel from "./ActivityLabel";
-import CompleteButtom from "./CompleteButtom";
+import ActivityLabel from "../../../components/ActivityLabel";
 
 type Props = {
   hasBottomBorder: boolean;
-  habit: Habit;
+  habit: HabitWithCompletions;
   isCompleted: boolean;
   onPress: () => void;
+  date: string;
 };
 
 export default function HabitBox({
@@ -20,6 +22,7 @@ export default function HabitBox({
   habit,
   isCompleted,
   onPress,
+  date,
 }: Props) {
   const { theme } = usePreferredColorTheme();
 
@@ -43,11 +46,29 @@ export default function HabitBox({
           <DynamicIcon color={habit.color} size={22} name={habit.iconName} />
         </View>
         <View className="flex flex-col justify-between items-start h-[37px]">
-          <InterText className={cn("text-md")}>{habit.name}</InterText>
+          <View className="flex-1 flex-row gap-2">
+            <InterText className={cn("text-base")}>{habit.name}</InterText>
+            {habit.unit !== null &&
+              (() => {
+                const completion = habit.completions.filter(
+                  (completion) =>
+                    YMDToDate(date) <= completion.completedAt &&
+                    completion.completedAt < addDaystoDate(YMDToDate(date), 1)
+                )[0];
+                if (completion === undefined) {
+                  return null;
+                }
+                return (
+                  <InterText className="text-base text-gray-500">
+                    {completion.unitValue + " " + habit.unit}
+                  </InterText>
+                );
+              })()}
+          </View>
           <ActivityLabel color={habit.color} text={"Habit"} />
         </View>
       </View>
-      <CompleteButtom isCompleted={isCompleted} />
+      <CompleteButton isCompleted={isCompleted} />
     </Pressable>
   );
 }

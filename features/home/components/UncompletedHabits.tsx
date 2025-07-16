@@ -1,10 +1,10 @@
 import Input from "@/components/Input";
 import InterText from "@/components/InterText";
 import ModalBottomSheet from "@/components/ModalBottomSheet";
-import { useHabits } from "@/context/HabitContext";
 import { usePreferredColorTheme } from "@/context/PrefferedColorTheme";
 import { HabitWithCompletions } from "@/db/types";
 import DynamicIcon from "@/features/habits/components/DynamicIcon";
+import { useHabits } from "@/features/habits/context/HabitsContext";
 import { markHabitAsCompleted } from "@/features/habits/lib/update";
 import useKeyboardHeight from "@/hooks/useKeyboardHeight";
 import { Colors } from "@/lib/colors";
@@ -13,8 +13,8 @@ import { cn } from "@/lib/tailwindClasses";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import React, { useCallback, useMemo, useRef, useState } from "react";
 import { Dimensions, Pressable, View } from "react-native";
+import ActivityLabel from "../../../components/ActivityLabel";
 import { useDate } from "../context/SelectedDateContext";
-import ActivityLabel from "./ActivityLabel";
 import HabitBox from "./HabitBox";
 
 export default function UncompletedHabits() {
@@ -54,6 +54,7 @@ function HabitBoxWithCompletionsManager({
   allowComplete?: boolean;
 }) {
   const unitInputRef = useRef<BottomSheetModal>(null);
+  const { selectedDate } = useDate();
 
   return (
     <>
@@ -61,6 +62,7 @@ function HabitBoxWithCompletionsManager({
         hasBottomBorder={true}
         isCompleted={false}
         habit={habit}
+        date={dateToYMD(selectedDate)}
         onPress={async () => {
           if (!allowComplete) {
             return;

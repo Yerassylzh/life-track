@@ -1,7 +1,9 @@
-import { useHabits } from "@/context/HabitContext";
+import { useHabits } from "@/features/habits/context/HabitsContext";
+import { useTasks } from "@/features/tasks/context/TasksContext";
 import { dateToYMD, YMDToDate } from "@/lib/date";
 import React, { useMemo, useState } from "react";
 import { FilterType } from "../components/HabitsAndTasksFilter";
+import { useDate } from "./SelectedDateContext";
 
 type ActivitiesContextType = {
   isEmpty: boolean;
@@ -38,11 +40,13 @@ export const ActivitiesProvider: React.FC<{ children: React.ReactNode }> = ({
     [currentFilter]
   );
   const includeTasks = useMemo(
-    () => ["all", "habit"].includes(currentFilter),
+    () => ["all", "task"].includes(currentFilter),
     [currentFilter]
   );
 
+  const { selectedDate } = useDate();
   const { habits } = useHabits();
+  const { tasks } = useTasks();
 
   const isEmpty = useMemo(() => {
     let habitsEmpty = true;
@@ -51,7 +55,7 @@ export const ActivitiesProvider: React.FC<{ children: React.ReactNode }> = ({
         habits.length > 0 &&
         habits.some((habit) => {
           return (
-            YMDToDate(dateToYMD(new Date())) >=
+            YMDToDate(dateToYMD(selectedDate)) >=
             YMDToDate(dateToYMD(habit.createdAt))
           );
         })
@@ -62,10 +66,17 @@ export const ActivitiesProvider: React.FC<{ children: React.ReactNode }> = ({
 
     let tasksEmpty = true;
     if (includeTasks) {
-      // soon
+      if (
+        tasks.length > 0 &&
+        tasks.some((task) => {
+          return dateToYMD(task.targetDate) === dateToYMD(selectedDate);
+        })
+      ) {
+        tasksEmpty = false;
+      }
     }
     return habitsEmpty && tasksEmpty;
-  }, [includeHabits, includeTasks, habits]);
+  }, [includeHabits, includeTasks, habits, tasks, selectedDate]);
 
   const data = {
     isEmpty,
