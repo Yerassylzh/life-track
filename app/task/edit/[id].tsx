@@ -3,23 +3,41 @@ import BackHeader from "@/components/BackHeader";
 import InterText from "@/components/InterText";
 import { useModalMessage } from "@/context/ModalMessageContext";
 import TaskForm, { TaskFormData } from "@/features/tasks/components/TaskForm";
-import { createTask } from "@/features/tasks/lib/create";
+import { updateTask } from "@/features/tasks/lib/update";
 import {
   NotificationContentType,
   scheduleSingleNotification,
 } from "@/lib/notifications";
-import { router } from "expo-router";
-import React, { useCallback } from "react";
+import * as Notifications from "expo-notifications";
+import { router, useLocalSearchParams } from "expo-router";
+import React, { useCallback, useMemo } from "react";
 import { View } from "react-native";
 
-export default function CreateTask() {
+import { useTasks } from "@/features/tasks/context/TasksContext";
+import { YMDToDate } from "@/lib/date";
+
+export default function EditTask() {
+  const { id } = useLocalSearchParams();
   const { showMessage } = useModalMessage();
+
+  const { tasks } = useTasks();
+  const task = useMemo(() => {
+    return tasks.find((task_) => id === task_.id) || null;
+  }, [tasks, id]);
 
   const handleSubmit = useCallback(
     async (data: TaskFormData) => {
+      if (!task) return;
+
+      if (task.reminder) {
+        const prevReminderIds = JSON.parse(task.reminder);
+        prevReminderIds.map((id: string) =>
+          Notifications.cancelScheduledNotificationAsync(id)
+        );
+      }
+
       let reminderIdsStr = null;
       if (data.reminder !== null) {
-        console.log(data);
         const reminderIds = await scheduleSingleNotification(
           data.reminder,
           data.selectedDate,
@@ -31,33 +49,38 @@ export default function CreateTask() {
         reminderIdsStr = JSON.stringify(reminderIds);
       }
 
-      const result = await createTask(
-        data.name,
-        data.selectedDate,
-        reminderIdsStr
-      );
+      const result = await updateTask(task.id, {
+        name: data.name,
+        targetDate: YMDToDate(data.selectedDate),
+        reminder: reminderIdsStr,
+      });
+
       if (result.success) {
-        console.log("Task created successfully!");
+        console.log("Task updated successfully!");
         router.replace("/(tabs)/home");
       } else {
         console.log("Error occured");
         showMessage(
-          `Error occured while creating a task. Logs: ${result.error}`
+          `Error occured while updating a task. Logs: ${result.error}`
         );
       }
     },
-    [showMessage]
+    [task, showMessage]
   );
+
+  if (!task) {
+    return <InterText>Task not found</InterText>;
+  }
 
   return (
     <AppBackground className="gap-4">
       <BackHeader>
         <View className="flex-row gap-1 items-center justify-start">
-          <InterText className="text-[20px]">Create</InterText>
+          <InterText className="text-[20px]">Edit</InterText>
           <InterText className="font-bold text-[20px]">Task</InterText>
         </View>
       </BackHeader>
-      <TaskForm onSubmit={handleSubmit} />
+      <TaskForm taskToEdit={task} onSubmit={handleSubmit} />
     </AppBackground>
   );
 }

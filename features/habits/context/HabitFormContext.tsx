@@ -2,7 +2,7 @@ import BottomSheetGorhom from "@gorhom/bottom-sheet";
 import React, { useRef, useState } from "react";
 import { HabitIconNameType } from "../lib/icons";
 
-type NewHabitContextType = {
+type HabitFormContextType = {
   title: string;
   setTitle: React.Dispatch<React.SetStateAction<string>>;
   description: string;
@@ -33,11 +33,11 @@ type NewHabitContextType = {
   setUnitError: React.Dispatch<React.SetStateAction<string | undefined>>;
 };
 
-const NewHabitContext = React.createContext<NewHabitContextType | undefined>(
+const HabitFormContext = React.createContext<HabitFormContextType | undefined>(
   undefined
 );
 
-export const NewHabitProvider: React.FC<{ children: React.ReactNode }> = ({
+export const HabitFormProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [title, setTitle] = React.useState("");
@@ -94,14 +94,16 @@ export const NewHabitProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   return (
-    <NewHabitContext.Provider value={data}>{children}</NewHabitContext.Provider>
+    <HabitFormContext.Provider value={data}>
+      {children}
+    </HabitFormContext.Provider>
   );
 };
 
-export const useNewHabit = () => {
-  const context = React.useContext(NewHabitContext);
+export const useHabitForm = () => {
+  const context = React.useContext(HabitFormContext);
   if (!context) {
-    throw new Error("useNewHabit must be used within a NewHabitProvider");
+    throw new Error("useHabitForm must be used within a HabitFormProvider");
   }
   return context;
 };

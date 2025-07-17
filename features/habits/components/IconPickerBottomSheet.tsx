@@ -2,12 +2,12 @@ import BottomSheet from "@/components/BottomSheet";
 import { ColorPalette } from "@/lib/colors";
 import React from "react";
 import { Pressable, View } from "react-native";
-import { useNewHabit } from "../context/NewHabitContext";
+import { useHabitForm } from "../context/HabitFormContext";
 import { HabitIconNameType, habitIcons } from "../lib/icons";
 import DynamicIcon from "./DynamicIcon";
 
 export default function IconPickerBottomSheet() {
-  const { iconPickerSheetRef, setIconName, colorIndex } = useNewHabit();
+  const { iconPickerSheetRef, setIconName, colorIndex } = useHabitForm();
 
   return (
     <BottomSheet ref={iconPickerSheetRef}>

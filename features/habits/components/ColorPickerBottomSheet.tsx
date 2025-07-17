@@ -2,11 +2,11 @@ import BottomSheet from "@/components/BottomSheet";
 import { ColorPalette } from "@/lib/colors";
 import React from "react";
 import { View } from "react-native";
-import { useNewHabit } from "../context/NewHabitContext";
+import { useHabitForm } from "../context/HabitFormContext";
 import ColorButton from "./ColorButton";
 
 export default function ColorPickerBottomSheet() {
-  const { colorPickerSheetRef, colorIndex, setColorIndex } = useNewHabit();
+  const { colorPickerSheetRef, colorIndex, setColorIndex } = useHabitForm();
 
   return (
     <BottomSheet ref={colorPickerSheetRef}>

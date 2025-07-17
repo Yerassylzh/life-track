@@ -19,3 +19,26 @@ export async function markTaskAsUncompleted(taskId: string) {
     })
     .where(eq(taskTable.id, taskId));
 }
+export async function updateTask(
+  taskId: string,
+  data: { name: string; targetDate: Date; reminder: string | null }
+) {
+  try {
+    await db
+      .update(taskTable)
+      .set({
+        name: data.name,
+        targetDate: data.targetDate,
+        reminder: data.reminder,
+      })
+      .where(eq(taskTable.id, taskId));
+    return {
+      success: true,
+    };
+  } catch (err) {
+    return {
+      success: false,
+      error: err,
+    };
+  }
+}

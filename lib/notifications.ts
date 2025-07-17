@@ -38,9 +38,30 @@ export const scheduleSingleNotification = async (
   return [notificationId];
 };
 
+export const getSingleNotificationInfo = async (id: string) => {
+  const allNotifications =
+    await Notifications.getAllScheduledNotificationsAsync();
+  const notification = allNotifications.find((noti) => noti.identifier === id);
+
+  if (!notification) {
+    return {
+      alreadyExpired: true,
+    };
+  }
+
+  return {
+    content: notification.content,
+    trigger: notification.trigger as Notifications.DateTriggerInput,
+  };
+};
+
 export const showScheduledNotifications = async () => {
   const scheduled = await Notifications.getAllScheduledNotificationsAsync();
   console.log("📋 Scheduled notifications:", scheduled);
+};
+
+export const deleteNotification = async (id: string) => {
+  await Notifications.cancelScheduledNotificationAsync(id);
 };
 
 export const deleteAllNotifications = async () => {

@@ -9,7 +9,7 @@ import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { useRef } from "react";
 import { TouchableOpacity, Vibration, View } from "react-native";
 import { Colors } from "react-native/Libraries/NewAppScreen";
-import TaskActivitiesModal from "./TaskActionsModal";
+import TaskActionsModal from "./TaskActionsModal";
 
 export type TaskBoxProps = {
   hasBottomBorder?: boolean;
@@ -64,7 +64,7 @@ export default function TaskBox({
         </View>
       </View>
       <CompleteButtom isCompleted={isCompleted} />
-      <TaskActivitiesModal ref={taskActionsRef} task={task} />
+      <TaskActionsModal ref={taskActionsRef} task={task} />
     </TouchableOpacity>
   );
 }

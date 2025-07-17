@@ -1,4 +1,4 @@
-import { useStorage } from "@/hook/useStorage";
+import { useStorage } from "@/hooks/useStorage";
 import React, {
   createContext,
   ReactNode,

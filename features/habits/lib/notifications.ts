@@ -116,3 +116,23 @@ const getRandomReminderForHabit = (
   const randomIndex = Math.floor(Math.random() * options.length);
   return options[randomIndex];
 };
+
+export const getNotificationTimeInfo = async (id: string) => {
+  const allNotification =
+    await Notifications.getAllScheduledNotificationsAsync();
+
+  const notification = allNotification.find((not) => not.identifier === id);
+  if (!notification) {
+    console.error("Could not find notification by id:", id);
+    return [8, 0];
+  }
+
+  type notType =
+    | Notifications.DailyTriggerInput
+    | Notifications.WeeklyTriggerInput
+    | Notifications.MonthlyTriggerInput;
+
+  const hour = (notification.trigger as notType).hour;
+  const minute = (notification.trigger as notType).minute;
+  return [hour, minute];
+};

@@ -1,10 +1,5 @@
 import Add from "@/components/Add";
-import InterText from "@/components/InterText";
 import TasksList from "@/features/tasks/components/TasksList";
-import { Colors } from "@/lib/colors";
-import { dateToYMD, getReadableDate } from "@/lib/date";
-import { cn } from "@/lib/tailwindClasses";
-import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import React, { useRef } from "react";
 import { View } from "react-native";
@@ -12,9 +7,9 @@ import { ScrollView } from "react-native-gesture-handler";
 import { useActivities } from "../context/ActivitiesCountContext";
 import { useDate } from "../context/SelectedDateContext";
 import ChooseActivityToCreateButtomSheet from "./ChooseActivityToCreateButtomSheet";
-import CompletedHabits from "./CompletedHabits";
 import HabitsAndTasksFilter from "./HabitsAndTasksFilter";
-import UncompletedHabits from "./UncompletedHabits";
+import HabitsList from "./HabitsList";
+import NoActivities from "./NoActivities";
 
 export default function TasksAndHabits() {
   const {
@@ -49,7 +44,7 @@ export default function TasksAndHabits() {
             displayUncompleted
           />
         )}
-        {includeHabits && <UncompletedHabits />}
+        {includeHabits && <HabitsList displayUncompleted />}
         {includeTasks && (
           <TasksList
             hasLabel
@@ -58,7 +53,7 @@ export default function TasksAndHabits() {
             displayCompleted
           />
         )}
-        {includeHabits && <CompletedHabits />}
+        {includeHabits && <HabitsList displayCompleted />}
         {isEmpty && (
           <NoActivities
             includeHabits={includeHabits}
@@ -71,38 +66,6 @@ export default function TasksAndHabits() {
         onPress={() => activityTypeChoiceRef.current?.present()}
       />
       <ChooseActivityToCreateButtomSheet ref={activityTypeChoiceRef} />
-    </View>
-  );
-}
-
-function NoActivities({
-  includeHabits,
-  includeTasks,
-}: {
-  includeHabits: boolean;
-  includeTasks: boolean;
-}) {
-  const { selectedDate } = useDate();
-
-  return (
-    <View className="items-center justify-center gap-3 pt-[50%]">
-      <MaterialCommunityIcons name="sleep" size={50} color={Colors.primary} />
-      <InterText className="text-lg font-semibold">
-        No{" "}
-        {(() => {
-          if (includeHabits && includeTasks) {
-            return "activities";
-          }
-          return includeHabits ? "habits" : "tasks";
-        })()}
-        {" for "}
-        {dateToYMD(selectedDate) === dateToYMD(new Date())
-          ? "today"
-          : getReadableDate(selectedDate)}
-      </InterText>
-      <InterText className={cn("text-gray-500")}>
-        Hit the button at the corner to create one
-      </InterText>
     </View>
   );
 }

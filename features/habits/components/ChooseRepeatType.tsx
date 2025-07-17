@@ -9,14 +9,14 @@ import Animated, {
   useSharedValue,
   withSpring,
 } from "react-native-reanimated";
-import { useNewHabit } from "../context/NewHabitContext";
+import { useHabitForm } from "../context/HabitFormContext";
 
 const options = ["Daily", "Weekly", "Monthly"];
 
 export default function ChooseRepeatType() {
   const { theme } = usePreferredColorTheme();
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const { setRepeatType } = useNewHabit();
+  const { setRepeatType } = useHabitForm();
 
   const [dimensions, setDimensions] = useState<{
     width: number;

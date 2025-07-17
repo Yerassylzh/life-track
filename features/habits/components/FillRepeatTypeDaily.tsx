@@ -2,12 +2,12 @@ import InterText from "@/components/InterText";
 import { usePreferredColorTheme } from "@/context/PrefferedColorTheme";
 import { ColorPalette, Colors } from "@/lib/colors";
 import { Dimensions, Pressable, Text, Vibration, View } from "react-native";
-import { useNewHabit } from "../context/NewHabitContext";
+import { useHabitForm } from "../context/HabitFormContext";
 
 const screenDim = Dimensions.get("window");
 
 export default function FillDaily() {
-  const { daysOfWeek, setDaysOfWeek } = useNewHabit();
+  const { daysOfWeek, setDaysOfWeek } = useHabitForm();
 
   return (
     <View className="w-full gap-3">
@@ -49,7 +49,7 @@ function DayOfWeekBox({
   onChange: (value: boolean) => boolean;
 }) {
   const { theme } = usePreferredColorTheme();
-  const { colorIndex, daysOfWeek } = useNewHabit();
+  const { colorIndex, daysOfWeek } = useHabitForm();
 
   return (
     <Pressable

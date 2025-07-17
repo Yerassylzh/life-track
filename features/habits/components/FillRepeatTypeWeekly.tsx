@@ -4,10 +4,10 @@ import { hexToRgba } from "@/lib/hex";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import React from "react";
 import { TouchableOpacity, Vibration, View } from "react-native";
-import { useNewHabit } from "../context/NewHabitContext";
+import { useHabitForm } from "../context/HabitFormContext";
 
 export default function FillRepeatTypeWeekly() {
-  const { weeklyFreq } = useNewHabit();
+  const { weeklyFreq } = useHabitForm();
 
   return (
     <View className="w-full flex-row items-center justify-between">
@@ -27,7 +27,7 @@ export default function FillRepeatTypeWeekly() {
 }
 
 function PlusButton() {
-  const { colorIndex, setWeeklyFreq, weeklyFreq } = useNewHabit();
+  const { colorIndex, setWeeklyFreq, weeklyFreq } = useHabitForm();
   return (
     <TouchableOpacity
       style={{
@@ -46,7 +46,7 @@ function PlusButton() {
 }
 
 function MinusButton() {
-  const { colorIndex, setWeeklyFreq, weeklyFreq } = useNewHabit();
+  const { colorIndex, setWeeklyFreq, weeklyFreq } = useHabitForm();
   return (
     <TouchableOpacity
       style={{

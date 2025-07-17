@@ -4,7 +4,7 @@ import ModalBottomSheet, {
   ModalBottomSheetProps,
 } from "@/components/ModalBottomSheet";
 import { usePreferredColorTheme } from "@/context/PrefferedColorTheme";
-import { Task } from "@/db/schema";
+import { HabitWithCompletions } from "@/db/types";
 import DynamicIcon from "@/features/habits/components/DynamicIcon";
 import { Colors } from "@/lib/colors";
 import { dateToYMD } from "@/lib/date";
@@ -13,13 +13,13 @@ import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { router } from "expo-router";
 import React, { useRef } from "react";
 import { Pressable, PressableProps, View } from "react-native";
-import TaskDeletionConfirmationModal from "./TaskDeletionConfirmationModal";
+import HabitDeletionConfirmationModal from "./HabitDeletionConfirmationModal";
 
 type Props = {
-  task: Task;
+  habit: HabitWithCompletions;
 } & ModalBottomSheetProps;
 
-export default function TaskActionsModal({ task, ref, ...rest }: Props) {
+export default function HabitActionsModal({ habit, ref, ...rest }: Props) {
   const deletionConfirmationModalRef = useRef<BottomSheetModal>(null);
 
   return (
@@ -32,7 +32,7 @@ export default function TaskActionsModal({ task, ref, ...rest }: Props) {
         className="pt-0 pb-10"
       >
         <View className="gap-4">
-          <TaskActionHeader task={task} />
+          <HabitActionHeader habit={habit} />
           <View className="gap-2">
             <ActivityOption
               name="edit"
@@ -40,8 +40,8 @@ export default function TaskActionsModal({ task, ref, ...rest }: Props) {
               onPress={() => {
                 ref?.current?.close();
                 router.push({
-                  pathname: `/task/edit/[id]`,
-                  params: { id: task.id },
+                  pathname: `/habit/edit/[id]`,
+                  params: { id: habit.id },
                 });
               }}
             />
@@ -57,9 +57,9 @@ export default function TaskActionsModal({ task, ref, ...rest }: Props) {
           </View>
         </View>
       </ModalBottomSheet>
-      <TaskDeletionConfirmationModal
-        task={task}
+      <HabitDeletionConfirmationModal
         ref={deletionConfirmationModalRef}
+        habit={habit}
       />
     </>
   );
@@ -92,16 +92,13 @@ function ActivityOption({
   );
 }
 
-function TaskActionHeader({ task }: { task: Task }) {
+function HabitActionHeader({ habit }: { habit: HabitWithCompletions }) {
   const { theme } = usePreferredColorTheme();
   return (
     <View className="flex-row items-center justify-between">
       <View className="gap-1">
-        <InterText className="text-xl">{task.name}</InterText>
-        <ActivityLabel
-          color={Colors.primary}
-          text={dateToYMD(task.targetDate)}
-        />
+        <InterText className="text-xl">{habit.name}</InterText>
+        <ActivityLabel color={Colors.primary} text={dateToYMD(new Date())} />
       </View>
       <View
         className={cn(
@@ -109,7 +106,7 @@ function TaskActionHeader({ task }: { task: Task }) {
           theme === "dark" && "bg-gray-900"
         )}
       >
-        <DynamicIcon color={Colors.primary} size={22} name={"Clock"} />
+        <DynamicIcon color={Colors.primary} size={22} name={habit.iconName} />
       </View>
     </View>
   );

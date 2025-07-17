@@ -67,7 +67,7 @@ export default function UnitValueInputModal({
             onChangeText={setUnitValue}
             value={unitValue}
             error={unitValueError}
-            bgColor={Colors["gray-800"]}
+            bgColor={theme === "dark" ? Colors["gray-800"] : undefined}
           />
           <View
             className={cn(

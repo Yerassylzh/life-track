@@ -1,5 +1,5 @@
 import { db } from "@/db/db";
-import { habitCompletionTable } from "@/db/schema";
+import { habitCompletionTable, habitTable } from "@/db/schema";
 import { and, eq, gte, lt } from "drizzle-orm";
 import "react-native-get-random-values";
 import { v4 as uuid } from "uuid";
@@ -53,4 +53,46 @@ export async function markHabitAsUncompleted(habitId: string, date: string) {
         lt(habitCompletionTable.completedAt, dateEnd)
       )
     );
+}
+
+export async function updateHabit(
+  habitId: string,
+  data: {
+    name: string;
+    description: string;
+    unit: string | null;
+    iconName: string;
+    color: string;
+    repeatType: "daily" | "weekly" | "monthly";
+    daysOfWeek: string;
+    weeklyFreq: number;
+    monthlyDays: string;
+    reminder: string | null;
+  }
+) {
+  try {
+    await db
+      .update(habitTable)
+      .set({
+        name: data.name,
+        description: data.description,
+        unit: data.unit,
+        iconName: data.iconName,
+        color: data.color,
+        repeatType: data.repeatType,
+        daysOfWeek: data.daysOfWeek,
+        weeklyFreq: data.weeklyFreq,
+        monthlyDays: data.monthlyDays,
+        reminder: data.reminder,
+      })
+      .where(eq(habitTable.id, habitId));
+    return {
+      success: true,
+    };
+  } catch (err) {
+    return {
+      success: false,
+      error: err,
+    };
+  }
 }

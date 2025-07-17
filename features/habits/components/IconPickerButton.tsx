@@ -2,7 +2,7 @@ import { ColorPalette } from "@/lib/colors";
 import { cn } from "@/lib/tailwindClasses";
 import React from "react";
 import { TouchableOpacity, TouchableOpacityProps } from "react-native";
-import { useNewHabit } from "../context/NewHabitContext";
+import { useHabitForm } from "../context/HabitFormContext";
 import { HabitIconNameType } from "../lib/icons";
 import DynamicIcon from "./DynamicIcon";
 
@@ -17,7 +17,7 @@ export default function IconPickerButton({
   isSelected,
   ...rest
 }: Props) {
-  const { colorIndex } = useNewHabit();
+  const { colorIndex } = useHabitForm();
 
   return (
     <TouchableOpacity

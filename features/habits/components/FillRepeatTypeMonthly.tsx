@@ -11,7 +11,7 @@ import {
   Vibration,
   View,
 } from "react-native";
-import { useNewHabit } from "../context/NewHabitContext";
+import { useHabitForm } from "../context/HabitFormContext";
 
 export default function FillRepeatTypeMonthly() {
   return (
@@ -32,7 +32,7 @@ const NUM_COLUMNS = 7;
 
 function SimpleCalendar() {
   const { theme } = usePreferredColorTheme();
-  const { monthlyDays, setMonthlyDays, colorIndex } = useNewHabit();
+  const { monthlyDays, setMonthlyDays, colorIndex } = useHabitForm();
 
   const toggleDay = useCallback(
     (day: number) => {

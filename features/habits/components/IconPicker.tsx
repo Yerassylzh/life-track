@@ -3,12 +3,12 @@ import { usePreferredColorTheme } from "@/context/PrefferedColorTheme";
 import { cn } from "@/lib/tailwindClasses";
 import React from "react";
 import { View } from "react-native";
-import { useNewHabit } from "../context/NewHabitContext";
+import { useHabitForm } from "../context/HabitFormContext";
 import IconPickerButton from "./IconPickerButton";
 
 export default function IconPicker() {
   const { theme } = usePreferredColorTheme();
-  const { iconPickerSheetRef, iconName } = useNewHabit();
+  const { iconPickerSheetRef, iconName } = useHabitForm();
 
   return (
     <View

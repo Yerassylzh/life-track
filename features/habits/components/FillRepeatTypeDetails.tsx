@@ -1,11 +1,11 @@
 import React, { useMemo } from "react";
-import { useNewHabit } from "../context/NewHabitContext";
+import { useHabitForm } from "../context/HabitFormContext";
 import FillDaily from "./FillRepeatTypeDaily";
 import FillRepeatTypeMonthly from "./FillRepeatTypeMonthly";
 import FillRepeatTypeWeekly from "./FillRepeatTypeWeekly";
 
 export default function FillRepeatTypeDetails() {
-  const { repeatType } = useNewHabit();
+  const { repeatType } = useHabitForm();
 
   const toRender = useMemo(() => {
     return {

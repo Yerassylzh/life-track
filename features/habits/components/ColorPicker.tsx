@@ -4,12 +4,12 @@ import { ColorPalette } from "@/lib/colors";
 import { cn } from "@/lib/tailwindClasses";
 import React from "react";
 import { View } from "react-native";
-import { useNewHabit } from "../context/NewHabitContext";
+import { useHabitForm } from "../context/HabitFormContext";
 import ColorButton from "./ColorButton";
 
 export default function ColorPicker() {
   const { theme } = usePreferredColorTheme();
-  const { colorPickerSheetRef, colorIndex } = useNewHabit();
+  const { colorPickerSheetRef, colorIndex } = useHabitForm();
 
   return (
     <View
