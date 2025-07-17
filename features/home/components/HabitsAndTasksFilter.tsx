@@ -5,7 +5,7 @@ import { capitalize } from "@/lib/text";
 import React from "react";
 import { Pressable, View } from "react-native";
 
-export type FilterType = "all" | "habit" | "task";
+export type FilterType = "habit" | "task";
 
 type Props = {
   onFilterChange: (filter_: FilterType) => void;
@@ -18,12 +18,12 @@ export default function HabitsAndTasksFilter({
 }: Props) {
   return (
     <View className="w-full flex flex-row gap-2 items-center justify-start px-[15px]">
-      {["all", "habit", "task"].map((filterText, index) => (
+      {["habit", "task"].map((filterText, index) => (
         <Filter
           key={index}
           selected={currentFilter === filterText}
           onPress={() => onFilterChange(filterText as FilterType)}
-          text={capitalize(filterText) + (filterText === "all" ? "" : "s")}
+          text={capitalize(filterText) + "s"}
         />
       ))}
     </View>

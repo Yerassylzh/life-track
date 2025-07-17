@@ -6,14 +6,15 @@ import {
 } from "@/features/habits/lib/update";
 import { dateToYMD, YMDToDate } from "@/lib/date";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
-import React, { useCallback, useMemo, useRef } from "react";
+import React, { useMemo, useRef } from "react";
 import { useDate } from "../context/SelectedDateContext";
 import HabitBox from "./HabitBox";
 import UnitValueInputModal from "./UnitValueInputModal";
 
 type DisplayType =
   | { displayCompleted: boolean }
-  | { displayUncompleted: boolean };
+  | { displayUncompleted: boolean }
+  | { displayAll: boolean };
 
 export type HabitsListProps = {
   hasLabel?: boolean;
@@ -24,11 +25,16 @@ export default function HabitsList(props: HabitsListProps) {
   const { selectedDate } = useDate();
   const date = useMemo(() => dateToYMD(selectedDate), [selectedDate]);
 
-  const filter = useCallback(
-    (habit: HabitWithCompletions) => {
+  const habitsToDisplay = useMemo(() => {
+    const filteredHabits = habits.filter((habit) => {
       if (YMDToDate(date) < YMDToDate(dateToYMD(habit.createdAt))) {
         return false;
       }
+
+      if ("displayAll" in props) {
+        return true;
+      }
+
       const isCompleted =
         habitsCompletionsManager.get(habit.id)?.isHabitCompletedAt(date) ||
         habitsCompletionsManager
@@ -38,18 +44,36 @@ export default function HabitsList(props: HabitsListProps) {
       if ("displayCompleted" in props) {
         return props.displayCompleted ? isCompleted : !isCompleted;
       }
-      return !isCompleted;
-    },
-    [habitsCompletionsManager, date, props]
-  );
+      if ("displayUncompleted" in props) {
+        return props.displayUncompleted ? !isCompleted : isCompleted;
+      }
+      return true;
+    });
+
+    return filteredHabits.sort((a, b) => {
+      const aCompleted =
+        habitsCompletionsManager.get(a.id)?.isHabitCompletedAt(date) ||
+        habitsCompletionsManager.get(a.id)?.isHabitDoesntNeedToCompleteAt(date);
+      const bCompleted =
+        habitsCompletionsManager.get(b.id)?.isHabitCompletedAt(date) ||
+        habitsCompletionsManager.get(b.id)?.isHabitDoesntNeedToCompleteAt(date);
+      return (aCompleted ? 1 : 0) - (bCompleted ? 1 : 0);
+    });
+  }, [habits, habitsCompletionsManager, date, props]);
 
   return (
     <>
-      {habits.filter(filter).map((habit, index) => (
+      {habitsToDisplay.map((habit) => (
         <HabitBoxWithCompletionsManager
-          key={index}
+          key={habit.id}
           habit={habit}
-          isCompleted={"displayCompleted" in props && props.displayCompleted}
+          isCompleted={
+            (habitsCompletionsManager.get(habit.id)?.isHabitCompletedAt(date) ||
+              habitsCompletionsManager
+                .get(habit.id)
+                ?.isHabitDoesntNeedToCompleteAt(date)) ??
+            false
+          }
         />
       ))}
     </>

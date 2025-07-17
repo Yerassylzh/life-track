@@ -1,5 +1,5 @@
 import { addDaystoDate, dateToYMD, YMDToDate } from "@/lib/date";
-import { useCallback, useMemo } from "react";
+import { useMemo } from "react";
 import { useTasks } from "../context/TasksContext";
 import { markTaskAsCompleted, markTaskAsUncompleted } from "../lib/update";
 import TaskBox from "./TaskBox";
@@ -19,74 +19,56 @@ export type TasksProps = {
 export default function TasksList(props: TasksProps) {
   const { tasks } = useTasks();
 
-  const getFilteredTasks = useCallback(
-    (completed: boolean) => {
-      if ("date" in props) {
-        return tasks.filter(
-          (task) =>
-            (completed
-              ? task.completedAt !== null
-              : task.completedAt === null) &&
-            dateToYMD(props.date) === dateToYMD(task.targetDate)
-        );
-      }
+  const tasksToDisplay = useMemo(() => {
+    let filteredTasks;
+    if ("date" in props) {
+      filteredTasks = tasks.filter(
+        (task) => dateToYMD(props.date) === dateToYMD(task.targetDate)
+      );
+    } else {
       const todayStartDate = YMDToDate(dateToYMD(new Date()));
       const yesterdayStartDate = addDaystoDate(todayStartDate, 1);
-      return tasks.filter(
-        (task) =>
-          (completed ? task.completedAt !== null : task.completedAt === null) &&
-          yesterdayStartDate <= task.targetDate
+      filteredTasks = tasks.filter(
+        (task) => yesterdayStartDate <= task.targetDate
       );
-    },
-    [tasks, props]
-  );
+    }
 
-  const completedTasks = useMemo(
-    () => getFilteredTasks(true),
-    [getFilteredTasks]
-  );
-  const uncompletedTasks = useMemo(
-    () => getFilteredTasks(false),
-    [getFilteredTasks]
-  );
+    if ("displayAllTasks" in props) {
+      return filteredTasks.sort(
+        (a, b) => (a.completedAt ? 1 : -1) - (b.completedAt ? 1 : -1)
+      );
+    } else if ("displayCompleted" in props) {
+      return filteredTasks.filter((task) => task.completedAt !== null);
+    } else if ("displayUncompleted" in props) {
+      return filteredTasks.filter((task) => task.completedAt === null);
+    }
+    return [];
+  }, [tasks, props]);
 
   return (
     <>
-      {("displayUncompleted" in props || "displayAllTasks" in props) &&
-        uncompletedTasks.map((task, index) => (
-          <TaskBox
-            key={index}
-            task={task}
-            hasBottomBorder={
-              props.displayBottomBorderForAll
-                ? true
-                : index !== completedTasks.length - 1
+      {tasksToDisplay.map((task, index) => (
+        <TaskBox
+          key={task.id}
+          task={task}
+          hasBottomBorder={
+            props.displayBottomBorderForAll
+              ? true
+              : index !== tasksToDisplay.length - 1
+          }
+          hasLabel={props.hasLabel}
+          onPress={async () => {
+            if ("showUpcoming" in props) {
+              return;
             }
-            hasLabel={props.hasLabel}
-            onPress={async () => {
-              if ("showUpcoming" in props) {
-                return;
-              }
-              await markTaskAsCompleted(task.id);
-            }}
-          />
-        ))}
-      {("displayCompleted" in props || "displayAllTasks" in props) &&
-        completedTasks.map((task, index) => (
-          <TaskBox
-            key={index}
-            task={task}
-            hasBottomBorder={
-              props.displayBottomBorderForAll
-                ? true
-                : index !== completedTasks.length - 1
-            }
-            hasLabel={props.hasLabel}
-            onPress={async () => {
+            if (task.completedAt) {
               await markTaskAsUncompleted(task.id);
-            }}
-          />
-        ))}
+            } else {
+              await markTaskAsCompleted(task.id);
+            }
+          }}
+        />
+      ))}
     </>
   );
 }

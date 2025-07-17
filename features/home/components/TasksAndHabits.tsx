@@ -41,19 +41,10 @@ export default function TasksAndHabits() {
             hasLabel
             date={selectedDate}
             displayBottomBorderForAll
-            displayUncompleted
+            displayAllTasks
           />
         )}
-        {includeHabits && <HabitsList displayUncompleted />}
-        {includeTasks && (
-          <TasksList
-            hasLabel
-            date={selectedDate}
-            displayBottomBorderForAll
-            displayCompleted
-          />
-        )}
-        {includeHabits && <HabitsList displayCompleted />}
+        {includeHabits && <HabitsList displayAll={true} />}
         {isEmpty && (
           <NoActivities
             includeHabits={includeHabits}

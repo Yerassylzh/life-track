@@ -9,6 +9,7 @@ import { cn } from "@/lib/tailwindClasses";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import React, { useRef } from "react";
 import { TouchableOpacity, Vibration, View } from "react-native";
+import Animated, { LinearTransition } from "react-native-reanimated";
 import ActivityLabel from "../../../components/ActivityLabel";
 
 type Props = {
@@ -30,7 +31,7 @@ export default function HabitBox({
   const habitActionRef = useRef<BottomSheetModal>(null);
 
   return (
-    <>
+    <Animated.View layout={LinearTransition}>
       <TouchableOpacity
         onPress={onPress}
         onLongPress={() => {
@@ -79,6 +80,6 @@ export default function HabitBox({
         <CompleteButton isCompleted={isCompleted} />
       </TouchableOpacity>
       <HabitActionsModal habit={habit} ref={habitActionRef} />
-    </>
+    </Animated.View>
   );
 }

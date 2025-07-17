@@ -15,8 +15,18 @@ const options = ["Daily", "Weekly", "Monthly"];
 
 export default function ChooseRepeatType() {
   const { theme } = usePreferredColorTheme();
+  const { setRepeatType, repeatType } = useHabitForm();
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const { setRepeatType } = useHabitForm();
+
+  useEffect(() => {
+    setSelectedIndex(
+      {
+        daily: 0,
+        weekly: 1,
+        monthly: 2,
+      }[repeatType]
+    );
+  }, [repeatType]);
 
   const [dimensions, setDimensions] = useState<{
     width: number;

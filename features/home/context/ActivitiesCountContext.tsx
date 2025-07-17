@@ -28,7 +28,7 @@ const ActivitiesContext = React.createContext<
 export const ActivitiesProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [currentFilter, setCurrentFilter] = React.useState<FilterType>("all");
+  const [currentFilter, setCurrentFilter] = React.useState<FilterType>("habit");
 
   const [uncompletedTasksCount, setUncompletedTasksCount] = useState(0);
   const [uncompletedHabitsCount, setUncompletedHabitsCount] = useState(0);
@@ -36,20 +36,16 @@ export const ActivitiesProvider: React.FC<{ children: React.ReactNode }> = ({
   const [completedHabitsCount, setCompletedHabitsCount] = useState(0);
 
   const includeHabits = useMemo(
-    () => ["all", "habit"].includes(currentFilter),
+    () => currentFilter === "habit",
     [currentFilter]
   );
-  const includeTasks = useMemo(
-    () => ["all", "task"].includes(currentFilter),
-    [currentFilter]
-  );
+  const includeTasks = useMemo(() => currentFilter === "task", [currentFilter]);
 
   const { selectedDate } = useDate();
   const { habits } = useHabits();
   const { tasks } = useTasks();
 
   const isEmpty = useMemo(() => {
-    let habitsEmpty = true;
     if (includeHabits) {
       if (
         habits.length > 0 &&
@@ -60,11 +56,10 @@ export const ActivitiesProvider: React.FC<{ children: React.ReactNode }> = ({
           );
         })
       ) {
-        habitsEmpty = false;
+        return false;
       }
     }
 
-    let tasksEmpty = true;
     if (includeTasks) {
       if (
         tasks.length > 0 &&
@@ -72,10 +67,10 @@ export const ActivitiesProvider: React.FC<{ children: React.ReactNode }> = ({
           return dateToYMD(task.targetDate) === dateToYMD(selectedDate);
         })
       ) {
-        tasksEmpty = false;
+        return false;
       }
     }
-    return habitsEmpty && tasksEmpty;
+    return true;
   }, [includeHabits, includeTasks, habits, tasks, selectedDate]);
 
   const data = {

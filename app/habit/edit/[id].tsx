@@ -81,7 +81,7 @@ export default function EditHabit() {
   return (
     <AppBackground className="gap-4">
       <BackHeader>
-        <View className="flex-row gap-1 items-center justify-start">
+        <View className="flex-row gap-1.5 items-center justify-start">
           <InterText className="text-[20px]">Edit</InterText>
           <InterText className="font-bold text-[20px]">Habit</InterText>
         </View>
