@@ -1,8 +1,11 @@
+import Add from "@/components/Add";
 import AppBackground from "@/components/AppBackground";
-import InterText from "@/components/InterText";
 import ViewSwitcher from "@/components/ViewSwitcher";
 import Header from "@/features/tasks/components/Header";
+import TasksList from "@/features/tasks/components/TasksList";
+import { router } from "expo-router";
 import React, { useState } from "react";
+import { ScrollView } from "react-native";
 
 const views = ["Today", "Later"];
 
@@ -10,7 +13,7 @@ export default function Tasks() {
   const [currentView, setCurrentView] = useState<"Today" | "Later">("Today");
 
   return (
-    <AppBackground>
+    <AppBackground className="relative">
       <Header />
       <ViewSwitcher
         views={views}
@@ -20,7 +23,24 @@ export default function Tasks() {
         }}
         elementWidth={80}
       />
-      <InterText>Tasks</InterText>
+      <ScrollView
+        bounces={true}
+        style={{ flex: 1 }}
+        overScrollMode="always"
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingBottom: 200 }}
+        className="relative px-[15px]"
+      >
+        {currentView === "Today" ? (
+          <TasksList hasLabel={false} displayAllTasks date={new Date()} />
+        ) : (
+          <TasksList hasLabel={false} displayAllTasks showUpcoming />
+        )}
+      </ScrollView>
+      <Add
+        className="mb-[120px] right-[15px]"
+        onPress={() => router.push("/task/create_task")}
+      />
     </AppBackground>
   );
 }

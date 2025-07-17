@@ -52,7 +52,7 @@ export default function DateSelectInput({
       className="gap-7 items-center justify-between rounded-2xl p-4 flex-row"
     >
       <View className="flex flex-row items-center gap-2">
-        <InterText className="text-lg font-semibold">Reminder</InterText>
+        <InterText className="text-lg font-semibold">Date</InterText>
       </View>
       <Pressable
         onPress={onDatePress}

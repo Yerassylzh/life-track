@@ -30,6 +30,7 @@ export const scheduleSingleNotification = async (
   const notificationId = await Notifications.scheduleNotificationAsync({
     content,
     trigger: {
+      type: "date",
       date: targetDate,
     } as Notifications.DateTriggerInput,
   });

@@ -32,7 +32,11 @@ export default function TasksList(props: TasksProps) {
       }
       const todayStartDate = YMDToDate(dateToYMD(new Date()));
       const yesterdayStartDate = addDaystoDate(todayStartDate, 1);
-      return tasks.filter((task) => yesterdayStartDate <= task.targetDate);
+      return tasks.filter(
+        (task) =>
+          (completed ? task.completedAt !== null : task.completedAt === null) &&
+          yesterdayStartDate <= task.targetDate
+      );
     },
     [tasks, props]
   );

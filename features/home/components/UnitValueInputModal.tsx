@@ -1,18 +1,18 @@
 import ActivityLabel from "@/components/ActivityLabel";
 import Input from "@/components/Input";
 import InterText from "@/components/InterText";
-import ModalBottomSheet from "@/components/ModalBottomSheet";
+import SheetModal from "@/components/SheetModal";
 import { usePreferredColorTheme } from "@/context/PrefferedColorTheme";
 import { HabitWithCompletions } from "@/db/types";
 import DynamicIcon from "@/features/habits/components/DynamicIcon";
 import { markHabitAsCompleted } from "@/features/habits/lib/update";
 import useKeyboardHeight from "@/hooks/useKeyboardHeight";
+import { Colors } from "@/lib/colors";
 import { dateToYMD } from "@/lib/date";
 import { cn } from "@/lib/tailwindClasses";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { useCallback, useState } from "react";
 import { Dimensions, Pressable, View } from "react-native";
-import { Colors } from "react-native/Libraries/NewAppScreen";
 
 const WINDOW_HEIGHT = Dimensions.get("window").height;
 
@@ -41,13 +41,9 @@ export default function UnitValueInputModal({
   }, [unitValue]);
 
   return (
-    <ModalBottomSheet
+    <SheetModal
       ref={unitInputRef}
-      detached
-      style={{ marginHorizontal: 20 }}
       bottomInset={Math.max((WINDOW_HEIGHT - 200) / 2, keyboardHeight + 20)}
-      handleIndicatorStyle={{ display: "none", height: 0 }}
-      paddingY={10}
     >
       <View className="gap-4 flex-1">
         <View className="flex-row items-center justify-between">
@@ -71,16 +67,22 @@ export default function UnitValueInputModal({
             onChangeText={setUnitValue}
             value={unitValue}
             error={unitValueError}
+            bgColor={Colors["gray-800"]}
           />
-          <View className="flex-1 flex-row items-center gap-2 border-t border-t-gray-100">
+          <View
+            className={cn(
+              "flex-1 flex-row items-center gap-2 border-t border-t-gray-100",
+              theme === "dark" && "border-t-gray-800"
+            )}
+          >
             <Pressable
               style={{
                 flex: 1,
-                borderRightWidth: 1,
-                borderRightColor:
-                  theme === "dark" ? Colors["gray-900"] : Colors["gray-100"],
               }}
-              className="items-center justify-center py-3"
+              className={cn(
+                "items-center justify-center py-3 border-r border-r-gray-100",
+                theme === "dark" && "border-r-gray-800"
+              )}
               onPress={() => unitInputRef.current?.close()}
             >
               <InterText className="font-semibold text-base">CANCEL</InterText>
@@ -104,6 +106,6 @@ export default function UnitValueInputModal({
           </View>
         </View>
       </View>
-    </ModalBottomSheet>
+    </SheetModal>
   );
 }

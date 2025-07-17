@@ -16,6 +16,7 @@ export interface ModalBottomSheetProps
   ref?: RefObject<BottomSheetModal | null>;
   children?: ReactNode | ReactNode[];
   paddingY?: number;
+  className?: string;
 }
 
 const ModalBottomSheet = ({
@@ -24,6 +25,7 @@ const ModalBottomSheet = ({
   paddingY,
   handleIndicatorStyle,
   backgroundStyle,
+  className,
   ...rest
 }: ModalBottomSheetProps) => {
   const { theme } = usePreferredColorTheme();
@@ -67,7 +69,7 @@ const ModalBottomSheet = ({
     >
       <BottomSheetScrollView>
         <BottomSheetView
-          className={cn("px-4")}
+          className={cn("px-4", className)}
           style={{ paddingVertical: paddingY !== undefined ? paddingY : 40 }}
         >
           {children}

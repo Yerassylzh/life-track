@@ -18,9 +18,6 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 export default function RootLayout() {
   // useEffect(() => {
   //   (async () => {
-  //     await deleteAllHabits();
-  //     console.log(await getHabits());
-
   //     await deleteAllNotifications();
   //     console.log(await getAllScheduledNotificationsAsync());
   //   })();

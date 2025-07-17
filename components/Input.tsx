@@ -1,5 +1,6 @@
 import { usePreferredColorTheme } from "@/context/PrefferedColorTheme";
 import { Colors } from "@/lib/colors";
+import { cn } from "@/lib/tailwindClasses";
 import { BottomSheetTextInput } from "@gorhom/bottom-sheet";
 import React, { useMemo } from "react";
 import { TextInput, View } from "react-native";
@@ -11,6 +12,8 @@ type Props = {
   value: string;
   error?: string;
   useBottomSheetTextInput?: boolean;
+  className?: string;
+  bgColor?: string;
 };
 
 export default function Input({
@@ -19,6 +22,8 @@ export default function Input({
   value,
   error,
   useBottomSheetTextInput,
+  className,
+  bgColor,
 }: Props) {
   const { theme } = usePreferredColorTheme();
 
@@ -32,8 +37,11 @@ export default function Input({
       <View
         className="p-1 rounded-2xl"
         style={{
-          backgroundColor:
-            theme === "light" ? Colors["gray-100"] : Colors["gray-900"],
+          backgroundColor: bgColor
+            ? bgColor
+            : theme === "light"
+              ? Colors["gray-100"]
+              : Colors["gray-900"],
         }}
       >
         <TextInputWidget
@@ -44,7 +52,7 @@ export default function Input({
           placeholder={placeholder}
           onChangeText={onChangeText}
           value={value}
-          className="p-4 rounded-xl text-lg font-inter"
+          className={cn("p-4 rounded-xl text-lg font-inter", className)}
           style={{ color: theme === "light" ? "black" : "white" }}
         />
       </View>

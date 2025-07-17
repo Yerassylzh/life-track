@@ -8,6 +8,29 @@ export async function markHabitAsCompleted(
   habitId: string,
   unitValue: number | null
 ) {
+  const dateStart = new Date();
+  dateStart.setHours(0, 0, 0, 0);
+  const dateEnd = new Date(dateStart);
+  dateEnd.setDate(dateEnd.getDate() + 1);
+
+  const existingCompletion = await db
+    .select()
+    .from(habitCompletionTable)
+    .where(
+      and(
+        eq(habitCompletionTable.habitId, habitId),
+        gte(habitCompletionTable.completedAt, dateStart),
+        lt(habitCompletionTable.completedAt, dateEnd)
+      )
+    )
+    .limit(1);
+
+  if (existingCompletion.length > 0) {
+    console.log(
+      "Habit already completed at this day. New completion is ignored."
+    );
+    return;
+  }
   await db.insert(habitCompletionTable).values({
     id: uuid(),
     habitId,

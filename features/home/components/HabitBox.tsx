@@ -6,7 +6,7 @@ import DynamicIcon from "@/features/habits/components/DynamicIcon";
 import { addDaystoDate, YMDToDate } from "@/lib/date";
 import { cn } from "@/lib/tailwindClasses";
 import React from "react";
-import { Pressable, View } from "react-native";
+import { TouchableOpacity, View } from "react-native";
 import ActivityLabel from "../../../components/ActivityLabel";
 
 type Props = {
@@ -27,7 +27,7 @@ export default function HabitBox({
   const { theme } = usePreferredColorTheme();
 
   return (
-    <Pressable
+    <TouchableOpacity
       onPress={onPress}
       className={cn(
         "flex flex-row items-center justify-between py-3.5",
@@ -69,6 +69,6 @@ export default function HabitBox({
         </View>
       </View>
       <CompleteButton isCompleted={isCompleted} />
-    </Pressable>
+    </TouchableOpacity>
   );
 }
