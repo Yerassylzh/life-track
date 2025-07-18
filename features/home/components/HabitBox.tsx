@@ -4,40 +4,37 @@ import { usePreferredColorTheme } from "@/context/PrefferedColorTheme";
 import { HabitWithCompletions } from "@/db/types";
 import DynamicIcon from "@/features/habits/components/DynamicIcon";
 import HabitActionsModal from "@/features/habits/components/HabitActionsModal";
-import { addDaystoDate, YMDToDate } from "@/lib/date";
+import UnitValueInputModal from "@/features/habits/components/UnitValueInputModal";
+import useHabitActions from "@/features/habits/hooks/useHabitActions";
 import { cn } from "@/lib/tailwindClasses";
-import { BottomSheetModal } from "@gorhom/bottom-sheet";
-import React, { useRef } from "react";
-import { TouchableOpacity, Vibration, View } from "react-native";
+import React from "react";
+import { TouchableOpacity, View } from "react-native";
 import Animated, { LinearTransition } from "react-native-reanimated";
 import ActivityLabel from "../../../components/ActivityLabel";
 
 type Props = {
   hasBottomBorder: boolean;
   habit: HabitWithCompletions;
-  isCompleted: boolean;
-  onPress: () => void;
   date: string;
 };
 
-export default function HabitBox({
-  hasBottomBorder,
-  habit,
-  isCompleted,
-  onPress,
-  date,
-}: Props) {
+export default function HabitBox({ hasBottomBorder, habit, date }: Props) {
   const { theme } = usePreferredColorTheme();
-  const habitActionRef = useRef<BottomSheetModal>(null);
+  const {
+    onPress,
+    onLongPress,
+    isCompleted,
+    doesNotNeedToComplete,
+    habitActionRef,
+    unitInputRef,
+    getCompletionUnitValue,
+  } = useHabitActions(habit, date);
 
   return (
     <Animated.View layout={LinearTransition}>
       <TouchableOpacity
         onPress={onPress}
-        onLongPress={() => {
-          Vibration.vibrate(30);
-          habitActionRef.current?.present();
-        }}
+        onLongPress={onLongPress}
         className={cn(
           "flex flex-row items-center justify-between py-3.5",
           hasBottomBorder && "border-b",
@@ -58,28 +55,22 @@ export default function HabitBox({
             <View className="flex-1 flex-row gap-2">
               <InterText className={cn("text-base")}>{habit.name}</InterText>
               {habit.unit !== null &&
-                (() => {
-                  const completion = habit.completions.filter(
-                    (completion) =>
-                      YMDToDate(date) <= completion.completedAt &&
-                      completion.completedAt < addDaystoDate(YMDToDate(date), 1)
-                  )[0];
-                  if (completion === undefined) {
-                    return null;
-                  }
-                  return (
-                    <InterText className="text-base text-gray-500">
-                      {completion.unitValue + " " + habit.unit}
-                    </InterText>
-                  );
-                })()}
+                (isCompleted || doesNotNeedToComplete) && (
+                  <InterText className="text-base text-gray-500">
+                    {getCompletionUnitValue() + " " + habit.unit}
+                  </InterText>
+                )}
             </View>
             <ActivityLabel color={habit.color} text={"Habit"} />
           </View>
         </View>
-        <CompleteButton isCompleted={isCompleted} />
+        <CompleteButton
+          isCompleted={isCompleted}
+          doesNotNeedToComplete={doesNotNeedToComplete}
+        />
       </TouchableOpacity>
       <HabitActionsModal habit={habit} ref={habitActionRef} />
+      <UnitValueInputModal unitInputRef={unitInputRef} habit={habit} />
     </Animated.View>
   );
 }

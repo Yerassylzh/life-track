@@ -2,32 +2,62 @@ import { usePreferredColorTheme } from "@/context/PrefferedColorTheme";
 import { Colors } from "@/lib/colors";
 import { cn } from "@/lib/tailwindClasses";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import React from "react";
+import React, { useMemo } from "react";
 import { View } from "react-native";
 
 type Props = {
+  tickColor?: string;
+  bgColorUncompleted?: string;
+  bgColorCompleted?: string;
   isCompleted?: boolean;
+  doesNotNeedToComplete?: boolean;
 };
 
-export default function CompleteButton({ isCompleted }: Props) {
+export default function CompleteButton({
+  isCompleted,
+  doesNotNeedToComplete,
+  bgColorUncompleted,
+  bgColorCompleted,
+  tickColor,
+}: Props) {
   const { theme } = usePreferredColorTheme();
+
+  const backgroundColor = useMemo(() => {
+    return isCompleted
+      ? bgColorCompleted
+        ? bgColorCompleted
+        : theme === "dark"
+          ? Colors["green-800"]
+          : Colors["green-200"]
+      : bgColorUncompleted
+        ? bgColorUncompleted
+        : theme === "light"
+          ? Colors["gray-100"]
+          : Colors["gray-900"];
+  }, [bgColorCompleted, bgColorUncompleted, isCompleted, theme]);
+
+  const checkColor = useMemo(() => {
+    return tickColor
+      ? tickColor
+      : theme === "dark"
+        ? Colors["green-300"]
+        : Colors["green-700"];
+  }, [theme, tickColor]);
 
   return (
     <View
+      style={{
+        backgroundColor,
+        opacity: doesNotNeedToComplete ? 0.7 : 1,
+      }}
       className={cn(
         "w-[27px] h-[27px]",
-        "rounded-full bg-gray-100",
-        theme === "dark" && "bg-gray-900",
-        isCompleted && (theme === "dark" ? "bg-green-800" : "bg-green-200"),
+        "rounded-full",
         "items-center justify-center"
       )}
     >
       {isCompleted && (
-        <MaterialIcons
-          name="done"
-          size={17}
-          color={theme === "dark" ? Colors["green-300"] : Colors["green-700"]}
-        />
+        <MaterialIcons name="done" size={17} color={checkColor} />
       )}
     </View>
   );

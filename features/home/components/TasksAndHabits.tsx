@@ -2,23 +2,16 @@ import Add from "@/components/Add";
 import TasksList from "@/features/tasks/components/TasksList";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import React, { useRef } from "react";
-import { View } from "react-native";
-import { ScrollView } from "react-native-gesture-handler";
+import { ScrollView, View } from "react-native";
 import { useActivities } from "../context/ActivitiesCountContext";
 import { useDate } from "../context/SelectedDateContext";
 import ChooseActivityToCreateButtomSheet from "./ChooseActivityToCreateButtomSheet";
 import HabitsAndTasksFilter from "./HabitsAndTasksFilter";
 import HabitsList from "./HabitsList";
-import NoActivities from "./NoActivities";
 
 export default function TasksAndHabits() {
-  const {
-    currentFilter,
-    setCurrentFilter,
-    includeHabits,
-    includeTasks,
-    isEmpty,
-  } = useActivities();
+  const { currentFilter, setCurrentFilter, includeHabits, includeTasks } =
+    useActivities();
   const activityTypeChoiceRef = useRef<BottomSheetModal>(null);
   const { selectedDate } = useDate();
 
@@ -45,12 +38,6 @@ export default function TasksAndHabits() {
           />
         )}
         {includeHabits && <HabitsList displayAll={true} />}
-        {isEmpty && (
-          <NoActivities
-            includeHabits={includeHabits}
-            includeTasks={includeTasks}
-          />
-        )}
       </ScrollView>
       <Add
         className="mb-[120px] right-[15px]"

@@ -2,6 +2,7 @@ import { addDaystoDate, dateToYMD, YMDToDate } from "@/lib/date";
 import { useMemo } from "react";
 import { useTasks } from "../context/TasksContext";
 import { markTaskAsCompleted, markTaskAsUncompleted } from "../lib/update";
+import NoTasks from "./NoTasks";
 import TaskBox from "./TaskBox";
 
 type TasksDateType = { date: Date } | { showUpcoming: boolean };
@@ -47,6 +48,7 @@ export default function TasksList(props: TasksProps) {
 
   return (
     <>
+      {tasksToDisplay.length === 0 && <NoTasks />}
       {tasksToDisplay.map((task, index) => (
         <TaskBox
           key={task.id}

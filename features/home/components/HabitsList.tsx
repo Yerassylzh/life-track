@@ -1,15 +1,9 @@
-import { HabitWithCompletions } from "@/db/types";
 import { useHabits } from "@/features/habits/context/HabitsContext";
-import {
-  markHabitAsCompleted,
-  markHabitAsUncompleted,
-} from "@/features/habits/lib/update";
+import useHabitSorter from "@/features/habits/hooks/useHabitSorter";
 import { dateToYMD, YMDToDate } from "@/lib/date";
-import { BottomSheetModal } from "@gorhom/bottom-sheet";
-import React, { useMemo, useRef } from "react";
+import React, { useMemo } from "react";
 import { useDate } from "../context/SelectedDateContext";
 import HabitBox from "./HabitBox";
-import UnitValueInputModal from "./UnitValueInputModal";
 
 type DisplayType =
   | { displayCompleted: boolean }
@@ -24,6 +18,7 @@ export default function HabitsList(props: HabitsListProps) {
   const { habits, habitsCompletionsManager } = useHabits();
   const { selectedDate } = useDate();
   const date = useMemo(() => dateToYMD(selectedDate), [selectedDate]);
+  const sortFn = useHabitSorter(date);
 
   const habitsToDisplay = useMemo(() => {
     const filteredHabits = habits.filter((habit) => {
@@ -35,87 +30,39 @@ export default function HabitsList(props: HabitsListProps) {
         return true;
       }
 
-      const isCompleted =
-        habitsCompletionsManager.get(habit.id)?.isHabitCompletedAt(date) ||
-        habitsCompletionsManager
-          .get(habit.id)
-          ?.isHabitDoesntNeedToCompleteAt(date);
+      const isCompleted = habitsCompletionsManager
+        .get(habit.id)
+        ?.isHabitCompletedAt(date);
+      const doesNotNeedToComplete = habitsCompletionsManager
+        .get(habit.id)
+        ?.isHabitDoesntNeedToCompleteAt(date);
 
       if ("displayCompleted" in props) {
-        return props.displayCompleted ? isCompleted : !isCompleted;
+        return props.displayCompleted
+          ? isCompleted || doesNotNeedToComplete
+          : !isCompleted;
       }
       if ("displayUncompleted" in props) {
-        return props.displayUncompleted ? !isCompleted : isCompleted;
+        return props.displayUncompleted
+          ? !isCompleted && !doesNotNeedToComplete
+          : isCompleted;
       }
       return true;
     });
 
-    return filteredHabits.sort((a, b) => {
-      const aCompleted =
-        habitsCompletionsManager.get(a.id)?.isHabitCompletedAt(date) ||
-        habitsCompletionsManager.get(a.id)?.isHabitDoesntNeedToCompleteAt(date);
-      const bCompleted =
-        habitsCompletionsManager.get(b.id)?.isHabitCompletedAt(date) ||
-        habitsCompletionsManager.get(b.id)?.isHabitDoesntNeedToCompleteAt(date);
-      return (aCompleted ? 1 : 0) - (bCompleted ? 1 : 0);
-    });
-  }, [habits, habitsCompletionsManager, date, props]);
+    return filteredHabits.sort(sortFn);
+  }, [habits, sortFn, date, props, habitsCompletionsManager]);
 
   return (
     <>
-      {habitsToDisplay.map((habit) => (
-        <HabitBoxWithCompletionsManager
+      {habitsToDisplay.map((habit, index) => (
+        <HabitBox
           key={habit.id}
+          hasBottomBorder={true}
           habit={habit}
-          isCompleted={
-            (habitsCompletionsManager.get(habit.id)?.isHabitCompletedAt(date) ||
-              habitsCompletionsManager
-                .get(habit.id)
-                ?.isHabitDoesntNeedToCompleteAt(date)) ??
-            false
-          }
+          date={date}
         />
       ))}
-    </>
-  );
-}
-
-function HabitBoxWithCompletionsManager({
-  habit,
-  isCompleted,
-}: {
-  habit: HabitWithCompletions;
-  isCompleted: boolean;
-}) {
-  const unitInputRef = useRef<BottomSheetModal>(null);
-  const { selectedDate } = useDate();
-  const date = dateToYMD(selectedDate);
-
-  const handlePress = async () => {
-    if (isCompleted) {
-      if (date !== dateToYMD(new Date())) {
-        return;
-      }
-      await markHabitAsUncompleted(habit.id, date);
-    } else {
-      if (habit.unit !== null) {
-        unitInputRef.current?.present();
-        return;
-      }
-      await markHabitAsCompleted(habit.id, null);
-    }
-  };
-
-  return (
-    <>
-      <HabitBox
-        hasBottomBorder={true}
-        isCompleted={isCompleted}
-        habit={habit}
-        date={date}
-        onPress={handlePress}
-      />
-      <UnitValueInputModal unitInputRef={unitInputRef} habit={habit} />
     </>
   );
 }
