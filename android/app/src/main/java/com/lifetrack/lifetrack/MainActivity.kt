@@ -1,4 +1,4 @@
-package com.anonymous.lifetrack
+package com.lifetrack.lifetrack
 import expo.modules.splashscreen.SplashScreenManager
 
 import android.os.Build

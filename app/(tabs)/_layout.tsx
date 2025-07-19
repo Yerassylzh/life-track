@@ -9,12 +9,6 @@ export default function TabLayout() {
       screenOptions={{
         headerShown: false,
         lazy: false,
-        freezeOnBlur: true,
-        // animationEnabled: true,
-        transitionSpec: {
-          animation: "timing",
-          config: { duration: 2000 },
-        },
       }}
     >
       <Tabs.Screen

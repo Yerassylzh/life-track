@@ -1,4 +1,4 @@
-package com.anonymous.lifetrack
+package com.lifetrack.lifetrack
 
 import android.app.Application
 import android.content.res.Configuration
