@@ -1,8 +1,8 @@
-import ActivityLabel from "@/components/ActivityLabel";
-import InterText from "@/components/InterText";
 import ModalBottomSheet, {
   ModalBottomSheetProps,
 } from "@/components/ModalBottomSheet";
+import ActivityLabel from "@/components/ui/ActivityLabel";
+import InterText from "@/components/ui/InterText";
 import { usePreferredColorTheme } from "@/context/PrefferedColorTheme";
 import { HabitWithCompletions } from "@/db/types";
 import DynamicIcon from "@/features/habits/components/DynamicIcon";

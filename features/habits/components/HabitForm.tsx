@@ -1,6 +1,6 @@
-import Input from "@/components/Input";
-import LongInput from "@/components/LongInput";
-import PrimaryButton from "@/components/PrimaryButton";
+import Input from "@/components/form/Input";
+import LongInput from "@/components/form/LongInput";
+import PrimaryButton from "@/components/form/PrimaryButton";
 import ReminderInput from "@/components/ReminderInput";
 import { Habit } from "@/db/schema";
 import { ColorPalette } from "@/lib/colors";

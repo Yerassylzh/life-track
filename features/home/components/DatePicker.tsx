@@ -3,17 +3,13 @@ import { Colors } from "@/lib/colors";
 import { cn } from "@/lib/tailwindClasses";
 import { FlashList } from "@shopify/flash-list";
 import moment, { Moment } from "moment"; // Import Moment type
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import React, { useCallback, useMemo, useRef, useState } from "react";
 import { Dimensions, Text, TouchableWithoutFeedback, View } from "react-native";
 
 const { width } = Dimensions.get("window");
-const ITEM_WIDTH = width / 9;
+const GAP = 5;
+const numOfDays = 9;
+const ITEM_WIDTH = (width - (numOfDays - 1) * GAP) / numOfDays;
 
 interface DatePickerProps {
   onDateSelected: (date: Date) => void;
@@ -24,21 +20,11 @@ const DatePicker: React.FC<DatePickerProps> = ({ onDateSelected }) => {
   const ref = useRef<FlashList<Moment>>(null);
   const { theme } = usePreferredColorTheme();
 
-  useEffect(() => {
-    setTimeout(() => {
-      ref.current?.scrollToIndex({
-        index: 10,
-        animated: true,
-        viewPosition: 0.5,
-      });
-    }, 1000);
-  }, []);
-
   const dates = useMemo(() => {
     const dates: Moment[] = [];
     const today: Moment = moment();
 
-    const delta = 10;
+    const delta = parseInt((numOfDays / 2).toString());
 
     for (let i = delta; i > 0; i--) {
       dates.push(moment(today).subtract(i, "days"));
@@ -75,7 +61,7 @@ const DatePicker: React.FC<DatePickerProps> = ({ onDateSelected }) => {
         <TouchableWithoutFeedback onPress={() => handleDatePress(item)}>
           <View
             className={cn(
-              "items-center justify-center py-1 mx-[3px] rounded-xl",
+              "items-center justify-center py-1 rounded-xl",
               theme === "light" ? "bg-gray-200" : "bg-gray-800"
             )}
             style={{
@@ -88,7 +74,7 @@ const DatePicker: React.FC<DatePickerProps> = ({ onDateSelected }) => {
             }}
           >
             <Text
-              className="text-xs font-medium mb-1"
+              className="text-[10px] font-medium mb-1"
               style={{
                 color: isSelected
                   ? "white"
@@ -100,7 +86,7 @@ const DatePicker: React.FC<DatePickerProps> = ({ onDateSelected }) => {
               {item.format("ddd")}
             </Text>
             <Text
-              className="text-xl font-bold"
+              className="text-base font-bold"
               style={{
                 color: isSelected
                   ? "white"
@@ -124,10 +110,12 @@ const DatePicker: React.FC<DatePickerProps> = ({ onDateSelected }) => {
         ref={ref}
         data={dates}
         renderItem={renderItem}
-        estimatedItemSize={20}
+        estimatedItemSize={ITEM_WIDTH}
+        estimatedListSize={{ width: width, height: ITEM_WIDTH }}
         horizontal
         showsHorizontalScrollIndicator={false}
         extraData={[selectedDate, theme]}
+        ItemSeparatorComponent={() => <View style={{ width: GAP }} />}
       />
     </View>
   );

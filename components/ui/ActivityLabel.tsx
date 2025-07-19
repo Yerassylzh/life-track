@@ -1,4 +1,4 @@
-import InterText from "@/components/InterText";
+import InterText from "@/components/ui/InterText";
 import { hexToRgba } from "@/lib/hex";
 import { cn } from "@/lib/tailwindClasses";
 import { View } from "react-native";

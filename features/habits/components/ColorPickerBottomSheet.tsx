@@ -1,4 +1,4 @@
-import BottomSheet from "@/components/BottomSheet";
+import ModalBottomSheet from "@/components/ModalBottomSheet";
 import { ColorPalette } from "@/lib/colors";
 import React from "react";
 import { View } from "react-native";
@@ -9,7 +9,7 @@ export default function ColorPickerBottomSheet() {
   const { colorPickerSheetRef, colorIndex, setColorIndex } = useHabitForm();
 
   return (
-    <BottomSheet ref={colorPickerSheetRef}>
+    <ModalBottomSheet ref={colorPickerSheetRef}>
       <View className="pb-10 flex-row flex-wrap items-center justify-start gap-3">
         {ColorPalette.map((color, index) => (
           <ColorButton
@@ -23,6 +23,6 @@ export default function ColorPickerBottomSheet() {
           />
         ))}
       </View>
-    </BottomSheet>
+    </ModalBottomSheet>
   );
 }

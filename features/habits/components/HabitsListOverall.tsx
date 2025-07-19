@@ -1,4 +1,4 @@
-import InterText from "@/components/InterText";
+import InterText from "@/components/ui/InterText";
 import React from "react";
 
 function HabitsListOverall() {

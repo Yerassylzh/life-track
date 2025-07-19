@@ -1,4 +1,4 @@
-import BottomSheetGorhom from "@gorhom/bottom-sheet";
+import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import React, { useRef, useState } from "react";
 import { HabitIconNameType } from "../lib/icons";
 
@@ -19,14 +19,14 @@ type HabitFormContextType = {
   setWeeklyFreq: React.Dispatch<React.SetStateAction<number>>;
   monthlyDays: number[];
   setMonthlyDays: React.Dispatch<React.SetStateAction<number[]>>;
-  colorPickerSheetRef: React.RefObject<BottomSheetGorhom | null>;
+  colorPickerSheetRef: React.RefObject<BottomSheetModal | null>;
   reminder: string | null;
   setReminder: React.Dispatch<React.SetStateAction<string | null>>;
   titleError: string | undefined;
   setTitleError: React.Dispatch<React.SetStateAction<string | undefined>>;
   iconName: HabitIconNameType;
   setIconName: React.Dispatch<React.SetStateAction<HabitIconNameType>>;
-  iconPickerSheetRef: React.RefObject<BottomSheetGorhom | null>;
+  iconPickerSheetRef: React.RefObject<BottomSheetModal | null>;
   unit: string;
   setUnit: React.Dispatch<React.SetStateAction<string>>;
   unitError: string | undefined;
@@ -54,12 +54,12 @@ export const HabitFormProvider: React.FC<{ children: React.ReactNode }> = ({
   ]);
   const [weeklyFreq, setWeeklyFreq] = React.useState<number>(3);
   const [monthlyDays, setMonthlyDays] = React.useState<number[]>([1]);
-  const colorPickerSheetRef = useRef<BottomSheetGorhom>(null);
+  const colorPickerSheetRef = useRef<BottomSheetModal>(null);
 
   const [reminder, setReminder] = React.useState<string | null>("08:00");
 
   const [iconName, setIconName] = React.useState<HabitIconNameType>("Album");
-  const iconPickerSheetRef = useRef<BottomSheetGorhom>(null);
+  const iconPickerSheetRef = useRef<BottomSheetModal>(null);
 
   const [unit, setUnit] = useState<string>("");
   const [unitError, setUnitError] = useState<string | undefined>("");

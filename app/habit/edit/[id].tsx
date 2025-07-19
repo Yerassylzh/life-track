@@ -1,7 +1,6 @@
 import AppBackground from "@/components/AppBackground";
-import BackHeader from "@/components/BackHeader";
-import InterText from "@/components/InterText";
-import { useModalMessage } from "@/context/ModalMessageContext";
+import BackHeader from "@/components/ui/BackHeader";
+import InterText from "@/components/ui/InterText";
 import HabitForm, {
   HabitFormData,
 } from "@/features/habits/components/HabitForm";
@@ -11,6 +10,7 @@ import { router, useLocalSearchParams } from "expo-router";
 import React, { useCallback, useMemo } from "react";
 import { View } from "react-native";
 
+import { useModalMessage } from "@/context/ModalMessageContext";
 import { useHabits } from "@/features/habits/context/HabitsContext";
 import { ColorPalette } from "@/lib/colors";
 import { deleteNotification } from "@/lib/notifications";

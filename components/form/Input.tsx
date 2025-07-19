@@ -4,7 +4,7 @@ import { cn } from "@/lib/tailwindClasses";
 import { BottomSheetTextInput } from "@gorhom/bottom-sheet";
 import React, { useMemo } from "react";
 import { TextInput, View } from "react-native";
-import InterText from "./InterText";
+import InterText from "../ui/InterText";
 
 type Props = {
   placeholder: string;

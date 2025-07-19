@@ -76,7 +76,6 @@ function Habits() {
           ))}
         </Animated.View>
       </View>
-
       <CreateNewHabitButton />
     </AppBackground>
   );

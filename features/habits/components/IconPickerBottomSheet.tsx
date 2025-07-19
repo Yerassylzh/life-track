@@ -1,4 +1,4 @@
-import BottomSheet from "@/components/BottomSheet";
+import ModalBottomSheet from "@/components/ModalBottomSheet";
 import { ColorPalette } from "@/lib/colors";
 import React from "react";
 import { Pressable, View } from "react-native";
@@ -10,7 +10,7 @@ export default function IconPickerBottomSheet() {
   const { iconPickerSheetRef, setIconName, colorIndex } = useHabitForm();
 
   return (
-    <BottomSheet ref={iconPickerSheetRef}>
+    <ModalBottomSheet ref={iconPickerSheetRef}>
       <View className="pb-10 flex-row flex-wrap items-center justify-start gap-3">
         {habitIcons.map((name: HabitIconNameType, index) => (
           <Pressable
@@ -29,6 +29,6 @@ export default function IconPickerBottomSheet() {
           </Pressable>
         ))}
       </View>
-    </BottomSheet>
+    </ModalBottomSheet>
   );
 }

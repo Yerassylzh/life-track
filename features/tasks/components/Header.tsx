@@ -1,4 +1,4 @@
-import InterText from "@/components/InterText";
+import InterText from "@/components/ui/InterText";
 import { usePreferredColorTheme } from "@/context/PrefferedColorTheme";
 import Feather from "@expo/vector-icons/Feather";
 import { Link } from "expo-router";
@@ -10,7 +10,7 @@ export default function Header() {
 
   return (
     <View className="w-full px-[25px] py-[10px] items-center justify-between flex-row">
-      <InterText className="font-bold text-[25px]">Tasks</InterText>
+      <InterText className="font-bold text-2xl">Tasks</InterText>
       <View className="flex-1 flex-row items-center justify-end">
         <Link href="/settings">
           <Feather

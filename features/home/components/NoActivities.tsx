@@ -1,4 +1,4 @@
-import InterText from "@/components/InterText";
+import InterText from "@/components/ui/InterText";
 import { Colors } from "@/lib/colors";
 import { dateToYMD, getReadableDate } from "@/lib/date";
 import { cn } from "@/lib/tailwindClasses";

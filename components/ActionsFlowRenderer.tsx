@@ -6,7 +6,7 @@ import { navigate } from "expo-router/build/global-state/routing";
 import { Href } from "expo-router/build/types";
 import { useCallback, useState } from "react";
 import { Pressable, PressableProps, View } from "react-native";
-import InterText from "./InterText";
+import InterText from "./ui/InterText";
 
 export type RedirectStep = {
   redirectTo: Href;
@@ -20,15 +20,15 @@ export type ActivityStep = {
   next?: ActivityStep[] | RedirectStep;
 };
 
-export type ActivityStepsRendererProps = {
+export type ActionsFlowRendererProps = {
   flow: ActivityStep[];
   onRedirect?: () => void;
 };
 
-export default function ActivityStepsRenderer({
+export default function ActionsFlowRenderer({
   flow,
   onRedirect,
-}: ActivityStepsRendererProps) {
+}: ActionsFlowRendererProps) {
   const [currentFlow, setCurrentFlow] = useState<ActivityStep[]>(flow);
 
   const onStepPress = useCallback(

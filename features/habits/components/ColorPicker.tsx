@@ -1,4 +1,4 @@
-import InterText from "@/components/InterText";
+import InterText from "@/components/ui/InterText";
 import { usePreferredColorTheme } from "@/context/PrefferedColorTheme";
 import { ColorPalette } from "@/lib/colors";
 import { cn } from "@/lib/tailwindClasses";

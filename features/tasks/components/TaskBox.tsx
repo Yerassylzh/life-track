@@ -1,6 +1,6 @@
-import ActivityLabel from "@/components/ActivityLabel";
-import CompleteButtom from "@/components/CompleteButton";
-import InterText from "@/components/InterText";
+import ActivityLabel from "@/components/ui/ActivityLabel";
+import CompleteButtom from "@/components/ui/CompleteButton";
+import InterText from "@/components/ui/InterText";
 import { usePreferredColorTheme } from "@/context/PrefferedColorTheme";
 import { Task } from "@/db/schema";
 import DynamicIcon from "@/features/habits/components/DynamicIcon";

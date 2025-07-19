@@ -1,5 +1,5 @@
-import InterText from "@/components/InterText";
-import ToggleSwitch from "@/components/ToggleSwitch";
+import InterText from "@/components/ui/InterText";
+import ToggleSwitch from "@/components/ui/ToggleSwitch";
 import { usePreferredColorTheme } from "@/context/PrefferedColorTheme";
 import { Colors } from "@/lib/colors";
 import { getFormattedTimeString } from "@/lib/date";

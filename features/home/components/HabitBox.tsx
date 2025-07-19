@@ -1,16 +1,15 @@
-import CompleteButton from "@/components/CompleteButton";
-import InterText from "@/components/InterText";
+import CompleteButton from "@/components/ui/CompleteButton";
+import InterText from "@/components/ui/InterText";
 import { usePreferredColorTheme } from "@/context/PrefferedColorTheme";
 import { HabitWithCompletions } from "@/db/types";
 import DynamicIcon from "@/features/habits/components/DynamicIcon";
 import HabitActionsModal from "@/features/habits/components/HabitActionsModal";
-import UnitValueInputModal from "@/features/habits/components/UnitValueInputModal";
 import useHabitActions from "@/features/habits/hooks/useHabitActions";
 import { cn } from "@/lib/tailwindClasses";
 import React from "react";
 import { TouchableOpacity, View } from "react-native";
 import Animated, { LinearTransition } from "react-native-reanimated";
-import ActivityLabel from "../../../components/ActivityLabel";
+import ActivityLabel from "../../../components/ui/ActivityLabel";
 
 type Props = {
   hasBottomBorder: boolean;
@@ -26,7 +25,6 @@ export default function HabitBox({ hasBottomBorder, habit, date }: Props) {
     isCompleted,
     doesNotNeedToComplete,
     habitActionRef,
-    unitInputRef,
     getCompletionUnitValue,
   } = useHabitActions(habit, date);
 
@@ -70,7 +68,6 @@ export default function HabitBox({ hasBottomBorder, habit, date }: Props) {
         />
       </TouchableOpacity>
       <HabitActionsModal habit={habit} ref={habitActionRef} />
-      <UnitValueInputModal unitInputRef={unitInputRef} habit={habit} />
     </Animated.View>
   );
 }

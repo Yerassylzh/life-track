@@ -1,4 +1,4 @@
-import InterText from "@/components/InterText";
+import InterText from "@/components/ui/InterText";
 import { ColorPalette } from "@/lib/colors";
 import { hexToRgba } from "@/lib/hex";
 import AntDesign from "@expo/vector-icons/AntDesign";

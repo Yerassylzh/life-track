@@ -1,5 +1,5 @@
-import CompleteButton from "@/components/CompleteButton";
-import InterText from "@/components/InterText";
+import CompleteButton from "@/components/ui/CompleteButton";
+import InterText from "@/components/ui/InterText";
 import { usePreferredColorTheme } from "@/context/PrefferedColorTheme";
 import { HabitWithCompletions } from "@/db/types";
 import { Colors } from "@/lib/colors";
@@ -12,7 +12,6 @@ import { useHabits } from "../context/HabitsContext";
 import useHabitActions from "../hooks/useHabitActions";
 import DynamicIcon from "./DynamicIcon";
 import HabitActionsModal from "./HabitActionsModal";
-import UnitValueInputModal from "./UnitValueInputModal";
 
 type Props = {
   habit: HabitWithCompletions;
@@ -90,8 +89,10 @@ export default function HabitBoxWeekly({ habit }: Props) {
     [habit.completions]
   );
 
-  const { unitInputRef, habitActionRef, onPress, onLongPress } =
-    useHabitActions(habit, dateToYMD(new Date()));
+  const { habitActionRef, onPress, onLongPress } = useHabitActions(
+    habit,
+    dateToYMD(new Date())
+  );
 
   return (
     <TouchableOpacity
@@ -139,7 +140,6 @@ export default function HabitBoxWeekly({ habit }: Props) {
           );
         })}
       </View>
-      <UnitValueInputModal unitInputRef={unitInputRef} habit={habit} />
       <HabitActionsModal habit={habit} ref={habitActionRef} />
     </TouchableOpacity>
   );
@@ -163,8 +163,10 @@ function DayItem({
   unitValue,
 }: DayItemProps) {
   const dateStr = dateToYMD(date);
-  const { onPress, onLongPress, unitInputRef, habitActionRef } =
-    useHabitActions(habit, dateStr);
+  const { onPress, onLongPress, habitActionRef } = useHabitActions(
+    habit,
+    dateStr
+  );
 
   const isToday = dateToYMD(new Date()) === dateStr;
 
@@ -224,8 +226,6 @@ function DayItem({
           </View>
         )}
       </Pressable>
-
-      <UnitValueInputModal unitInputRef={unitInputRef} habit={habit} />
       <HabitActionsModal habit={habit} ref={habitActionRef} />
     </View>
   );

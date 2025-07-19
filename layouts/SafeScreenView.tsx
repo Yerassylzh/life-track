@@ -14,7 +14,9 @@ export default function SafeScreenView({
 
   return (
     <View
-      style={{ paddingTop: insets.top }}
+      style={{
+        paddingTop: insets.top,
+      }}
       className={cn("flex-1", theme === "light" ? "bg-gray-50" : "bg-gray-950")}
     >
       {children}

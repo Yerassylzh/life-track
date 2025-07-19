@@ -6,9 +6,10 @@ export default function TabLayout() {
   return (
     <Tabs
       tabBar={(props) => <TabBar {...props} />}
+      initialRouteName="home"
       screenOptions={{
         headerShown: false,
-        lazy: false,
+        // lazy: false,
       }}
     >
       <Tabs.Screen

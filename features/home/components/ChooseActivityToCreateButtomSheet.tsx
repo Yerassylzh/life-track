@@ -1,6 +1,6 @@
 import ActivityStepsRenderer, {
   ActivityStep,
-} from "@/components/ActivityStepsRenderer";
+} from "@/components/ActionsFlowRenderer";
 import ModalBottomSheet, {
   ModalBottomSheetProps,
 } from "@/components/ModalBottomSheet";

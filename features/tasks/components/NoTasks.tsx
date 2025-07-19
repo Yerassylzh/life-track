@@ -1,4 +1,4 @@
-import InterText from "@/components/InterText";
+import InterText from "@/components/ui/InterText";
 import { Colors } from "@/lib/colors";
 import { cn } from "@/lib/tailwindClasses";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
@@ -7,7 +7,7 @@ import { View } from "react-native";
 
 export default function NoTasks() {
   return (
-    <View className="items-center justify-center gap-3 pt-[50%] flex-1">
+    <View className="items-center justify-center gap-3 flex-1">
       <MaterialCommunityIcons name="sleep" size={50} color={Colors.primary} />
       <InterText className="text-lg font-semibold">
         No tasks scheduled

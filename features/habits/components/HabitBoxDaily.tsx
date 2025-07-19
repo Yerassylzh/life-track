@@ -1,8 +1,7 @@
-import CompleteButton from "@/components/CompleteButton";
-import InterText from "@/components/InterText";
+import CompleteButton from "@/components/ui/CompleteButton";
+import InterText from "@/components/ui/InterText";
 import { usePreferredColorTheme } from "@/context/PrefferedColorTheme";
 import { HabitWithCompletions } from "@/db/types";
-import UnitValueInputModal from "@/features/habits/components/UnitValueInputModal";
 import { Colors } from "@/lib/colors";
 import { hexToRgba } from "@/lib/hex";
 import { cn } from "@/lib/tailwindClasses";
@@ -26,7 +25,6 @@ export default function HabitBoxDaily({ habit, date }: Props) {
     onPress,
     onLongPress,
     habitActionRef,
-    unitInputRef,
     getCompletionUnitValue,
   } = useHabitActions(habit, date);
 
@@ -70,7 +68,6 @@ export default function HabitBoxDaily({ habit, date }: Props) {
           bgColorCompleted={hexToRgba(habit.color, 0.2)}
         />
       </TouchableOpacity>
-      <UnitValueInputModal unitInputRef={unitInputRef} habit={habit} />
       <HabitActionsModal habit={habit} ref={habitActionRef} />
     </Animated.View>
   );

@@ -1,5 +1,5 @@
 import AppBackground from "@/components/AppBackground";
-import InterText from "@/components/InterText";
+import InterText from "@/components/ui/InterText";
 import React from "react";
 
 export default function Journal() {

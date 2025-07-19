@@ -1,9 +1,9 @@
 import * as Notifications from "expo-notifications";
 import React, { useCallback, useEffect, useState } from "react";
 import { ActivityIndicator, Text } from "react-native";
-import AppBackground from "./AppBackground";
-import InterText from "./InterText";
-import PrimaryButton from "./PrimaryButton";
+import AppBackground from "../components/AppBackground";
+import PrimaryButton from "../components/form/PrimaryButton";
+import InterText from "../components/ui/InterText";
 
 export const RequireNotificationPermission: React.FC<{
   children: React.ReactNode;

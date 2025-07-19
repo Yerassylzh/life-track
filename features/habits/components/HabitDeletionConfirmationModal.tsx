@@ -1,5 +1,5 @@
-import InterText from "@/components/InterText";
 import SheetModal from "@/components/SheetModal";
+import InterText from "@/components/ui/InterText";
 import { usePreferredColorTheme } from "@/context/PrefferedColorTheme";
 import { HabitWithCompletions } from "@/db/types";
 import { cn } from "@/lib/tailwindClasses";

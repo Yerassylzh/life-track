@@ -1,7 +1,7 @@
 import { cn } from "@/lib/tailwindClasses";
 import React from "react";
 import { TouchableOpacity, TouchableOpacityProps } from "react-native";
-import InterText from "./InterText";
+import InterText from "../ui/InterText";
 
 interface Props extends TouchableOpacityProps {
   label: string;

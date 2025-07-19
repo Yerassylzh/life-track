@@ -1,5 +1,8 @@
+import { Task } from "@/db/schema";
 import { addDaystoDate, dateToYMD, YMDToDate } from "@/lib/date";
-import { useMemo } from "react";
+import { FlashList } from "@shopify/flash-list";
+import { useCallback, useEffect, useMemo, useRef } from "react";
+import { Dimensions, View } from "react-native";
 import { useTasks } from "../context/TasksContext";
 import { markTaskAsCompleted, markTaskAsUncompleted } from "../lib/update";
 import NoTasks from "./NoTasks";
@@ -14,8 +17,11 @@ type DisplayType =
 export type TasksProps = {
   hasLabel?: boolean;
   displayBottomBorderForAll?: boolean;
+  allowToDisplayNoTasks?: boolean;
 } & TasksDateType &
   DisplayType;
+
+const screenDimensions = Dimensions.get("window");
 
 export default function TasksList(props: TasksProps) {
   const { tasks } = useTasks();
@@ -46,31 +52,58 @@ export default function TasksList(props: TasksProps) {
     return [];
   }, [tasks, props]);
 
-  return (
-    <>
-      {tasksToDisplay.length === 0 && <NoTasks />}
-      {tasksToDisplay.map((task, index) => (
+  const renderItem = useCallback(
+    ({ item }: { item: Task }) => {
+      return (
         <TaskBox
-          key={task.id}
-          task={task}
-          hasBottomBorder={
-            props.displayBottomBorderForAll
-              ? true
-              : index !== tasksToDisplay.length - 1
-          }
+          key={item.id}
+          task={item}
           hasLabel={props.hasLabel}
+          hasBottomBorder
           onPress={async () => {
             if ("showUpcoming" in props) {
               return;
             }
-            if (task.completedAt) {
-              await markTaskAsUncompleted(task.id);
+            if (item.completedAt) {
+              await markTaskAsUncompleted(item.id);
             } else {
-              await markTaskAsCompleted(task.id);
+              await markTaskAsCompleted(item.id);
             }
           }}
         />
-      ))}
-    </>
+      );
+    },
+    [props]
+  );
+
+  const listRef = useRef<FlashList<any>>(null);
+
+  useEffect(() => {
+    listRef.current?.prepareForLayoutAnimationRender();
+  }, []);
+
+  if (tasksToDisplay.length === 0 && props.allowToDisplayNoTasks) {
+    return (
+      <View className="flex-1 items-center justify-start pb-40">
+        <NoTasks />
+      </View>
+    );
+  }
+
+  return (
+    <FlashList
+      bounces={true}
+      data={tasksToDisplay}
+      renderItem={renderItem}
+      overScrollMode="always"
+      showsVerticalScrollIndicator={false}
+      contentContainerStyle={{ paddingBottom: 200, paddingHorizontal: 15 }}
+      keyExtractor={(item) => item.id}
+      estimatedItemSize={65}
+      estimatedListSize={{
+        width: screenDimensions.width,
+        height: Math.min(screenDimensions.height, 65 * tasksToDisplay.length),
+      }}
+    />
   );
 }

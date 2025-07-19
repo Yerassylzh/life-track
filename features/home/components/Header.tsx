@@ -1,4 +1,4 @@
-import AnimatedInterText from "@/components/AnimatedInterText";
+import AnimatedInterText from "@/components/ui/AnimatedInterText";
 import { usePreferredColorTheme } from "@/context/PrefferedColorTheme";
 import { getReadableDate } from "@/lib/date";
 import Feather from "@expo/vector-icons/Feather";
@@ -42,7 +42,7 @@ export default function Header() {
     <View className="w-full px-[25px] py-[10px] items-center justify-between flex-row">
       <AnimatedInterText
         style={dateOpacityStyle}
-        className="font-bold text-[25px]"
+        className="font-bold text-2xl"
       >
         {dateString}
       </AnimatedInterText>

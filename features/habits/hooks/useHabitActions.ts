@@ -4,6 +4,7 @@ import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { useCallback, useMemo, useRef } from "react";
 import { Vibration } from "react-native";
 import { useHabits } from "../context/HabitsContext";
+import { useUnitValueInputModal } from "../context/UnitValueInputModalContext";
 import { markHabitAsCompleted, markHabitAsUncompleted } from "../lib/update";
 
 export default function useHabitActions(
@@ -12,7 +13,7 @@ export default function useHabitActions(
 ) {
   const { habitsCompletionsManager } = useHabits();
   const habitActionRef = useRef<BottomSheetModal>(null);
-  const unitInputRef = useRef<BottomSheetModal>(null);
+  const { showModal: showUnitValueInputModal } = useUnitValueInputModal();
 
   const getCompletionUnitValue = useCallback(() => {
     const completion = habit.completions.filter(
@@ -35,19 +36,20 @@ export default function useHabitActions(
   }, [date, habit.id, habitsCompletionsManager]);
 
   const onPress = useCallback(async () => {
+    if (date !== dateToYMD(new Date())) {
+      return;
+    }
+
     if (isCompleted) {
-      if (date !== dateToYMD(new Date())) {
-        return;
-      }
       await markHabitAsUncompleted(habit.id, date);
     } else {
       if (habit.unit !== null) {
-        unitInputRef.current?.present();
+        showUnitValueInputModal(habit);
         return;
       }
       await markHabitAsCompleted(habit.id, null);
     }
-  }, [date, habit.id, habit.unit, isCompleted]);
+  }, [date, habit, isCompleted, showUnitValueInputModal]);
 
   const onLongPress = useCallback(() => {
     Vibration.vibrate(30);
@@ -60,7 +62,6 @@ export default function useHabitActions(
     onPress,
     onLongPress,
     habitActionRef,
-    unitInputRef,
     getCompletionUnitValue,
   };
 }

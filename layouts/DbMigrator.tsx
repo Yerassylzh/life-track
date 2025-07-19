@@ -1,5 +1,4 @@
 import AppLoading from "@/components/AppLoading";
-import { useModalMessage } from "@/context/ModalMessageContext";
 import { db } from "@/db/db";
 import migrations from "@/drizzle/migrations";
 import { useMigrations } from "drizzle-orm/expo-sqlite/migrator";
@@ -10,16 +9,16 @@ export default function DbMigrator({
 }: {
   children: React.ReactNode;
 }) {
-  const { showMessage } = useModalMessage();
+  // const { showMessage } = useModalMessage();
   const { success, error } = useMigrations(db, migrations);
 
   useEffect(() => {
     if (error) {
-      showMessage(
-        `Error occured while running local DB migrations. Please delete and download app again =). Error logs: ${error.message}`
-      );
+      // showMessage(
+      //   `Error occured while running local DB migrations. Please delete and download app again =). Error logs: ${error.message}`
+      // );
     }
-  }, [error, showMessage]);
+  }, [error]);
 
   // Migration is in progress
   if (!success) {

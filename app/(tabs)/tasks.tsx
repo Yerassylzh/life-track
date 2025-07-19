@@ -1,5 +1,5 @@
-import Add from "@/components/Add";
 import AppBackground from "@/components/AppBackground";
+import Add from "@/components/ui/Add";
 import ViewSwitcher from "@/components/ViewSwitcher";
 import Header from "@/features/tasks/components/Header";
 import TasksList from "@/features/tasks/components/TasksList";
@@ -38,7 +38,7 @@ export default function Tasks() {
         )}
       </ScrollView>
       <Add
-        className="mb-[120px] right-[15px]"
+        className="mb-[100px] right-[15px]"
         onPress={() => router.navigate("/task/create_task")}
       />
     </AppBackground>

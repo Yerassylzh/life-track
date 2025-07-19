@@ -2,7 +2,7 @@ import { usePreferredColorTheme } from "@/context/PrefferedColorTheme";
 import { Colors } from "@/lib/colors";
 import React from "react";
 import { TextInput, View } from "react-native";
-import InterText from "./InterText";
+import InterText from "../ui/InterText";
 
 type Props = {
   placeholder: string;

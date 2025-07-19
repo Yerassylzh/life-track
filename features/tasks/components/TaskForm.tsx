@@ -1,6 +1,6 @@
-import DateSelectInput from "@/components/DateSelectInput";
-import Input from "@/components/Input";
-import PrimaryButton from "@/components/PrimaryButton";
+import DateSelectInput from "@/components/form/DateSelectInput";
+import Input from "@/components/form/Input";
+import PrimaryButton from "@/components/form/PrimaryButton";
 import ReminderInput from "@/components/ReminderInput";
 import { Task } from "@/db/schema";
 import { dateToYMD, getFormattedTimeString } from "@/lib/date";

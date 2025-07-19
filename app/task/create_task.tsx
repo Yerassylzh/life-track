@@ -1,6 +1,6 @@
 import AppBackground from "@/components/AppBackground";
-import BackHeader from "@/components/BackHeader";
-import InterText from "@/components/InterText";
+import BackHeader from "@/components/ui/BackHeader";
+import InterText from "@/components/ui/InterText";
 import { useModalMessage } from "@/context/ModalMessageContext";
 import TaskForm, { TaskFormData } from "@/features/tasks/components/TaskForm";
 import { createTask } from "@/features/tasks/lib/create";

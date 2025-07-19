@@ -1,7 +1,6 @@
 import AppBackground from "@/components/AppBackground";
-import BackHeader from "@/components/BackHeader";
-import InterText from "@/components/InterText";
-import { useModalMessage } from "@/context/ModalMessageContext";
+import BackHeader from "@/components/ui/BackHeader";
+import InterText from "@/components/ui/InterText";
 import TaskForm, { TaskFormData } from "@/features/tasks/components/TaskForm";
 import { updateTask } from "@/features/tasks/lib/update";
 import {
@@ -13,6 +12,7 @@ import { router, useLocalSearchParams } from "expo-router";
 import React, { useCallback, useMemo } from "react";
 import { View } from "react-native";
 
+import { useModalMessage } from "@/context/ModalMessageContext";
 import { useTasks } from "@/features/tasks/context/TasksContext";
 import { YMDToDate } from "@/lib/date";
 

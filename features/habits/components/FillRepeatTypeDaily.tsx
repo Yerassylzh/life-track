@@ -1,4 +1,4 @@
-import InterText from "@/components/InterText";
+import InterText from "@/components/ui/InterText";
 import { usePreferredColorTheme } from "@/context/PrefferedColorTheme";
 import { ColorPalette, Colors } from "@/lib/colors";
 import { Dimensions, Pressable, Text, Vibration, View } from "react-native";

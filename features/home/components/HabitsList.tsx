@@ -1,9 +1,13 @@
+import { HabitWithCompletions } from "@/db/types";
 import { useHabits } from "@/features/habits/context/HabitsContext";
 import useHabitSorter from "@/features/habits/hooks/useHabitSorter";
 import { dateToYMD, YMDToDate } from "@/lib/date";
-import React, { useMemo } from "react";
+import { FlashList } from "@shopify/flash-list";
+import React, { useCallback, useMemo } from "react";
+import { Dimensions } from "react-native";
 import { useDate } from "../context/SelectedDateContext";
 import HabitBox from "./HabitBox";
+import NoActivities from "./NoActivities";
 
 type DisplayType =
   | { displayCompleted: boolean }
@@ -12,7 +16,10 @@ type DisplayType =
 
 export type HabitsListProps = {
   hasLabel?: boolean;
+  allowToDisplayNoHabits?: boolean;
 } & DisplayType;
+
+const screenDimensions = Dimensions.get("window");
 
 export default function HabitsList(props: HabitsListProps) {
   const { habits, habitsCompletionsManager } = useHabits();
@@ -53,16 +60,38 @@ export default function HabitsList(props: HabitsListProps) {
     return filteredHabits.sort(sortFn);
   }, [habits, sortFn, date, props, habitsCompletionsManager]);
 
-  return (
-    <>
-      {habitsToDisplay.map((habit, index) => (
+  const renderItem = useCallback(
+    ({ item }: { item: HabitWithCompletions }) => {
+      return (
         <HabitBox
-          key={habit.id}
+          key={item.id}
           hasBottomBorder={true}
-          habit={habit}
+          habit={item}
           date={date}
         />
-      ))}
-    </>
+      );
+    },
+    [date]
+  );
+
+  if (habitsToDisplay.length === 0 && props.allowToDisplayNoHabits) {
+    return <NoActivities includeHabits={true} includeTasks={false} />;
+  }
+
+  return (
+    <FlashList
+      bounces={true}
+      data={habitsToDisplay}
+      renderItem={renderItem}
+      overScrollMode="always"
+      showsVerticalScrollIndicator={false}
+      contentContainerStyle={{ paddingBottom: 200, paddingHorizontal: 15 }}
+      keyExtractor={(item) => item.id}
+      estimatedItemSize={65}
+      estimatedListSize={{
+        width: screenDimensions.width,
+        height: Math.min(screenDimensions.height, 65 * habitsToDisplay.length),
+      }}
+    />
   );
 }

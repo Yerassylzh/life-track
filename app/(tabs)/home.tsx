@@ -7,7 +7,7 @@ import {
   DateProvider,
   useDate,
 } from "@/features/home/context/SelectedDateContext";
-import React from "react";
+import React, { useEffect } from "react";
 
 export default function Wrapper() {
   return (
@@ -22,8 +22,12 @@ export default function Wrapper() {
 function Home() {
   const { setSelectedDate } = useDate();
 
+  useEffect(() => {
+    console.log("Home Re-render");
+  });
+
   return (
-    <AppBackground className="gap-2">
+    <AppBackground className="">
       <Header />
       <DatePicker onDateSelected={setSelectedDate} />
       <TasksAndHabits />

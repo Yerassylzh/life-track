@@ -1,7 +1,7 @@
 import AppBackground from "@/components/AppBackground";
 import AppLoading from "@/components/AppLoading";
-import BackHeader from "@/components/BackHeader";
-import InterText from "@/components/InterText";
+import BackHeader from "@/components/ui/BackHeader";
+import InterText from "@/components/ui/InterText";
 import { useModalMessage } from "@/context/ModalMessageContext";
 import HabitForm, {
   HabitFormData,
