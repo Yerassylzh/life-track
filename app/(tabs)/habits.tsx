@@ -1,24 +1,48 @@
-import Add from "@/components/Add";
 import AppBackground from "@/components/AppBackground";
-import InterText from "@/components/InterText";
-import ChooseHabitTypeToCreate from "@/features/habits/components/ChooseHabitTypeToCreate";
-import HabitBoxDaily from "@/features/habits/components/HabitBoxDaily";
+import CreateNewHabitButton from "@/features/habits/components/CreateNewHabitButton";
 import HabitReviewPeriodFilter from "@/features/habits/components/HabitReviewPeriodFilter";
+import HabitsListDaily from "@/features/habits/components/HabitsListDaily";
+import HabitsListOverall from "@/features/habits/components/HabitsListOverall";
+import HabitsListWeekly from "@/features/habits/components/HabitsListWeekly";
 import Header from "@/features/habits/components/Header";
-import { useHabits } from "@/features/habits/context/HabitsContext";
-import useHabitSorter from "@/features/habits/hooks/useHabitSorter";
-import { dateToYMD } from "@/lib/date";
-import { BottomSheetModal } from "@gorhom/bottom-sheet";
-import React, { useMemo, useRef, useState } from "react";
-import { ScrollView } from "react-native-gesture-handler";
+import React, { useEffect, useRef, useState } from "react";
+import { Animated, Dimensions, View } from "react-native";
 
-export default function Habits() {
+const { width: screenWidth } = Dimensions.get("window");
+
+function Habits() {
   const [periodFilterIndex, setPeriodFilterIndex] = useState(0);
+  const slideAnim = useRef(new Animated.Value(0)).current;
+  const fadeAnim = useRef(new Animated.Value(1)).current;
 
-  const HabitsListComponent = useMemo(() => {
-    const components = [HabitsListDaily, HabitsListWeekly, HabitsListOverall];
-    return components[periodFilterIndex];
-  }, [periodFilterIndex]);
+  // All components are pre-mounted
+  const components = [
+    { Component: HabitsListDaily, key: "daily" },
+    { Component: HabitsListWeekly, key: "weekly" },
+    { Component: HabitsListOverall, key: "overall" },
+  ];
+
+  useEffect(() => {
+    Animated.parallel([
+      Animated.timing(slideAnim, {
+        toValue: -periodFilterIndex * screenWidth,
+        duration: 300,
+        useNativeDriver: true,
+      }),
+      Animated.sequence([
+        Animated.timing(fadeAnim, {
+          toValue: 0.7,
+          duration: 150,
+          useNativeDriver: true,
+        }),
+        Animated.timing(fadeAnim, {
+          toValue: 1,
+          duration: 150,
+          useNativeDriver: true,
+        }),
+      ]),
+    ]).start();
+  }, [periodFilterIndex, slideAnim, fadeAnim]);
 
   return (
     <AppBackground className="relative">
@@ -27,54 +51,35 @@ export default function Habits() {
         selectedIndex={periodFilterIndex}
         onSelect={setPeriodFilterIndex}
       />
-      {HabitsListComponent && <HabitsListComponent />}
+
+      <View style={{ flex: 1, overflow: "hidden" }}>
+        <Animated.View
+          style={{
+            flexDirection: "row",
+            width: screenWidth * components.length,
+            flex: 1,
+            transform: [{ translateX: slideAnim }],
+            opacity: fadeAnim,
+          }}
+        >
+          {components.map(({ Component, key }, index) => (
+            <View
+              key={key}
+              style={{
+                width: screenWidth,
+                flex: 1,
+                pointerEvents: index === periodFilterIndex ? "auto" : "none",
+              }}
+            >
+              <Component />
+            </View>
+          ))}
+        </Animated.View>
+      </View>
+
       <CreateNewHabitButton />
     </AppBackground>
   );
 }
 
-function CreateNewHabitButton() {
-  const activityTypeChoiceRef = useRef<BottomSheetModal>(null);
-
-  return (
-    <>
-      <Add
-        className="mb-[120px] right-[15px]"
-        onPress={() => activityTypeChoiceRef.current?.present()}
-      />
-      <ChooseHabitTypeToCreate ref={activityTypeChoiceRef} />
-    </>
-  );
-}
-
-function HabitsListDaily() {
-  const { habits } = useHabits();
-  const sortFn = useHabitSorter(dateToYMD(new Date()));
-
-  return (
-    <ScrollView
-      bounces={true}
-      style={{ flex: 1 }}
-      overScrollMode="always"
-      showsVerticalScrollIndicator={false}
-      contentContainerStyle={{ paddingTop: 20, paddingBottom: 200, gap: 10 }}
-      className="relative px-[15px]"
-    >
-      {habits.sort(sortFn).map((habit) => (
-        <HabitBoxDaily
-          key={habit.id}
-          habit={habit}
-          date={dateToYMD(new Date())}
-        />
-      ))}
-    </ScrollView>
-  );
-}
-
-function HabitsListWeekly() {
-  return <InterText>Weekly</InterText>;
-}
-
-function HabitsListOverall() {
-  return <InterText>Overall</InterText>;
-}
+export default React.memo(Habits);

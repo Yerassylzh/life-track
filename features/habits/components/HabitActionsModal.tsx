@@ -39,7 +39,7 @@ export default function HabitActionsModal({ habit, ref, ...rest }: Props) {
               iconName="Pencil"
               onPress={() => {
                 ref?.current?.close();
-                router.push({
+                router.navigate({
                   pathname: `/habit/edit/[id]`,
                   params: { id: habit.id },
                 });
@@ -98,7 +98,7 @@ function HabitActionHeader({ habit }: { habit: HabitWithCompletions }) {
     <View className="flex-row items-center justify-between">
       <View className="gap-1">
         <InterText className="text-xl">{habit.name}</InterText>
-        <ActivityLabel color={Colors.primary} text={dateToYMD(new Date())} />
+        <ActivityLabel color={habit.color} text={dateToYMD(new Date())} />
       </View>
       <View
         className={cn(
@@ -106,7 +106,7 @@ function HabitActionHeader({ habit }: { habit: HabitWithCompletions }) {
           theme === "dark" && "bg-gray-900"
         )}
       >
-        <DynamicIcon color={Colors.primary} size={22} name={habit.iconName} />
+        <DynamicIcon color={habit.color} size={22} name={habit.iconName} />
       </View>
     </View>
   );

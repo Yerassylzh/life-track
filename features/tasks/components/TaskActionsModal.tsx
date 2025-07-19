@@ -39,7 +39,7 @@ export default function TaskActionsModal({ task, ref, ...rest }: Props) {
               iconName="Pencil"
               onPress={() => {
                 ref?.current?.close();
-                router.push({
+                router.navigate({
                   pathname: `/task/edit/[id]`,
                   params: { id: task.id },
                 });

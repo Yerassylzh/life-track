@@ -39,7 +39,7 @@ export default function Tasks() {
       </ScrollView>
       <Add
         className="mb-[120px] right-[15px]"
-        onPress={() => router.push("/task/create_task")}
+        onPress={() => router.navigate("/task/create_task")}
       />
     </AppBackground>
   );

@@ -66,7 +66,7 @@ export default function HabitBoxDaily({ habit, date }: Props) {
           isCompleted={isCompleted}
           doesNotNeedToComplete={doesNotNeedToComplete}
           tickColor={habit.color}
-          bgColorUncompleted={hexToRgba(Colors["gray-100"], 0.5)}
+          bgColorUncompleted={hexToRgba(Colors["gray-100"], 0.4)}
           bgColorCompleted={hexToRgba(habit.color, 0.2)}
         />
       </TouchableOpacity>

@@ -25,6 +25,7 @@
         <category android:name="android.intent.category.DEFAULT"/>
         <category android:name="android.intent.category.BROWSABLE"/>
         <data android:scheme="lifetrack"/>
+        <data android:scheme="exp+life-track"/>
       </intent-filter>
     </activity>
   </application>

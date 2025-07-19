@@ -1,5 +1,5 @@
 import ViewSwitcher from "@/components/ViewSwitcher";
-import React from "react";
+import React, { useEffect } from "react";
 
 type Props = {
   selectedIndex: number;
@@ -10,6 +10,10 @@ export default function HabitReviewPeriodFilter({
   selectedIndex,
   onSelect,
 }: Props) {
+  useEffect(() => {
+    console.log("View switcher rerender");
+  });
+
   return (
     <ViewSwitcher
       views={["Today", "Weekly", "Overall"]}
