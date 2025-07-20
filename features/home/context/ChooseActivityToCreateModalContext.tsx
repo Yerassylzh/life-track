@@ -1,9 +1,27 @@
-import ActivityStepsRenderer, {
+import ActionsFlowRenderer, {
   ActivityStep,
 } from "@/components/ActionsFlowRenderer";
-import ModalBottomSheet, {
-  ModalBottomSheetProps,
-} from "@/components/ModalBottomSheet";
+import ModalBottomSheet from "@/components/ModalBottomSheet";
+import { BottomSheetModal } from "@gorhom/bottom-sheet";
+import React, {
+  createContext,
+  ReactNode,
+  useCallback,
+  useContext,
+  useRef,
+} from "react";
+
+interface ContextType {
+  showModal: () => void;
+}
+
+const ChooseActivityToCreateContext = createContext<ContextType | undefined>(
+  undefined
+);
+
+interface ProviderProps {
+  children: ReactNode;
+}
 
 const flow: ActivityStep[] = [
   {
@@ -51,16 +69,30 @@ const flow: ActivityStep[] = [
   },
 ];
 
-export default function ChooseActivityToCreateButtomSheet({
-  ref,
-  ...rest
-}: ModalBottomSheetProps) {
+export const ChooseActivityToCreateProvider: React.FC<ProviderProps> = ({
+  children,
+}) => {
+  const ref = useRef<BottomSheetModal>(null);
+  const showModal = useCallback(() => {
+    ref.current?.present();
+  }, []);
+
   return (
-    <ModalBottomSheet ref={ref} {...rest}>
-      <ActivityStepsRenderer
-        flow={flow}
-        onRedirect={() => ref?.current?.close({ duration: 100 })}
-      />
-    </ModalBottomSheet>
+    <ChooseActivityToCreateContext.Provider value={{ showModal }}>
+      {children}
+      <ModalBottomSheet ref={ref}>
+        <ActionsFlowRenderer flow={flow} onRedirect={ref.current?.close} />
+      </ModalBottomSheet>
+    </ChooseActivityToCreateContext.Provider>
   );
-}
+};
+
+export const useChooseActivityToCreate = () => {
+  const context = useContext(ChooseActivityToCreateContext);
+  if (context === undefined) {
+    throw new Error(
+      "useChooseActivityToCreate must be used within a ChooseActivityToCreateProvider"
+    );
+  }
+  return context;
+};

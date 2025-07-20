@@ -1,11 +1,11 @@
 import { Task } from "@/db/schema";
+import NoActivities from "@/features/home/components/NoActivities";
 import { addDaystoDate, dateToYMD, YMDToDate } from "@/lib/date";
 import { FlashList } from "@shopify/flash-list";
 import { useCallback, useEffect, useMemo, useRef } from "react";
-import { Dimensions, View } from "react-native";
+import { Dimensions } from "react-native";
 import { useTasks } from "../context/TasksContext";
 import { markTaskAsCompleted, markTaskAsUncompleted } from "../lib/update";
-import NoTasks from "./NoTasks";
 import TaskBox from "./TaskBox";
 
 type TasksDateType = { date: Date } | { showUpcoming: boolean };
@@ -17,7 +17,6 @@ type DisplayType =
 export type TasksProps = {
   hasLabel?: boolean;
   displayBottomBorderForAll?: boolean;
-  allowToDisplayNoTasks?: boolean;
 } & TasksDateType &
   DisplayType;
 
@@ -82,12 +81,8 @@ export default function TasksList(props: TasksProps) {
     listRef.current?.prepareForLayoutAnimationRender();
   }, []);
 
-  if (tasksToDisplay.length === 0 && props.allowToDisplayNoTasks) {
-    return (
-      <View className="flex-1 items-center justify-start pb-40">
-        <NoTasks />
-      </View>
-    );
+  if (tasksToDisplay.length === 0) {
+    return <NoActivities includeTasks />;
   }
 
   return (

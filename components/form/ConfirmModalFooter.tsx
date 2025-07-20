@@ -15,7 +15,7 @@ type ConfirmFooterProps = {
   cancelStyle?: TextStyle;
 };
 
-function ConfirmFooter({
+export default function ConfirmModalFooter({
   onOk,
   okLabel,
   okClassName,
@@ -44,12 +44,11 @@ function ConfirmFooter({
           theme === "dark" && "border-r-gray-800"
         )}
         onPress={() => {
-          console.log("Pressed");
           onCancel();
         }}
       >
         <InterText
-          className={cn("font-semibold text-base", cancelClassName)}
+          className={cn("font-semibold text-sm", cancelClassName)}
           style={cancelStyle}
         >
           {cancelLabel || "CANCEL"}
@@ -61,7 +60,7 @@ function ConfirmFooter({
         onPress={onOk}
       >
         <InterText
-          className={cn("font-semibold text-base text-red-500", okClassName)}
+          className={cn("font-semibold text-sm", okClassName)}
           style={okStyle}
         >
           {okLabel || "OK"}

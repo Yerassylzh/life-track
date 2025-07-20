@@ -1,5 +1,5 @@
 import { usePreferredColorTheme } from "@/context/PrefferedColorTheme";
-import DynamicIcon from "@/features/habits/components/DynamicIcon";
+import DynamicIcon from "@/features/habits/components/ui/DynamicIcon";
 import { Colors } from "@/lib/colors";
 import { cn } from "@/lib/tailwindClasses";
 import { navigate } from "expo-router/build/global-state/routing";

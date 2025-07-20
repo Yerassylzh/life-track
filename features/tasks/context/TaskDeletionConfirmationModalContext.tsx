@@ -3,6 +3,7 @@ import InterText from "@/components/ui/InterText";
 import { Task } from "@/db/schema";
 import Modal from "@/layouts/Modal";
 import { createContext, useCallback, useContext, useState } from "react";
+import { View } from "react-native";
 import { deleteTask } from "../lib/delete";
 
 type ContextProps = {
@@ -42,8 +43,16 @@ export function TaskDeletionConfirmationModalProvider({
       {children}
       {task && (
         <Modal visible={visible} onRequestClose={() => setVisible(false)}>
-          <InterText className="text-base">{`Task '${task.name}' will be permanently deleted. Continue?`}</InterText>
-          <ConfirmModalFooter onOk={onOk} onCancel={onCancel} />
+          <View className="gap-3">
+            <InterText className="text-base">{`Task '${task.name}' will be permanently deleted. Continue?`}</InterText>
+            <ConfirmModalFooter
+              onOk={onOk}
+              onCancel={onCancel}
+              okLabel="DELETE"
+              okClassName="text-red-500 text-sm"
+              cancelClassName="text-sm"
+            />
+          </View>
         </Modal>
       )}
     </Context.Provider>

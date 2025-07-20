@@ -2,13 +2,12 @@ import { useHabits } from "@/features/habits/context/HabitsContext";
 import { useTasks } from "@/features/tasks/context/TasksContext";
 import { dateToYMD, YMDToDate } from "@/lib/date";
 import React, { useMemo, useState } from "react";
-import { FilterType } from "../components/HabitsAndTasksFilter";
 import { useDate } from "./SelectedDateContext";
 
 type ActivitiesContextType = {
   isEmpty: boolean;
-  currentFilter: FilterType;
-  setCurrentFilter: React.Dispatch<React.SetStateAction<FilterType>>;
+  currentFilter: string;
+  setCurrentFilter: React.Dispatch<React.SetStateAction<string>>;
   includeTasks: boolean;
   includeHabits: boolean;
   uncompletedTasksCount: number;
@@ -28,7 +27,7 @@ const ActivitiesContext = React.createContext<
 export const ActivitiesProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [currentFilter, setCurrentFilter] = React.useState<FilterType>("habit");
+  const [currentFilter, setCurrentFilter] = React.useState("Habits");
 
   const [uncompletedTasksCount, setUncompletedTasksCount] = useState(0);
   const [uncompletedHabitsCount, setUncompletedHabitsCount] = useState(0);
@@ -36,10 +35,13 @@ export const ActivitiesProvider: React.FC<{ children: React.ReactNode }> = ({
   const [completedHabitsCount, setCompletedHabitsCount] = useState(0);
 
   const includeHabits = useMemo(
-    () => currentFilter === "habit",
+    () => currentFilter === "Habits",
     [currentFilter]
   );
-  const includeTasks = useMemo(() => currentFilter === "task", [currentFilter]);
+  const includeTasks = useMemo(
+    () => currentFilter === "Tasks",
+    [currentFilter]
+  );
 
   const { selectedDate } = useDate();
   const { habits } = useHabits();

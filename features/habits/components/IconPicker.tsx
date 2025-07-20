@@ -8,7 +8,7 @@ import IconPickerButton from "./IconPickerButton";
 
 export default function IconPicker() {
   const { theme } = usePreferredColorTheme();
-  const { iconPickerSheetRef, iconName } = useHabitForm();
+  const { iconName, openIconPickerSheet } = useHabitForm();
 
   return (
     <View
@@ -18,10 +18,7 @@ export default function IconPicker() {
       )}
     >
       <InterText className="text-lg font-semibold">Icon</InterText>
-      <IconPickerButton
-        iconName={iconName}
-        onPress={() => iconPickerSheetRef.current?.expand()}
-      />
+      <IconPickerButton iconName={iconName} onPress={openIconPickerSheet} />
     </View>
   );
 }

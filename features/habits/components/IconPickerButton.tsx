@@ -4,7 +4,7 @@ import React from "react";
 import { TouchableOpacity, TouchableOpacityProps } from "react-native";
 import { useHabitForm } from "../context/HabitFormContext";
 import { HabitIconNameType } from "../lib/icons";
-import DynamicIcon from "./DynamicIcon";
+import DynamicIcon from "./ui/DynamicIcon";
 
 interface Props extends TouchableOpacityProps {
   iconName: HabitIconNameType;

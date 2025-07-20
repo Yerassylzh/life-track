@@ -3,8 +3,8 @@ import { usePreferredColorTheme } from "@/context/PrefferedColorTheme";
 import { Colors } from "@/lib/colors";
 import React from "react";
 import { View } from "react-native";
-import ChooseRepeatType from "./ChooseRepeatType";
-import FillRepeatTypeDetails from "./FillRepeatTypeDetails";
+import ChooseRepeatType from "./form/ChooseRepeatType";
+import FillRepeatTypeDetails from "./form/FillRepeatTypeDetails";
 
 export default function ChooseHabitRepeat() {
   const { theme } = usePreferredColorTheme();

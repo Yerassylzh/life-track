@@ -1,6 +1,10 @@
 import { ModalMessageProvider } from "@/context/ModalMessageContext";
 import { PreferredColorThemeProvider } from "@/context/PrefferedColorTheme";
 import { expoDb } from "@/db/db";
+import { ChooseHabitTypeToCreateProvider } from "@/features/habits/context/ChooseHabitTypeToCreateContext";
+import { HabitActionsProvider } from "@/features/habits/context/HabitActionsContext";
+import { HabitActionsModalProvider } from "@/features/habits/context/HabitActionsModalContext";
+import { HabitDeletionConfirmationModalProvider } from "@/features/habits/context/HabitDeletionConfirmationModalContext";
 import HabitsProvider from "@/features/habits/context/HabitsContext";
 import { UnitValueInputModalProvider } from "@/features/habits/context/UnitValueInputModalContext";
 import { TaskDeletionConfirmationModalProvider } from "@/features/tasks/context/TaskDeletionConfirmationModalContext";
@@ -39,15 +43,23 @@ export default function RootLayout() {
                     <BottomSheetModalProvider>
                       <UnitValueInputModalProvider>
                         <TaskDeletionConfirmationModalProvider>
-                          <SafeScreenView>
-                            <Stack
-                              screenOptions={{
-                                headerShown: false,
-                                animation: "fade_from_bottom",
-                                animationDuration: 100,
-                              }}
-                            />
-                          </SafeScreenView>
+                          <HabitDeletionConfirmationModalProvider>
+                            <ChooseHabitTypeToCreateProvider>
+                              <HabitActionsModalProvider>
+                                <HabitActionsProvider>
+                                  <SafeScreenView>
+                                    <Stack
+                                      screenOptions={{
+                                        headerShown: false,
+                                        animation: "fade_from_bottom",
+                                        animationDuration: 100,
+                                      }}
+                                    />
+                                  </SafeScreenView>
+                                </HabitActionsProvider>
+                              </HabitActionsModalProvider>
+                            </ChooseHabitTypeToCreateProvider>
+                          </HabitDeletionConfirmationModalProvider>
                         </TaskDeletionConfirmationModalProvider>
                       </UnitValueInputModalProvider>
                     </BottomSheetModalProvider>

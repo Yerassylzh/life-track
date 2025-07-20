@@ -3,7 +3,7 @@ import CompleteButtom from "@/components/ui/CompleteButton";
 import InterText from "@/components/ui/InterText";
 import { usePreferredColorTheme } from "@/context/PrefferedColorTheme";
 import { Task } from "@/db/schema";
-import DynamicIcon from "@/features/habits/components/DynamicIcon";
+import DynamicIcon from "@/features/habits/components/ui/DynamicIcon";
 import { cn } from "@/lib/tailwindClasses";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { useRef } from "react";

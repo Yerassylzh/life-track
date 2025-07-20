@@ -9,7 +9,7 @@ import Animated, {
   useSharedValue,
   withSpring,
 } from "react-native-reanimated";
-import { useHabitForm } from "../context/HabitFormContext";
+import { useHabitForm } from "../../context/HabitFormContext";
 
 const options = ["Daily", "Weekly", "Monthly"];
 

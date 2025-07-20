@@ -24,6 +24,7 @@ export default function InterText({
         className
       )}
       style={[customColor ? { color: customColor } : {}, style]}
+      {...rest}
     >
       {children}
     </Text>

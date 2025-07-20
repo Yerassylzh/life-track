@@ -1,21 +1,22 @@
 import InterText from "@/components/ui/InterText";
 import { Colors } from "@/lib/colors";
-import { dateToYMD, getReadableDate } from "@/lib/date";
+import { getReadableDate } from "@/lib/date";
 import { cn } from "@/lib/tailwindClasses";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import React from "react";
 import { View } from "react-native";
-import { useDate } from "../context/SelectedDateContext";
 
 export default function NoActivities({
   includeHabits,
   includeTasks,
+  date,
+  customDateString,
 }: {
-  includeHabits: boolean;
-  includeTasks: boolean;
+  includeHabits?: boolean;
+  includeTasks?: boolean;
+  date?: Date;
+  customDateString?: string;
 }) {
-  const { selectedDate } = useDate();
-
   const getActivityText = () => {
     if (includeHabits && includeTasks) {
       return "activities";
@@ -24,21 +25,27 @@ export default function NoActivities({
   };
 
   const getDateText = () => {
-    if (dateToYMD(selectedDate) === dateToYMD(new Date())) {
-      return "today";
+    if (customDateString) {
+      return customDateString;
     }
-    return getReadableDate(selectedDate);
+    if (date) {
+      return getReadableDate(date);
+    }
   };
 
   return (
-    <View className="items-center justify-center gap-3 pt-[50%]">
-      <MaterialCommunityIcons name="sleep" size={50} color={Colors.primary} />
-      <InterText className="text-lg font-semibold">
-        No {getActivityText()} for {getDateText()}
-      </InterText>
-      <InterText className={cn("text-gray-500")}>
-        Hit the button at the corner to create one
-      </InterText>
+    <View className="flex-1 items-center justify-center">
+      <View className="items-center justify-center gap-3">
+        <MaterialCommunityIcons name="sleep" size={50} color={Colors.primary} />
+        <InterText className="text-lg font-semibold">
+          No {getActivityText()}{" "}
+          {getDateText() ? "for " + getDateText() : "scheduled"}
+        </InterText>
+        <InterText className={cn("text-gray-500")}>
+          Hit the button at the corner to create one
+        </InterText>
+        <View style={{ height: 65, width: 100 }} />
+      </View>
     </View>
   );
 }

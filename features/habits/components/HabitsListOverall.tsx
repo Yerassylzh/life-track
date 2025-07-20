@@ -1,8 +1,13 @@
-import InterText from "@/components/ui/InterText";
+import NoActivities from "@/features/home/components/NoActivities";
 import React from "react";
+import { useHabits } from "../context/HabitsContext";
 
 function HabitsListOverall() {
-  return <InterText>Overall</InterText>;
+  const { habits } = useHabits();
+
+  if (habits.length === 0) {
+    return <NoActivities includeHabits />;
+  }
 }
 
 export default React.memo(HabitsListOverall);

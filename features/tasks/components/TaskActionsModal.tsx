@@ -5,7 +5,7 @@ import ActivityLabel from "@/components/ui/ActivityLabel";
 import InterText from "@/components/ui/InterText";
 import { usePreferredColorTheme } from "@/context/PrefferedColorTheme";
 import { Task } from "@/db/schema";
-import DynamicIcon from "@/features/habits/components/DynamicIcon";
+import DynamicIcon from "@/features/habits/components/ui/DynamicIcon";
 import { Colors } from "@/lib/colors";
 import { dateToYMD } from "@/lib/date";
 import { cn } from "@/lib/tailwindClasses";

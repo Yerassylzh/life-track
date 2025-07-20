@@ -8,9 +8,8 @@ import { cn } from "@/lib/tailwindClasses";
 import React from "react";
 import { TouchableOpacity, View } from "react-native";
 import Animated, { LinearTransition } from "react-native-reanimated";
-import useHabitActions from "../hooks/useHabitActions";
-import DynamicIcon from "./DynamicIcon";
-import HabitActionsModal from "./HabitActionsModal";
+import { useHabitActions } from "../context/HabitActionsContext";
+import DynamicIcon from "./ui/DynamicIcon";
 
 type Props = {
   habit: HabitWithCompletions;
@@ -24,9 +23,8 @@ export default function HabitBoxDaily({ habit, date }: Props) {
     doesNotNeedToComplete,
     onPress,
     onLongPress,
-    habitActionRef,
     getCompletionUnitValue,
-  } = useHabitActions(habit, date);
+  } = useHabitActions();
 
   return (
     <Animated.View
@@ -35,8 +33,8 @@ export default function HabitBoxDaily({ habit, date }: Props) {
       className={"rounded-xl flex flex-row items-center justify-between"}
     >
       <TouchableOpacity
-        onPress={onPress}
-        onLongPress={onLongPress}
+        onPress={async () => await onPress(habit, date)}
+        onLongPress={() => onLongPress(habit)}
         className={cn(
           "flex flex-row items-center justify-between py-3.5 px-3.5 flex-1"
         )}
@@ -54,21 +52,22 @@ export default function HabitBoxDaily({ habit, date }: Props) {
             <DynamicIcon name={habit.iconName} color={habit.color} />
           </View>
           <InterText>{habit.name}</InterText>
-          {habit.unit !== null && (isCompleted || doesNotNeedToComplete) && (
-            <InterText className="text-base text-gray-500">
-              {getCompletionUnitValue() + " " + habit.unit}
-            </InterText>
-          )}
+          {habit.unit !== null &&
+            (isCompleted(habit, date) ||
+              doesNotNeedToComplete(habit, date)) && (
+              <InterText className="text-base text-gray-500">
+                {getCompletionUnitValue(habit, date) + " " + habit.unit}
+              </InterText>
+            )}
         </View>
         <CompleteButton
-          isCompleted={isCompleted}
-          doesNotNeedToComplete={doesNotNeedToComplete}
+          isCompleted={isCompleted(habit, date)}
+          doesNotNeedToComplete={doesNotNeedToComplete(habit, date)}
           tickColor={habit.color}
           bgColorUncompleted={hexToRgba(Colors["gray-100"], 0.4)}
           bgColorCompleted={hexToRgba(habit.color, 0.2)}
         />
       </TouchableOpacity>
-      <HabitActionsModal habit={habit} ref={habitActionRef} />
     </Animated.View>
   );
 }

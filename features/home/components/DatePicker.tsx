@@ -1,9 +1,8 @@
 import { usePreferredColorTheme } from "@/context/PrefferedColorTheme";
 import { Colors } from "@/lib/colors";
 import { cn } from "@/lib/tailwindClasses";
-import { FlashList } from "@shopify/flash-list";
 import moment, { Moment } from "moment"; // Import Moment type
-import React, { useCallback, useMemo, useRef, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { Dimensions, Text, TouchableWithoutFeedback, View } from "react-native";
 
 const { width } = Dimensions.get("window");
@@ -17,7 +16,6 @@ interface DatePickerProps {
 
 const DatePicker: React.FC<DatePickerProps> = ({ onDateSelected }) => {
   const [selectedDate, setSelectedDate] = useState<Moment>(() => moment());
-  const ref = useRef<FlashList<Moment>>(null);
   const { theme } = usePreferredColorTheme();
 
   const dates = useMemo(() => {
@@ -50,7 +48,6 @@ const DatePicker: React.FC<DatePickerProps> = ({ onDateSelected }) => {
 
   interface RenderItemProps {
     item: Moment;
-    index: number;
   }
 
   const renderItem = useCallback(
@@ -58,7 +55,10 @@ const DatePicker: React.FC<DatePickerProps> = ({ onDateSelected }) => {
       const isSelected: boolean = item.isSame(selectedDate, "day");
 
       return (
-        <TouchableWithoutFeedback onPress={() => handleDatePress(item)}>
+        <TouchableWithoutFeedback
+          key={item.toDate().getTime()}
+          onPress={() => handleDatePress(item)}
+        >
           <View
             className={cn(
               "items-center justify-center py-1 rounded-xl",
@@ -105,18 +105,10 @@ const DatePicker: React.FC<DatePickerProps> = ({ onDateSelected }) => {
   );
 
   return (
-    <View className="h-24 justify-center py-2">
-      <FlashList
-        ref={ref}
-        data={dates}
-        renderItem={renderItem}
-        estimatedItemSize={ITEM_WIDTH}
-        estimatedListSize={{ width: width, height: ITEM_WIDTH }}
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        extraData={[selectedDate, theme]}
-        ItemSeparatorComponent={() => <View style={{ width: GAP }} />}
-      />
+    <View className="justify-center pt-3 pb-6 flex-row" style={{ gap: GAP }}>
+      {dates.map((date) => {
+        return renderItem({ item: date });
+      })}
     </View>
   );
 };

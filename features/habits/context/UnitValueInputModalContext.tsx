@@ -10,7 +10,7 @@ import { dateToYMD } from "@/lib/date";
 import { cn } from "@/lib/tailwindClasses";
 import { createContext, useCallback, useContext, useState } from "react";
 import { View } from "react-native";
-import DynamicIcon from "../components/DynamicIcon";
+import DynamicIcon from "../components/ui/DynamicIcon";
 import { markHabitAsCompleted } from "../lib/update";
 
 type ContextProps = {
@@ -67,32 +67,39 @@ export function UnitValueInputModalProvider({
       {children}
       {habit && (
         <Modal visible={visible} onRequestClose={() => setVisible(false)}>
-          <View className="flex-row items-center justify-between">
-            <View className="gap-1">
-              <InterText className="text-xl">{habit.name}</InterText>
-              <ActivityLabel color={habit.color} text={dateToYMD(new Date())} />
-            </View>
-            <View
-              className={cn(
-                "w-[40px] h-[40px] bg-gray-100 rounded-xl items-center justify-center",
-                theme === "dark" && "bg-gray-900"
-              )}
-            >
-              <DynamicIcon
-                color={habit.color}
-                size={22}
-                name={habit.iconName}
+          <View className="gap-2">
+            <View className="gap-3">
+              <View className="flex-row items-center justify-between">
+                <View className="gap-1">
+                  <InterText className="text-xl">{habit.name}</InterText>
+                  <ActivityLabel
+                    color={habit.color}
+                    text={dateToYMD(new Date())}
+                  />
+                </View>
+                <View
+                  className={cn(
+                    "w-[40px] h-[40px] bg-gray-100 rounded-xl items-center justify-center",
+                    theme === "dark" && "bg-gray-900"
+                  )}
+                >
+                  <DynamicIcon
+                    color={habit.color}
+                    size={22}
+                    name={habit.iconName}
+                  />
+                </View>
+              </View>
+              <Input
+                placeholder="Enter value"
+                onChangeText={setUnitValue}
+                value={unitValue}
+                error={unitValueError}
+                bgColor={theme === "dark" ? Colors["gray-800"] : undefined}
               />
             </View>
-            <Input
-              placeholder="Enter value"
-              onChangeText={setUnitValue}
-              value={unitValue}
-              error={unitValueError}
-              bgColor={theme === "dark" ? Colors["gray-800"] : undefined}
-            />
+            <ConfirmModalFooter onOk={onOk} onCancel={onCancel} />
           </View>
-          <ConfirmModalFooter onOk={onOk} onCancel={onCancel} />
         </Modal>
       )}
     </Context.Provider>

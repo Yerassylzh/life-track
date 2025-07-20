@@ -24,11 +24,12 @@ export default function Modal({ children, visible, onRequestClose }: Props) {
       >
         <View className="flex-1 flex items-center justify-center">
           <View
-            className={cn("bg-white", theme === "dark" && "bg-black")}
+            className={cn(
+              "bg-white rounded-xl p-4 pb-0",
+              theme === "dark" && "bg-black"
+            )}
             style={{
               width: width * 0.8,
-              borderRadius: 10,
-              padding: 15,
             }}
           >
             {children}

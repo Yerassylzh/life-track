@@ -1,6 +1,10 @@
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
-import React, { useRef, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import { HabitIconNameType } from "../lib/icons";
+import {
+  ColorPickerBottomSheet,
+  IconPickerBottomSheet,
+} from "./HabitFormContext.components";
 
 type HabitFormContextType = {
   title: string;
@@ -19,14 +23,14 @@ type HabitFormContextType = {
   setWeeklyFreq: React.Dispatch<React.SetStateAction<number>>;
   monthlyDays: number[];
   setMonthlyDays: React.Dispatch<React.SetStateAction<number[]>>;
-  colorPickerSheetRef: React.RefObject<BottomSheetModal | null>;
   reminder: string | null;
   setReminder: React.Dispatch<React.SetStateAction<string | null>>;
   titleError: string | undefined;
   setTitleError: React.Dispatch<React.SetStateAction<string | undefined>>;
   iconName: HabitIconNameType;
   setIconName: React.Dispatch<React.SetStateAction<HabitIconNameType>>;
-  iconPickerSheetRef: React.RefObject<BottomSheetModal | null>;
+  openIconPickerSheet: () => void;
+  openColorPickerSheet: () => void;
   unit: string;
   setUnit: React.Dispatch<React.SetStateAction<string>>;
   unitError: string | undefined;
@@ -54,15 +58,21 @@ export const HabitFormProvider: React.FC<{ children: React.ReactNode }> = ({
   ]);
   const [weeklyFreq, setWeeklyFreq] = React.useState<number>(3);
   const [monthlyDays, setMonthlyDays] = React.useState<number[]>([1]);
-  const colorPickerSheetRef = useRef<BottomSheetModal>(null);
 
   const [reminder, setReminder] = React.useState<string | null>("08:00");
 
   const [iconName, setIconName] = React.useState<HabitIconNameType>("Album");
-  const iconPickerSheetRef = useRef<BottomSheetModal>(null);
 
   const [unit, setUnit] = useState<string>("");
   const [unitError, setUnitError] = useState<string | undefined>("");
+
+  const openIconPickerSheet = useCallback(() => {
+    iconPickerSheetRef.current?.present();
+  }, []);
+
+  const openColorPickerSheet = useCallback(() => {
+    colorPickerSheetRef.current?.present();
+  }, []);
 
   const data = {
     title,
@@ -79,23 +89,28 @@ export const HabitFormProvider: React.FC<{ children: React.ReactNode }> = ({
     setWeeklyFreq,
     monthlyDays,
     setMonthlyDays,
-    colorPickerSheetRef,
     reminder,
     setReminder,
     titleError,
     setTitleError,
     iconName,
     setIconName,
-    iconPickerSheetRef,
     unit,
     setUnit,
     unitError,
     setUnitError,
+    openIconPickerSheet,
+    openColorPickerSheet,
   };
+
+  const colorPickerSheetRef = useRef<BottomSheetModal>(null);
+  const iconPickerSheetRef = useRef<BottomSheetModal>(null);
 
   return (
     <HabitFormContext.Provider value={data}>
       {children}
+      <ColorPickerBottomSheet ref={colorPickerSheetRef} />
+      <IconPickerBottomSheet ref={iconPickerSheetRef} />
     </HabitFormContext.Provider>
   );
 };

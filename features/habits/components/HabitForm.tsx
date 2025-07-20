@@ -10,11 +10,9 @@ import { ScrollView, View } from "react-native";
 import { HabitFormProvider, useHabitForm } from "../context/HabitFormContext";
 import { HabitIconNameType } from "../lib/icons";
 import { getNotificationTimeInfo } from "../lib/notifications";
-import ColorPicker from "./ColorPicker";
-import ColorPickerBottomSheet from "./ColorPickerBottomSheet";
+import ColorPicker from "./form/ColorPicker";
 import HabitRepeat from "./HabitRepeat";
 import IconPicker from "./IconPicker";
-import IconPickerBottomSheet from "./IconPickerBottomSheet";
 
 export type HabitFormData = {
   title: string;
@@ -181,8 +179,6 @@ function HabitForm({ habitToEdit, onSubmit, type }: HabitFormProps) {
         className="self-center absolute bottom-4 w-[90%]"
         onPress={handlePress}
       />
-      <ColorPickerBottomSheet />
-      <IconPickerBottomSheet />
     </>
   );
 }

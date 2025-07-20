@@ -4,12 +4,12 @@ import { ColorPalette } from "@/lib/colors";
 import { cn } from "@/lib/tailwindClasses";
 import React from "react";
 import { View } from "react-native";
-import { useHabitForm } from "../context/HabitFormContext";
+import { useHabitForm } from "../../context/HabitFormContext";
 import ColorButton from "./ColorButton";
 
 export default function ColorPicker() {
   const { theme } = usePreferredColorTheme();
-  const { colorPickerSheetRef, colorIndex } = useHabitForm();
+  const { colorIndex, openColorPickerSheet } = useHabitForm();
 
   return (
     <View
@@ -21,7 +21,7 @@ export default function ColorPicker() {
       <InterText className="text-lg font-semibold">Color</InterText>
       <ColorButton
         backgroundColor={ColorPalette[colorIndex]}
-        onPress={() => colorPickerSheetRef.current?.expand()}
+        onPress={openColorPickerSheet}
       />
     </View>
   );

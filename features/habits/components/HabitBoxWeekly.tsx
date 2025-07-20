@@ -6,12 +6,10 @@ import { Colors } from "@/lib/colors";
 import { addDaystoDate, dateToYMD, getMondayBasedWeekday } from "@/lib/date";
 import { hexToRgba } from "@/lib/hex";
 import { cn } from "@/lib/tailwindClasses";
-import React, { useCallback, useMemo } from "react";
+import React, { useMemo } from "react";
 import { Pressable, TouchableOpacity, Vibration, View } from "react-native";
-import { useHabits } from "../context/HabitsContext";
-import useHabitActions from "../hooks/useHabitActions";
-import DynamicIcon from "./DynamicIcon";
-import HabitActionsModal from "./HabitActionsModal";
+import { useHabitActions } from "../context/HabitActionsContext";
+import DynamicIcon from "./ui/DynamicIcon";
 
 type Props = {
   habit: HabitWithCompletions;
@@ -35,7 +33,6 @@ const CURRENT_WEEK_DATES = getCurrentWeekDates();
 
 export default function HabitBoxWeekly({ habit }: Props) {
   const { theme } = usePreferredColorTheme();
-  const { habitsCompletionsManager } = useHabits();
 
   const dayLabels = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
@@ -62,44 +59,20 @@ export default function HabitBoxWeekly({ habit }: Props) {
     return "";
   }, [habit]);
 
-  // Get completion status for each day
-  const getCompletionStatus = useCallback(
-    (date: Date) => {
-      const dateStr = dateToYMD(date);
-      const completionsManager = habitsCompletionsManager.get(habit.id);
-
-      const isCompleted =
-        completionsManager?.isHabitCompletedAt(dateStr) || false;
-      const doesNotNeedToComplete =
-        completionsManager?.isHabitDoesntNeedToCompleteAt(dateStr) || false;
-
-      return { isCompleted, doesNotNeedToComplete };
-    },
-    [habit.id, habitsCompletionsManager]
-  );
-
-  const getUnitValue = useCallback(
-    (date: Date) => {
-      const dateStr = dateToYMD(date);
-      const completion = habit.completions.find(
-        (completion) => dateStr === dateToYMD(completion.completedAt)
-      );
-      return completion?.unitValue || 0;
-    },
-    [habit.completions]
-  );
-
-  const { habitActionRef, onPress, onLongPress } = useHabitActions(
-    habit,
-    dateToYMD(new Date())
-  );
+  const {
+    onPress,
+    onLongPress,
+    isCompleted,
+    doesNotNeedToComplete,
+    getCompletionUnitValue,
+  } = useHabitActions();
 
   return (
     <TouchableOpacity
       style={{ backgroundColor: hexToRgba(habit.color, 0.2) }}
       className="rounded-xl p-4"
-      onLongPress={onLongPress}
-      onPress={onPress}
+      onLongPress={() => onLongPress(habit)}
+      onPress={async () => await onPress(habit, dateToYMD(new Date()))}
     >
       {/* Header */}
       <View className="flex flex-row items-center justify-between mb-4">
@@ -122,9 +95,7 @@ export default function HabitBoxWeekly({ habit }: Props) {
 
       <View className="flex flex-row justify-between">
         {CURRENT_WEEK_DATES.map((date, index) => {
-          const { isCompleted, doesNotNeedToComplete } =
-            getCompletionStatus(date);
-          const unitValue = getUnitValue(date);
+          const unitValue = getCompletionUnitValue(habit, dateToYMD(date));
           const dateStr = dateToYMD(date);
 
           return (
@@ -133,14 +104,16 @@ export default function HabitBoxWeekly({ habit }: Props) {
               date={date}
               dayLabel={dayLabels[index]}
               habit={habit}
-              isCompleted={isCompleted}
-              doesNotNeedToComplete={doesNotNeedToComplete}
+              isCompleted={isCompleted(habit, dateToYMD(date))}
+              doesNotNeedToComplete={doesNotNeedToComplete(
+                habit,
+                dateToYMD(date)
+              )}
               unitValue={unitValue}
             />
           );
         })}
       </View>
-      <HabitActionsModal habit={habit} ref={habitActionRef} />
     </TouchableOpacity>
   );
 }
@@ -163,10 +136,7 @@ function DayItem({
   unitValue,
 }: DayItemProps) {
   const dateStr = dateToYMD(date);
-  const { onPress, onLongPress, habitActionRef } = useHabitActions(
-    habit,
-    dateStr
-  );
+  const { onPress, onLongPress } = useHabitActions();
 
   const isToday = dateToYMD(new Date()) === dateStr;
 
@@ -182,12 +152,12 @@ function DayItem({
         onPress={() => {
           if (isToday) {
             Vibration.vibrate(30);
-            onPress();
+            onPress(habit, dateToYMD(date));
           }
         }}
         onLongPress={() => {
           if (isToday) {
-            onLongPress();
+            onLongPress(habit);
           }
         }}
         className="flex flex-col items-center"
@@ -226,7 +196,6 @@ function DayItem({
           </View>
         )}
       </Pressable>
-      <HabitActionsModal habit={habit} ref={habitActionRef} />
     </View>
   );
 }

@@ -4,7 +4,7 @@ import { hexToRgba } from "@/lib/hex";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import React from "react";
 import { TouchableOpacity, Vibration, View } from "react-native";
-import { useHabitForm } from "../context/HabitFormContext";
+import { useHabitForm } from "../../context/HabitFormContext";
 
 export default function FillRepeatTypeWeekly() {
   const { weeklyFreq } = useHabitForm();

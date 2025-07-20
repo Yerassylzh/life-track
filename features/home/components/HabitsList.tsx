@@ -75,7 +75,7 @@ export default function HabitsList(props: HabitsListProps) {
   );
 
   if (habitsToDisplay.length === 0 && props.allowToDisplayNoHabits) {
-    return <NoActivities includeHabits={true} includeTasks={false} />;
+    return <NoActivities includeHabits={true} date={selectedDate} />;
   }
 
   return (

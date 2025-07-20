@@ -2,7 +2,7 @@ import InterText from "@/components/ui/InterText";
 import { usePreferredColorTheme } from "@/context/PrefferedColorTheme";
 import { ColorPalette, Colors } from "@/lib/colors";
 import { Dimensions, Pressable, Text, Vibration, View } from "react-native";
-import { useHabitForm } from "../context/HabitFormContext";
+import { useHabitForm } from "../../context/HabitFormContext";
 
 const screenDim = Dimensions.get("window");
 

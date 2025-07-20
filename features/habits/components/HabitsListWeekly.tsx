@@ -1,7 +1,8 @@
 import { HabitWithCompletions } from "@/db/types";
+import NoActivities from "@/features/home/components/NoActivities";
 import { FlashList } from "@shopify/flash-list";
-import React, { useCallback, useState } from "react";
-import { ActivityIndicator, View } from "react-native";
+import React, { useCallback } from "react";
+import { View } from "react-native";
 import { useHabits } from "../context/HabitsContext";
 import HabitBoxWeekly from "./HabitBoxWeekly";
 
@@ -12,11 +13,12 @@ function HabitsListWeekly() {
     return <HabitBoxWeekly key={item.id} habit={item} />;
   }, []);
 
-  const [loading, setLoading] = useState(true);
+  if (habits.length === 0) {
+    return <NoActivities includeHabits />;
+  }
 
   return (
     <>
-      {loading && <ActivityIndicator size={"large"} />}
       <FlashList
         bounces={true}
         overScrollMode="always"
@@ -26,20 +28,14 @@ function HabitsListWeekly() {
           paddingBottom: 200,
           paddingHorizontal: 15,
         }}
-        ItemSeparatorComponent={useCallback(
-          () => (
-            <View className="w-full h-[10px]" />
-          ),
-          []
-        )}
-        keyExtractor={useCallback((item: HabitWithCompletions) => item.id, [])}
+        ItemSeparatorComponent={() => <View className="w-full h-[10px]" />}
+        keyExtractor={(item: HabitWithCompletions) => item.id}
         data={habits}
         renderItem={renderItem}
         estimatedItemSize={141}
         drawDistance={200}
         removeClippedSubviews={false}
         onLoad={({ elapsedTimeInMs }) => {
-          setLoading(false);
           console.log(elapsedTimeInMs);
         }}
       />

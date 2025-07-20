@@ -2,9 +2,8 @@ import CompleteButton from "@/components/ui/CompleteButton";
 import InterText from "@/components/ui/InterText";
 import { usePreferredColorTheme } from "@/context/PrefferedColorTheme";
 import { HabitWithCompletions } from "@/db/types";
-import DynamicIcon from "@/features/habits/components/DynamicIcon";
-import HabitActionsModal from "@/features/habits/components/HabitActionsModal";
-import useHabitActions from "@/features/habits/hooks/useHabitActions";
+import DynamicIcon from "@/features/habits/components/ui/DynamicIcon";
+import { useHabitActions } from "@/features/habits/context/HabitActionsContext";
 import { cn } from "@/lib/tailwindClasses";
 import React from "react";
 import { TouchableOpacity, View } from "react-native";
@@ -24,15 +23,14 @@ export default function HabitBox({ hasBottomBorder, habit, date }: Props) {
     onLongPress,
     isCompleted,
     doesNotNeedToComplete,
-    habitActionRef,
     getCompletionUnitValue,
-  } = useHabitActions(habit, date);
+  } = useHabitActions();
 
   return (
     <Animated.View layout={LinearTransition}>
       <TouchableOpacity
-        onPress={onPress}
-        onLongPress={onLongPress}
+        onPress={() => onPress(habit, date)}
+        onLongPress={() => onLongPress(habit)}
         className={cn(
           "flex flex-row items-center justify-between py-3.5",
           hasBottomBorder && "border-b",
@@ -53,9 +51,10 @@ export default function HabitBox({ hasBottomBorder, habit, date }: Props) {
             <View className="flex-1 flex-row gap-2">
               <InterText className={cn("text-base")}>{habit.name}</InterText>
               {habit.unit !== null &&
-                (isCompleted || doesNotNeedToComplete) && (
+                (isCompleted(habit, date) ||
+                  doesNotNeedToComplete(habit, date)) && (
                   <InterText className="text-base text-gray-500">
-                    {getCompletionUnitValue() + " " + habit.unit}
+                    {getCompletionUnitValue(habit, date) + " " + habit.unit}
                   </InterText>
                 )}
             </View>
@@ -63,11 +62,10 @@ export default function HabitBox({ hasBottomBorder, habit, date }: Props) {
           </View>
         </View>
         <CompleteButton
-          isCompleted={isCompleted}
-          doesNotNeedToComplete={doesNotNeedToComplete}
+          isCompleted={isCompleted(habit, date)}
+          doesNotNeedToComplete={doesNotNeedToComplete(habit, date)}
         />
       </TouchableOpacity>
-      <HabitActionsModal habit={habit} ref={habitActionRef} />
     </Animated.View>
   );
 }

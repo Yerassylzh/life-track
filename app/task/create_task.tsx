@@ -19,7 +19,6 @@ export default function CreateTask() {
     async (data: TaskFormData) => {
       let reminderIdsStr = null;
       if (data.reminder !== null) {
-        console.log(data);
         const reminderIds = await scheduleSingleNotification(
           data.reminder,
           data.selectedDate,
