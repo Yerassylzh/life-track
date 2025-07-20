@@ -37,14 +37,7 @@ const Habits = () => {
 
 const Tasks = () => {
   const { selectedDate } = useDate();
-  return (
-    <TasksList
-      hasLabel
-      date={selectedDate}
-      displayAllTasks
-      allowToDisplayNoTasks
-    />
-  );
+  return <TasksList hasLabel date={selectedDate} displayAllTasks />;
 };
 
 function Home() {

@@ -33,7 +33,7 @@ export default function HabitBoxDaily({ habit, date }: Props) {
       className={"rounded-xl flex flex-row items-center justify-between"}
     >
       <TouchableOpacity
-        onPress={async () => await onPress(habit, date)}
+        onPress={() => onPress(habit, date)}
         onLongPress={() => onLongPress(habit)}
         className={cn(
           "flex flex-row items-center justify-between py-3.5 px-3.5 flex-1"

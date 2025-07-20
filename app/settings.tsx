@@ -1,6 +1,7 @@
+import AppLoading from "@/components/AppLoading";
 import { useModalMessage } from "@/context/ModalMessageContext";
 import React, { useEffect } from "react";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 
 export default function Settings() {
   const { showMessage } = useModalMessage();
@@ -10,8 +11,8 @@ export default function Settings() {
   }, [showMessage]);
 
   return (
-    <View>
-      <Text>settings</Text>
+    <View className="flex-1">
+      <AppLoading />
     </View>
   );
 }

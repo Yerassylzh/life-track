@@ -7,18 +7,23 @@ import Header from "@/features/habits/components/Header";
 import CreateNewHabitButton from "@/features/habits/components/ui/CreateNewHabitButton";
 import React, { useState } from "react";
 
+const viewsConfig = {
+  Today: () => Promise.resolve({ default: HabitsListDaily }),
+  Weekly: () => Promise.resolve({ default: HabitsListWeekly }),
+  Overall: () => Promise.resolve({ default: HabitsListOverall }),
+};
+
 function Habits() {
-  const [periodFilterIndex, setPeriodFilterIndex] = useState(0);
+  const [currentView, setCurrentView] = useState("Today");
 
   return (
     <AppBackground className="relative">
       <Header />
       <ViewSwitcher
-        views={["Today", "Weekly", "Overall"]}
-        selectedIndex={periodFilterIndex}
-        onSelect={setPeriodFilterIndex}
+        onSelect={setCurrentView}
+        viewsConfig={viewsConfig}
+        activeView={currentView}
         elementWidth={80}
-        components={[HabitsListDaily, HabitsListWeekly, HabitsListOverall]}
       />
       <CreateNewHabitButton />
     </AppBackground>

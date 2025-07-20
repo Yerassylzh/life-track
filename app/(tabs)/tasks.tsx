@@ -6,7 +6,10 @@ import TasksList from "@/features/tasks/components/TasksList";
 import { router } from "expo-router";
 import React, { useState } from "react";
 
-const views = ["Today", "Later"];
+const viewsConfig = {
+  Today: () => Promise.resolve({ default: TasksListToday }),
+  Later: () => Promise.resolve({ default: TasksListUpcoming }),
+};
 
 const TasksListToday = () => {
   return <TasksList hasLabel={false} displayAllTasks date={new Date()} />;
@@ -23,13 +26,12 @@ export default function Tasks() {
     <AppBackground className="relative">
       <Header />
       <ViewSwitcher
-        views={views}
-        selectedIndex={currentView === "Today" ? 0 : 1}
-        onSelect={(index: number) => {
-          setCurrentView(views[index] as typeof currentView);
-        }}
+        viewsConfig={viewsConfig}
+        activeView={currentView}
+        onSelect={(viewKey: string) =>
+          setCurrentView(viewKey as typeof currentView)
+        }
         elementWidth={80}
-        components={[TasksListToday, TasksListUpcoming]}
       />
       <Add
         className="mb-[100px] right-[15px]"

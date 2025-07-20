@@ -6,6 +6,7 @@ import { Colors } from "@/lib/colors";
 import { addDaystoDate, dateToYMD, getMondayBasedWeekday } from "@/lib/date";
 import { hexToRgba } from "@/lib/hex";
 import { cn } from "@/lib/tailwindClasses";
+import { useMappingHelper } from "@shopify/flash-list";
 import React, { useMemo } from "react";
 import { Pressable, TouchableOpacity, Vibration, View } from "react-native";
 import { useHabitActions } from "../context/HabitActionsContext";
@@ -67,6 +68,8 @@ export default function HabitBoxWeekly({ habit }: Props) {
     getCompletionUnitValue,
   } = useHabitActions();
 
+  const { getMappingKey } = useMappingHelper();
+
   return (
     <TouchableOpacity
       style={{ backgroundColor: hexToRgba(habit.color, 0.2) }}
@@ -100,7 +103,7 @@ export default function HabitBoxWeekly({ habit }: Props) {
 
           return (
             <DayItem
-              key={dateStr}
+              key={getMappingKey(dateStr, index)}
               date={date}
               dayLabel={dayLabels[index]}
               habit={habit}

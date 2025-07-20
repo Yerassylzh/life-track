@@ -81,7 +81,13 @@ export const ChooseActivityToCreateProvider: React.FC<ProviderProps> = ({
     <ChooseActivityToCreateContext.Provider value={{ showModal }}>
       {children}
       <ModalBottomSheet ref={ref}>
-        <ActionsFlowRenderer flow={flow} onRedirect={ref.current?.close} />
+        <ActionsFlowRenderer
+          flow={flow}
+          onRedirect={() => {
+            console.log("Closed");
+            ref.current?.dismiss();
+          }}
+        />
       </ModalBottomSheet>
     </ChooseActivityToCreateContext.Provider>
   );

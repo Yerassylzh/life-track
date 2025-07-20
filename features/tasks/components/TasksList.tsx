@@ -2,7 +2,7 @@ import { Task } from "@/db/schema";
 import NoActivities from "@/features/home/components/NoActivities";
 import { addDaystoDate, dateToYMD, YMDToDate } from "@/lib/date";
 import { FlashList } from "@shopify/flash-list";
-import { useCallback, useEffect, useMemo, useRef } from "react";
+import { useCallback, useMemo } from "react";
 import { Dimensions } from "react-native";
 import { useTasks } from "../context/TasksContext";
 import { markTaskAsCompleted, markTaskAsUncompleted } from "../lib/update";
@@ -55,7 +55,6 @@ export default function TasksList(props: TasksProps) {
     ({ item }: { item: Task }) => {
       return (
         <TaskBox
-          key={item.id}
           task={item}
           hasLabel={props.hasLabel}
           hasBottomBorder
@@ -74,12 +73,6 @@ export default function TasksList(props: TasksProps) {
     },
     [props]
   );
-
-  const listRef = useRef<FlashList<any>>(null);
-
-  useEffect(() => {
-    listRef.current?.prepareForLayoutAnimationRender();
-  }, []);
 
   if (tasksToDisplay.length === 0) {
     return <NoActivities includeTasks />;

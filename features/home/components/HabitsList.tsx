@@ -62,14 +62,7 @@ export default function HabitsList(props: HabitsListProps) {
 
   const renderItem = useCallback(
     ({ item }: { item: HabitWithCompletions }) => {
-      return (
-        <HabitBox
-          key={item.id}
-          hasBottomBorder={true}
-          habit={item}
-          date={date}
-        />
-      );
+      return <HabitBox hasBottomBorder={true} habit={item} date={date} />;
     },
     [date]
   );

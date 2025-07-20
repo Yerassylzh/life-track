@@ -34,7 +34,10 @@ export default function TaskBox({
   return (
     <Animated.View layout={LinearTransition}>
       <TouchableOpacity
-        onPress={onPress}
+        onPress={() => {
+          Vibration.vibrate(30);
+          onPress();
+        }}
         onLongPress={() => {
           Vibration.vibrate(30);
           taskActionsRef.current?.present();

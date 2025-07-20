@@ -10,7 +10,7 @@ function HabitsListWeekly() {
   const { habits } = useHabits();
 
   const renderItem = useCallback(({ item }: { item: HabitWithCompletions }) => {
-    return <HabitBoxWeekly key={item.id} habit={item} />;
+    return <HabitBoxWeekly habit={item} />;
   }, []);
 
   if (habits.length === 0) {
