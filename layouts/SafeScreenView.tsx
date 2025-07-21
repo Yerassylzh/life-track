@@ -1,4 +1,4 @@
-import { usePreferredColorTheme } from "@/context/PrefferedColorTheme";
+import { useScreenInsetsColor } from "@/context/ScreenInsetsColorContext";
 import { cn } from "@/lib/tailwindClasses";
 import React from "react";
 import { View } from "react-native";
@@ -10,14 +10,15 @@ export default function SafeScreenView({
   children: React.ReactNode;
 }) {
   const insets = useSafeAreaInsets();
-  const { theme } = usePreferredColorTheme();
+  const { insetColor } = useScreenInsetsColor();
 
   return (
     <View
       style={{
         paddingTop: insets.top,
+        backgroundColor: insetColor,
       }}
-      className={cn("flex-1", theme === "light" ? "bg-gray-50" : "bg-gray-950")}
+      className={cn("flex-1")}
     >
       {children}
     </View>

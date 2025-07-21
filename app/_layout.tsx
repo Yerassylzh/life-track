@@ -1,5 +1,7 @@
+import { FullScreenImageModalProvider } from "@/context/FullScreenImageModalContext";
 import { ModalMessageProvider } from "@/context/ModalMessageContext";
 import { PreferredColorThemeProvider } from "@/context/PrefferedColorTheme";
+import { ScreenInsetsColorProvider } from "@/context/ScreenInsetsColorContext";
 import { expoDb } from "@/db/db";
 import { ChooseHabitTypeToCreateProvider } from "@/features/habits/context/ChooseHabitTypeToCreateContext";
 import { HabitActionsProvider } from "@/features/habits/context/HabitActionsContext";
@@ -47,15 +49,19 @@ export default function RootLayout() {
                             <ChooseHabitTypeToCreateProvider>
                               <HabitActionsModalProvider>
                                 <HabitActionsProvider>
-                                  <SafeScreenView>
-                                    <Stack
-                                      screenOptions={{
-                                        headerShown: false,
-                                        animation: "fade_from_bottom",
-                                        animationDuration: 100,
-                                      }}
-                                    />
-                                  </SafeScreenView>
+                                  <ScreenInsetsColorProvider>
+                                    <FullScreenImageModalProvider>
+                                      <SafeScreenView>
+                                        <Stack
+                                          screenOptions={{
+                                            headerShown: false,
+                                            animation: "fade_from_bottom",
+                                            animationDuration: 100,
+                                          }}
+                                        />
+                                      </SafeScreenView>
+                                    </FullScreenImageModalProvider>
+                                  </ScreenInsetsColorProvider>
                                 </HabitActionsProvider>
                               </HabitActionsModalProvider>
                             </ChooseHabitTypeToCreateProvider>

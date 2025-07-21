@@ -64,7 +64,7 @@ const flow: ActivityStep[] = [
       "Write your thoughts, experiences, or reflections. You can also add images",
     iconName: "Album",
     next: {
-      redirectTo: "/journal/create_journal_entry",
+      redirectTo: "/journal/create/create",
     },
   },
 ];

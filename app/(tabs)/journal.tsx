@@ -1,11 +1,11 @@
 import AppBackground from "@/components/AppBackground";
-import InterText from "@/components/ui/InterText";
+import Header from "@/features/journal/components/Header";
 import React from "react";
 
 export default function Journal() {
   return (
     <AppBackground>
-      <InterText>Journal</InterText>
+      <Header />
     </AppBackground>
   );
 }
