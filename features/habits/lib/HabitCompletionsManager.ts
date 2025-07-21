@@ -2,6 +2,7 @@ import { HabitWithCompletions } from "@/db/types";
 import {
   addDaystoDate,
   dateToYMD,
+  getMondayBasedWeekday,
   getSundayBasedWeekday,
   substractDaysFromDate,
   YMDToDate,
@@ -192,6 +193,143 @@ export class HabitCompletionsManager {
       chunks.push(month);
     }
     return chunks;
+  }
+
+  /**
+   * Returns the current streak of successful completions for this habit.
+   */
+  getCurrentStreak() {
+    // Only consider scheduled days (not doesNotNeedToComplete)
+    let streak = 0;
+    let date = new Date();
+    while (true) {
+      const ymd = dateToYMD(date);
+      if (this.isHabitDoesntNeedToCompleteAt(ymd)) {
+        date = substractDaysFromDate(date, 1);
+        continue;
+      }
+      if (this.isHabitCompletedAt(ymd)) {
+        streak++;
+      } else {
+        break;
+      }
+      date = substractDaysFromDate(date, 1);
+    }
+    return streak;
+  }
+
+  /**
+   * Returns the best (longest) streak of successful completions for this habit.
+   */
+  getBestStreak() {
+    // Only consider scheduled days (not doesNotNeedToComplete)
+    let best = 0;
+    let current = 0;
+    let date = new Date(this.habit.createdAt);
+    const today = new Date();
+    while (date <= today) {
+      const ymd = dateToYMD(date);
+      if (this.isHabitDoesntNeedToCompleteAt(ymd)) {
+        date = addDaystoDate(date, 1);
+        continue;
+      }
+      if (this.isHabitCompletedAt(ymd)) {
+        current++;
+        best = Math.max(best, current);
+      } else {
+        current = 0;
+      }
+      date = addDaystoDate(date, 1);
+    }
+    return best;
+  }
+
+  /**
+   * Returns the total amount of completions for numeric habits in the given period.
+   * @param {'week'|'month'|'year'|'all'} period
+   */
+  getCompletionsCount(period: "week" | "month" | "year" | "all" = "all") {
+    if (this.habit.unit == null) return 0;
+    const now = new Date();
+    return this.habit.completions.reduce((sum, c) => {
+      const d = new Date(c.completedAt);
+      if (!this._isInPeriod(d, now, period)) return sum;
+      return sum + (typeof c.unitValue === "number" ? c.unitValue : 0);
+    }, 0);
+  }
+
+  /**
+   * Returns the number of times the habit was completed in the given period.
+   * @param {'week'|'month'|'year'|'all'} period
+   */
+  getTimesCompleted(period: "week" | "month" | "year" | "all" = "all") {
+    const now = new Date();
+    return this.habit.completions.reduce((count, c) => {
+      const d = new Date(c.completedAt);
+      if (!this._isInPeriod(d, now, period)) return count;
+      return count + 1;
+    }, 0);
+  }
+
+  /**
+   * Returns the total number of successful completions (all time).
+   */
+  getTotalSuccess() {
+    return this.habit.completions.length;
+  }
+
+  /**
+   * Returns the total number of failures (all time).
+   */
+  getTotalFailure() {
+    // Count all scheduled days (not doesNotNeedToComplete) that are not completed
+    let failures = 0;
+    let date = new Date(this.habit.createdAt);
+    const today = new Date();
+    while (date <= today) {
+      const ymd = dateToYMD(date);
+      if (this.isHabitDoesntNeedToCompleteAt(ymd)) {
+        date = addDaystoDate(date, 1);
+        continue;
+      }
+      if (!this.isHabitCompletedAt(ymd)) {
+        failures++;
+      }
+      date = addDaystoDate(date, 1);
+    }
+    return failures;
+  }
+
+  /**
+   * Helper: checks if a date is in the given period relative to now.
+   */
+  _isInPeriod(
+    date: Date,
+    now: Date,
+    period: "week" | "month" | "year" | "all"
+  ): boolean {
+    if (period === "all") return true;
+    if (period === "week") {
+      // Make week Monday-based
+      const nowDay = getMondayBasedWeekday(now.getDay());
+      const startOfWeek = new Date(now);
+      startOfWeek.setDate(now.getDate() - nowDay);
+      // startOfWeek is now the Monday of the current week
+      return (
+        dateToYMD(date) >= dateToYMD(startOfWeek) &&
+        dateToYMD(date) <= dateToYMD(now)
+      );
+    }
+    if (period === "month") {
+      return (
+        date.getFullYear() === now.getFullYear() &&
+        date.getMonth() === now.getMonth()
+      );
+    }
+    if (period === "year") {
+      return date.getFullYear() === now.getFullYear();
+    }
+    return false;
   }
 }
 

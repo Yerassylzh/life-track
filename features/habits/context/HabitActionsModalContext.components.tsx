@@ -2,10 +2,10 @@ import ActivityLabel from "@/components/ui/ActivityLabel";
 import InterText from "@/components/ui/InterText";
 import { usePreferredColorTheme } from "@/context/PrefferedColorTheme";
 import { HabitWithCompletions } from "@/db/types";
+import { Colors } from "@/lib/colors";
 import { dateToYMD } from "@/lib/date";
 import { cn } from "@/lib/tailwindClasses";
 import { Pressable, PressableProps, View } from "react-native";
-import { Colors } from "react-native/Libraries/NewAppScreen";
 import DynamicIcon from "../components/ui/DynamicIcon";
 
 type ActivityOptionProps = {
@@ -21,12 +21,17 @@ export function ActivityOption({
   className,
   ...rest
 }: ActivityOptionProps) {
+  const { theme } = usePreferredColorTheme();
+
   return (
     <Pressable className={cn("py-3 px-2 flex-row gap-3", className)} {...rest}>
       <DynamicIcon
         size={20}
         name={iconName}
-        color={customColor || Colors["gray-500"]}
+        color={
+          customColor ||
+          (theme === "dark" ? Colors["gray-300"] : Colors["gray-500"])
+        }
       />
       <InterText customColor={customColor || Colors["gray-500"]}>
         {name}

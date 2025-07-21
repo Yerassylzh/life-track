@@ -46,6 +46,11 @@ export const Colors = {
   "blue-800": "#1e40af",
   "blue-900": "#1e3a8a",
   "blue-950": "#172554",
+  "teal-50": "#E6F7F7",
+  "teal-300": "#67E8F9",
+  "amber-50": "#FEF3C7",
+  "amber-300": "#FACC15",
+  "amber-500": "#F59E0B",
 };
 
 export const ColorPalette = [

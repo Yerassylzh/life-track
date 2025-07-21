@@ -60,6 +60,17 @@ export function HabitActionsModalProvider({
                 }}
               />
               <ActivityOption
+                name="statistics"
+                iconName="BarChart2"
+                onPress={() => {
+                  modalRef.current?.close();
+                  router.navigate({
+                    pathname: `/habit/statistics/[id]`,
+                    params: { id: currentHabit.id },
+                  });
+                }}
+              />
+              <ActivityOption
                 customColor={Colors["red-500"]}
                 name="delete"
                 iconName="Trash2"

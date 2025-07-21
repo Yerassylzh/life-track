@@ -45,7 +45,10 @@ export function IconPickerBottomSheet({
           <Pressable
             key={index}
             className="p-1"
-            onPress={() => setIconName(name)}
+            onPress={() => {
+              setIconName(name);
+              ref.current?.close();
+            }}
           >
             <DynamicIcon
               name={name}
