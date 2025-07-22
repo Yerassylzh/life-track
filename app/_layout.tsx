@@ -49,8 +49,8 @@ export default function RootLayout() {
                             <ChooseHabitTypeToCreateProvider>
                               <HabitActionsModalProvider>
                                 <HabitActionsProvider>
-                                  <ScreenInsetsColorProvider>
-                                    <FullScreenImageModalProvider>
+                                  <FullScreenImageModalProvider>
+                                    <ScreenInsetsColorProvider>
                                       <SafeScreenView>
                                         <Stack
                                           screenOptions={{
@@ -60,8 +60,8 @@ export default function RootLayout() {
                                           }}
                                         />
                                       </SafeScreenView>
-                                    </FullScreenImageModalProvider>
-                                  </ScreenInsetsColorProvider>
+                                    </ScreenInsetsColorProvider>
+                                  </FullScreenImageModalProvider>
                                 </HabitActionsProvider>
                               </HabitActionsModalProvider>
                             </ChooseHabitTypeToCreateProvider>

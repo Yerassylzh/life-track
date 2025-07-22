@@ -9,15 +9,20 @@ import { View } from "react-native";
 export default function NoActivities({
   includeHabits,
   includeTasks,
+  customTitle,
   date,
   customDateString,
 }: {
   includeHabits?: boolean;
   includeTasks?: boolean;
+  customTitle?: string;
   date?: Date;
   customDateString?: string;
 }) {
   const getActivityText = () => {
+    if (customTitle) {
+      return customTitle;
+    }
     if (includeHabits && includeTasks) {
       return "activities";
     }
@@ -38,8 +43,11 @@ export default function NoActivities({
       <View className="items-center justify-center gap-3">
         <MaterialCommunityIcons name="sleep" size={50} color={Colors.primary} />
         <InterText className="text-lg font-semibold">
-          No {getActivityText()}{" "}
-          {getDateText() ? "for " + getDateText() : "scheduled"}
+          {customTitle ||
+            "No " +
+              getActivityText() +
+              " " +
+              (getDateText() ? "for " + getDateText() : "scheduled")}
         </InterText>
         <InterText className={cn("text-gray-500")}>
           Hit the button at the corner to create one

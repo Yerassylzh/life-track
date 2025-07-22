@@ -1,0 +1,28 @@
+after finishing app, make sure to add google admob to app.json:
+[
+        "react-native-google-mobile-ads",
+        {
+          "androidAppId": "ca-app-pub-3528814229848978~4985918508",
+          "android_app_id": "ca-app-pub-3528814229848978~4985918508"
+        }
+      ],
+
+and also in app itself:
+import {
+  BannerAd,
+  BannerAdSize,
+  TestIds,
+} from "react-native-google-mobile-ads";
+
+const adUnitId = __DEV__
+  ? TestIds.ADAPTIVE_BANNER
+  : "ca-app-pub-3528814229848978~4985918508";
+
+
+  const bannerRef = useRef<BannerAd>(null);
+
+ {/* <BannerAd
+        ref={bannerRef}
+        unitId={adUnitId}
+        size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
+      /> */}

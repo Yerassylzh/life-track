@@ -63,7 +63,8 @@ export const habitCompletionRelations = relations(
 export const noteTable = sqliteTable("note", {
   id: text("id").primaryKey().notNull(),
   title: text("title").notNull(),
-  content: text("content").notNull(),
+  plainContent: text("plainContent").notNull(),
+  richContent: text("richContent").notNull(),
   createdAt: integer("createdAt", { mode: "timestamp" }).notNull(),
   editedAt: integer("editedAt", { mode: "timestamp" }).notNull(),
   images: text("images").notNull(), // store as JSON string

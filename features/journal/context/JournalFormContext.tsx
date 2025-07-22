@@ -5,8 +5,10 @@ export type JournalFormContextType = {
   id?: string;
   title: string;
   setTitle: (t: string) => void;
-  content: string;
-  setContent: (c: string) => void;
+  plainContent: string;
+  setPlainContent: (c: string) => void;
+  richContent: string;
+  setRichContent: (c: string) => void;
   images: string[];
   setImages: (imgs: string[]) => void;
   color: string;
@@ -33,7 +35,8 @@ export const JournalFormProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [id] = useState<string | undefined>(undefined);
   const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
+  const [plainContent, setPlainContent] = useState("");
+  const [richContent, setRichContent] = useState("");
   const [images, setImages] = useState<string[]>([]);
   const [color, setColor] = useState(noteColors[0]);
   const [date, setDate] = useState<Date>(new Date());
@@ -44,8 +47,10 @@ export const JournalFormProvider: React.FC<{ children: React.ReactNode }> = ({
         id,
         title,
         setTitle,
-        content,
-        setContent,
+        plainContent,
+        setPlainContent,
+        richContent,
+        setRichContent,
         images,
         setImages,
         color,

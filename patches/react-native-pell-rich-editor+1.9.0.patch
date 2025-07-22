@@ -1,0 +1,54 @@
+diff --git a/node_modules/react-native-pell-rich-editor/index.d.ts b/node_modules/react-native-pell-rich-editor/index.d.ts
+index 870f2ba..ba29af7 100644
+--- a/node_modules/react-native-pell-rich-editor/index.d.ts
++++ b/node_modules/react-native-pell-rich-editor/index.d.ts
+@@ -1,6 +1,6 @@
+-import {WebViewProps} from 'react-native-webview';
+-import {ImageSourcePropType, StyleProp, ViewStyle} from 'react-native';
+ import React from 'react';
++import { ImageSourcePropType, StyleProp, ViewStyle } from 'react-native';
++import { WebViewProps } from 'react-native-webview';
+ 
+ /** The RichTextEditor accepts all props from Webview */
+ export interface RichEditorProps extends WebViewProps {
+diff --git a/node_modules/react-native-pell-rich-editor/src/RichEditor.js b/node_modules/react-native-pell-rich-editor/src/RichEditor.js
+index 14bea22..9586e88 100644
+--- a/node_modules/react-native-pell-rich-editor/src/RichEditor.js
++++ b/node_modules/react-native-pell-rich-editor/src/RichEditor.js
+@@ -1,8 +1,8 @@
+-import React, {Component} from 'react';
+-import {WebView} from 'react-native-webview';
+-import {actions, messages} from './const';
+-import {Keyboard, Platform, StyleSheet, TextInput, View, Linking} from 'react-native';
+-import {createHTML} from './editor';
++import React, { Component } from 'react';
++import { Keyboard, Linking, Platform, StyleSheet, TextInput, View } from 'react-native';
++import { WebView } from 'react-native-webview';
++import { actions, messages } from './const';
++import { createHTML } from './editor';
+ 
+ const PlatformIOS = Platform.OS === 'ios';
+ 
+@@ -267,7 +267,7 @@ export default class RichTextEditor extends Component {
+           ref={that.setRef}
+           onMessage={that.onMessage}
+           originWhitelist={['*']}
+-          dataDetectorTypes={'none'}
++          // dataDetectorTypes={'none'}
+           domStorageEnabled={false}
+           bounces={false}
+           javaScriptEnabled={true}
+diff --git a/node_modules/react-native-pell-rich-editor/src/RichToolbar.js b/node_modules/react-native-pell-rich-editor/src/RichToolbar.js
+index d2d4ac1..9cc2d3e 100644
+--- a/node_modules/react-native-pell-rich-editor/src/RichToolbar.js
++++ b/node_modules/react-native-pell-rich-editor/src/RichToolbar.js
+@@ -1,6 +1,6 @@
+-import React, {Component} from 'react';
+-import {FlatList, Image, StyleSheet, TouchableOpacity, View} from 'react-native';
+-import {actions} from './const';
++import React, { Component } from 'react';
++import { FlatList, Image, StyleSheet, TouchableOpacity, View } from 'react-native';
++import { actions } from './const';
+ 
+ export const defaultActions = [
+   actions.keyboard,
