@@ -1,3 +1,4 @@
+import { ChooseOptionModalProvider } from "@/context/ChooseOptionModalContext";
 import { FullScreenImageModalProvider } from "@/context/FullScreenImageModalContext";
 import { ModalMessageProvider } from "@/context/ModalMessageContext";
 import { PreferredColorThemeProvider } from "@/context/PrefferedColorTheme";
@@ -9,6 +10,7 @@ import { HabitActionsModalProvider } from "@/features/habits/context/HabitAction
 import { HabitDeletionConfirmationModalProvider } from "@/features/habits/context/HabitDeletionConfirmationModalContext";
 import HabitsProvider from "@/features/habits/context/HabitsContext";
 import { UnitValueInputModalProvider } from "@/features/habits/context/UnitValueInputModalContext";
+import { SettingsProvider } from "@/features/settings/context/SettingsContext";
 import { TaskDeletionConfirmationModalProvider } from "@/features/tasks/context/TaskDeletionConfirmationModalContext";
 import TasksProvider from "@/features/tasks/context/TasksContext";
 import "@/global.css";
@@ -31,6 +33,12 @@ export default function RootLayout() {
   //   })();
   // }, []);
 
+  // useEffect(() => {
+  //   console.log("Generating fake data");
+  //   generateFakeData();
+  //   console.log("Fake data generated");
+  // }, []);
+
   useDrizzleStudio(expoDb);
 
   return (
@@ -39,39 +47,43 @@ export default function RootLayout() {
         <FontLayout>
           <ModalMessageProvider>
             <RequireNotificationPermission>
-              <DbMigrator>
-                <HabitsProvider>
-                  <TasksProvider>
-                    <BottomSheetModalProvider>
-                      <UnitValueInputModalProvider>
-                        <TaskDeletionConfirmationModalProvider>
-                          <HabitDeletionConfirmationModalProvider>
-                            <ChooseHabitTypeToCreateProvider>
-                              <HabitActionsModalProvider>
-                                <HabitActionsProvider>
-                                  <FullScreenImageModalProvider>
-                                    <ScreenInsetsColorProvider>
-                                      <SafeScreenView>
-                                        <Stack
-                                          screenOptions={{
-                                            headerShown: false,
-                                            animation: "fade_from_bottom",
-                                            animationDuration: 100,
-                                          }}
-                                        />
-                                      </SafeScreenView>
-                                    </ScreenInsetsColorProvider>
-                                  </FullScreenImageModalProvider>
-                                </HabitActionsProvider>
-                              </HabitActionsModalProvider>
-                            </ChooseHabitTypeToCreateProvider>
-                          </HabitDeletionConfirmationModalProvider>
-                        </TaskDeletionConfirmationModalProvider>
-                      </UnitValueInputModalProvider>
-                    </BottomSheetModalProvider>
-                  </TasksProvider>
-                </HabitsProvider>
-              </DbMigrator>
+              <SettingsProvider>
+                <DbMigrator>
+                  <HabitsProvider>
+                    <TasksProvider>
+                      <BottomSheetModalProvider>
+                        <UnitValueInputModalProvider>
+                          <TaskDeletionConfirmationModalProvider>
+                            <HabitDeletionConfirmationModalProvider>
+                              <ChooseHabitTypeToCreateProvider>
+                                <HabitActionsModalProvider>
+                                  <HabitActionsProvider>
+                                    <FullScreenImageModalProvider>
+                                      <ScreenInsetsColorProvider>
+                                        <ChooseOptionModalProvider>
+                                          <SafeScreenView>
+                                            <Stack
+                                              screenOptions={{
+                                                headerShown: false,
+                                                animation: "fade_from_bottom",
+                                                animationDuration: 100,
+                                              }}
+                                            />
+                                          </SafeScreenView>
+                                        </ChooseOptionModalProvider>
+                                      </ScreenInsetsColorProvider>
+                                    </FullScreenImageModalProvider>
+                                  </HabitActionsProvider>
+                                </HabitActionsModalProvider>
+                              </ChooseHabitTypeToCreateProvider>
+                            </HabitDeletionConfirmationModalProvider>
+                          </TaskDeletionConfirmationModalProvider>
+                        </UnitValueInputModalProvider>
+                      </BottomSheetModalProvider>
+                    </TasksProvider>
+                  </HabitsProvider>
+                </DbMigrator>
+              </SettingsProvider>
             </RequireNotificationPermission>
           </ModalMessageProvider>
         </FontLayout>

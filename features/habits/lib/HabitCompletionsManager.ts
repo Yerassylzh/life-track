@@ -99,6 +99,7 @@ export class HabitCompletionsManager {
 
     for (const weekChunk of chunks) {
       let count = 0;
+      // console.log("\n\n\n");
       for (const weekdayYMD of weekChunk) {
         if (
           this.completionData.has(weekdayYMD) &&

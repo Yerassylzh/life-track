@@ -1,10 +1,11 @@
 import { usePreferredColorTheme } from "@/context/PrefferedColorTheme";
 import { HabitWithCompletions } from "@/db/types";
-import { HabitCompletionsManager } from "@/features/habits/lib/HabitCompletionsManager";
 import { cn } from "@/lib/tailwindClasses";
 import { Feather } from "@expo/vector-icons";
 import React, { useMemo } from "react";
 import { ScrollView, View } from "react-native";
+import { useHabits } from "../../context/HabitsContext";
+import { HabitCompletionsManager } from "../../lib/HabitCompletionsManager";
 import AmountCompleted from "./AmountCompleted";
 import MonthlyTimeline from "./MonthlyTimeline";
 import PillHeader from "./PillHeader";
@@ -19,9 +20,10 @@ const StatisticsView: React.FC<{ habit: HabitWithCompletions }> = ({
   habit,
 }) => {
   const { theme } = usePreferredColorTheme();
+  const { habitsCompletionsManager } = useHabits();
   const manager = useMemo(
-    () => new HabitCompletionsManager(habit, "mon"),
-    [habit]
+    () => habitsCompletionsManager.get(habit.id) as HabitCompletionsManager,
+    [habit.id, habitsCompletionsManager]
   );
   const stats = useMemo(
     () => ({

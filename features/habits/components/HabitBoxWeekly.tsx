@@ -2,8 +2,9 @@ import CompleteButton from "@/components/ui/CompleteButton";
 import InterText from "@/components/ui/InterText";
 import { usePreferredColorTheme } from "@/context/PrefferedColorTheme";
 import { HabitWithCompletions } from "@/db/types";
+import { useSettingsContext } from "@/features/settings/context/SettingsContext";
 import { Colors } from "@/lib/colors";
-import { addDaystoDate, dateToYMD, getMondayBasedWeekday } from "@/lib/date";
+import { addDaystoDate, dateToYMD } from "@/lib/date";
 import { hexToRgba } from "@/lib/hex";
 import { cn } from "@/lib/tailwindClasses";
 import { useMappingHelper } from "@shopify/flash-list";
@@ -16,26 +17,36 @@ type Props = {
   habit: HabitWithCompletions;
 };
 
-// At the top of your file, outside any component
-const getCurrentWeekDates = () => {
-  const today = new Date();
-  const currentDay = getMondayBasedWeekday(today.getDay());
-  const mondayOffset = currentDay === 0 ? -6 : 1 - currentDay;
-  const monday = addDaystoDate(today, mondayOffset);
-
-  const dates = [];
-  for (let i = 0; i < 7; i++) {
-    dates.push(addDaystoDate(monday, i));
-  }
-  return dates;
-};
-
-const CURRENT_WEEK_DATES = getCurrentWeekDates();
-
 export default function HabitBoxWeekly({ habit }: Props) {
   const { theme } = usePreferredColorTheme();
+  const { firstDayOfWeek } = useSettingsContext();
 
-  const dayLabels = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+  const currentWeekDates = useMemo(() => {
+    const startDay = new Date();
+    const checkIsStart = (date: Date) => {
+      if (firstDayOfWeek === "Monday") {
+        return date.getDay() === 1;
+      }
+      return date.getDay() === 0;
+    };
+    while (!checkIsStart(startDay)) {
+      startDay.setDate(startDay.getDate() - 1);
+    }
+    const dates = [];
+
+    for (let i = 0; i < 7; i++) {
+      dates.push(addDaystoDate(startDay, i));
+    }
+    return dates;
+  }, [firstDayOfWeek]);
+
+  const dayLabels = useMemo(() => {
+    const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+    if (firstDayOfWeek === "Monday") {
+      return days;
+    }
+    return [days.pop() as string, ...days];
+  }, [firstDayOfWeek]);
 
   const frequencyText = useMemo(() => {
     if (habit.repeatType === "daily") {
@@ -97,7 +108,7 @@ export default function HabitBoxWeekly({ habit }: Props) {
       </View>
 
       <View className="flex flex-row justify-between">
-        {CURRENT_WEEK_DATES.map((date, index) => {
+        {currentWeekDates.map((date, index) => {
           const unitValue = getCompletionUnitValue(habit, dateToYMD(date));
           const dateStr = dateToYMD(date);
 
@@ -107,11 +118,8 @@ export default function HabitBoxWeekly({ habit }: Props) {
               date={date}
               dayLabel={dayLabels[index]}
               habit={habit}
-              isCompleted={isCompleted(habit, dateToYMD(date))}
-              doesNotNeedToComplete={doesNotNeedToComplete(
-                habit,
-                dateToYMD(date)
-              )}
+              isCompleted={isCompleted(habit, dateStr)}
+              doesNotNeedToComplete={doesNotNeedToComplete(habit, dateStr)}
               unitValue={unitValue}
             />
           );
@@ -182,7 +190,7 @@ function DayItem({
             >
               {isCompleted || doesNotNeedToComplete ? unitValue : "0"}
             </InterText>
-            <InterText className="text-[9px] text-gray-400">
+            <InterText className="text-[7px] text-gray-400">
               {habit.unit}
             </InterText>
           </View>

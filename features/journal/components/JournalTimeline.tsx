@@ -1,5 +1,7 @@
 import InterText from "@/components/ui/InterText";
+import { usePreferredColorTheme } from "@/context/PrefferedColorTheme";
 import { Note } from "@/db/schema";
+import { cn } from "@/lib/tailwindClasses";
 import { FlashList } from "@shopify/flash-list";
 import React, { useMemo } from "react";
 import NoteCard from "./NoteCard";
@@ -61,6 +63,8 @@ const JournalTimeline: React.FC<JournalTimelineProps> = ({
     return arr;
   }, [sections]);
 
+  const { theme } = usePreferredColorTheme();
+
   return (
     <FlashList
       data={flatData}
@@ -68,7 +72,12 @@ const JournalTimeline: React.FC<JournalTimelineProps> = ({
       renderItem={({ item }) => {
         if (item.type === "header") {
           return (
-            <InterText className="mt-6 mb-2 items-center text-lg font-bold text-zinc-900 dark:text-zinc-100 text-center">
+            <InterText
+              className={cn(
+                "mt-6 mb-2 items-center text-lg font-bold text-zinc-900 text-center",
+                theme === "dark" && "text-zinc-100"
+              )}
+            >
               {item.title}
             </InterText>
           );

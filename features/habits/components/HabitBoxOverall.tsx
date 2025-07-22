@@ -2,6 +2,7 @@ import CompleteButton from "@/components/ui/CompleteButton";
 import InterText from "@/components/ui/InterText";
 import { usePreferredColorTheme } from "@/context/PrefferedColorTheme";
 import { HabitWithCompletions } from "@/db/types";
+import { useSettingsContext } from "@/features/settings/context/SettingsContext";
 import { Colors } from "@/lib/colors";
 import { dateToYMD, getMondayBasedWeekday } from "@/lib/date";
 import { hexToRgba } from "@/lib/hex";
@@ -21,13 +22,17 @@ const CNT_IN_ROW = parseInt(
 const CalendarGrid = ({ habit }: { habit: HabitWithCompletions }) => {
   const { isCompleted, doesNotNeedToComplete } = useHabitActions();
   const { theme } = usePreferredColorTheme();
+  const { firstDayOfWeek } = useSettingsContext();
 
   const todayYMD = useMemo(() => dateToYMD(new Date()), []);
 
   const days = useMemo(() => {
     const result: { date: string; isFuture: boolean }[] = [];
     const todayDate = new Date();
-    const dayOfWeek = getMondayBasedWeekday(todayDate.getDay());
+    const dayOfWeek =
+      firstDayOfWeek === "Monday"
+        ? getMondayBasedWeekday(todayDate.getDay())
+        : todayDate.getDay();
 
     const daysInGrid = CNT_IN_ROW * 7;
 
@@ -46,7 +51,7 @@ const CalendarGrid = ({ habit }: { habit: HabitWithCompletions }) => {
       iterDate.setDate(iterDate.getDate() + 1);
     }
     return result;
-  }, [todayYMD]);
+  }, [firstDayOfWeek, todayYMD]);
 
   const { getMappingKey } = useMappingHelper();
 
@@ -63,15 +68,15 @@ const CalendarGrid = ({ habit }: { habit: HabitWithCompletions }) => {
         const beforeCreation = date < dateToYMD(habit.createdAt);
 
         const emptyColor =
-          theme === "dark" ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.05)";
+          theme === "dark" ? "rgba(255,255,255,0.2)" : "rgba(0,0,0,0.2)";
 
         const backgroundColor =
-          isFuture || beforeCreation
+          (isFuture && !notNeeded) || beforeCreation
             ? emptyColor
             : completed
               ? hexToRgba(habit.color, 0.7)
               : notNeeded
-                ? hexToRgba(habit.color, 0.2)
+                ? hexToRgba(habit.color, 0.4)
                 : emptyColor;
 
         return (
@@ -103,7 +108,9 @@ export default function HabitBoxOverall({ habit }: Props) {
 
   return (
     <TouchableOpacity
-      style={{ backgroundColor: theme === "dark" ? "black" : "white" }}
+      style={{
+        backgroundColor: theme === "dark" ? Colors["gray-900"] : "white",
+      }}
       className="rounded-xl p-4"
       onLongPress={() => onLongPress(habit)}
       onPress={async () => await onPress(habit, dateToYMD(new Date()))}

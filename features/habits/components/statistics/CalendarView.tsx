@@ -2,13 +2,20 @@ import InterText from "@/components/ui/InterText";
 import { usePreferredColorTheme } from "@/context/PrefferedColorTheme";
 import { HabitWithCompletions } from "@/db/types";
 import { HabitCompletionsManager } from "@/features/habits/lib/HabitCompletionsManager";
+import { useSettingsContext } from "@/features/settings/context/SettingsContext";
 import { Colors } from "@/lib/colors";
-import { addDaystoDate, dateToYMD, substractDaysFromDate } from "@/lib/date";
+import {
+  addDaystoDate,
+  dateToYMD,
+  getMondayBasedWeekday,
+  substractDaysFromDate,
+} from "@/lib/date";
 import { cn } from "@/lib/tailwindClasses";
 import { Feather } from "@expo/vector-icons";
 import Entypo from "@expo/vector-icons/Entypo";
 import React, { useMemo, useState } from "react";
 import { Dimensions, ScrollView, TouchableOpacity, View } from "react-native";
+import { useHabits } from "../../context/HabitsContext";
 import PillHeader from "./PillHeader";
 import Streak from "./Streak";
 
@@ -21,10 +28,20 @@ const DAY_CELL_MARGIN = 6;
 const DAY_CELL_SIZE =
   (width - CALENDAR_PADDING * 2) / DAYS_IN_ROW - DAY_CELL_MARGIN * 2;
 
+const getWeekdayLabels = (firstDayOfWeek: "Monday" | "Sunday") => {
+  if (firstDayOfWeek === "Monday") {
+    return ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+  }
+  return ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+};
+
 const CalendarView: React.FC<{ habit: HabitWithCompletions }> = ({ habit }) => {
+  const { firstDayOfWeek } = useSettingsContext();
+  const { habitsCompletionsManager } = useHabits();
+
   const manager = useMemo(
-    () => new HabitCompletionsManager(habit, "mon"),
-    [habit]
+    () => habitsCompletionsManager.get(habit.id) as HabitCompletionsManager,
+    [habit.id, habitsCompletionsManager]
   );
   const { theme } = usePreferredColorTheme();
   const [monthOffset, setMonthOffset] = useState(0);
@@ -39,14 +56,17 @@ const CalendarView: React.FC<{ habit: HabitWithCompletions }> = ({ habit }) => {
       displayMonth.getMonth(),
       1
     );
-    const startDay = firstDay.getDay() === 0 ? 6 : firstDay.getDay() - 1; // Monday-based
+    const startDay =
+      firstDayOfWeek === "Monday"
+        ? getMondayBasedWeekday(firstDay.getDay())
+        : firstDay.getDay(); // Monday-based
     const startDate = substractDaysFromDate(firstDay, startDay);
     const grid: Date[] = [];
     for (let i = 0; i < DAYS_IN_ROW * ROWS; i++) {
       grid.push(addDaystoDate(startDate, i));
     }
     return grid;
-  }, [displayMonth]);
+  }, [displayMonth, firstDayOfWeek]);
 
   return (
     <ScrollView
@@ -84,25 +104,27 @@ const CalendarView: React.FC<{ habit: HabitWithCompletions }> = ({ habit }) => {
             </TouchableOpacity>
           </View>
           <View className="flex-row justify-between">
-            {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map((d, i) => (
-              <View
-                key={d}
-                style={{
-                  width: DAY_CELL_SIZE,
-                  margin: DAY_CELL_MARGIN,
-                  alignItems: "center",
-                }}
-              >
-                <InterText
-                  className={cn(
-                    "text-xs",
-                    theme === "dark" ? "text-gray-400" : "text-gray-500"
-                  )}
+            {getWeekdayLabels(firstDayOfWeek as "Monday" | "Sunday").map(
+              (d, i) => (
+                <View
+                  key={d}
+                  style={{
+                    width: DAY_CELL_SIZE,
+                    margin: DAY_CELL_MARGIN,
+                    alignItems: "center",
+                  }}
                 >
-                  {d}
-                </InterText>
-              </View>
-            ))}
+                  <InterText
+                    className={cn(
+                      "text-xs",
+                      theme === "dark" ? "text-gray-400" : "text-gray-500"
+                    )}
+                  >
+                    {d}
+                  </InterText>
+                </View>
+              )
+            )}
           </View>
           <View className="flex-row flex-wrap justify-center">
             {days.map((date, idx) => {
@@ -112,13 +134,14 @@ const CalendarView: React.FC<{ habit: HabitWithCompletions }> = ({ habit }) => {
               const completed = manager.isHabitCompletedAt(ymd);
               const notNeeded = manager.isHabitDoesntNeedToCompleteAt(ymd);
               const beforeCreation = ymd < dateToYMD(new Date(habit.createdAt));
+              console.log(ymd, beforeCreation, notNeeded, completed);
               const emptyColor =
                 theme === "dark"
                   ? "rgba(255,255,255,0.05)"
                   : "rgba(0,0,0,0.05)";
               let backgroundColor = emptyColor;
               let borderColor = "transparent";
-              if (!isCurrentMonth || beforeCreation) {
+              if (!isCurrentMonth || (beforeCreation && !notNeeded)) {
                 backgroundColor = emptyColor;
               } else if (completed) {
                 backgroundColor =

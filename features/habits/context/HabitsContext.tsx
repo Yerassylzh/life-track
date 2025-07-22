@@ -2,6 +2,7 @@ import AppLoading from "@/components/AppLoading";
 import { db } from "@/db/db";
 import { HabitWithCompletions } from "@/db/types";
 import { HabitCompletionsManager } from "@/features/habits/lib/HabitCompletionsManager";
+import { useSettingsContext } from "@/features/settings/context/SettingsContext";
 import { useLiveQuery } from "drizzle-orm/expo-sqlite";
 import React, { createContext, useContext, useMemo } from "react";
 
@@ -37,15 +38,19 @@ export default function HabitsProvider({
 }) {
   const habits = useHabitsWithCompletions();
 
+  const { firstDayOfWeek } = useSettingsContext();
+
   const habitsCompletionsManager = useMemo(() => {
-    const firstDayOfWeek = "mon";
     return new Map(
       habits.map((habit) => [
         habit.id,
-        new HabitCompletionsManager(habit, firstDayOfWeek),
+        new HabitCompletionsManager(
+          habit,
+          firstDayOfWeek === "Monday" ? "mon" : "sun"
+        ),
       ])
     );
-  }, [habits]);
+  }, [firstDayOfWeek, habits]);
 
   if (habitsCompletionsManager === null) {
     return <AppLoading />;

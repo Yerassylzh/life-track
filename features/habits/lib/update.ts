@@ -70,6 +70,10 @@ export async function updateHabit(
     reminder: string | null;
   }
 ) {
+  if (data.unit?.length === 0) {
+    data.unit = null;
+  }
+
   try {
     await db
       .update(habitTable)

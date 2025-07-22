@@ -133,7 +133,12 @@ function Tab({
       )}
       onPress={onPress}
     >
-      <Text className={cn("font-inter text-sm text-black dark:text-white")}>
+      <Text
+        className={cn(
+          "font-inter text-sm text-black",
+          theme === "dark" && "text-white"
+        )}
+      >
         {text}
       </Text>
     </Pressable>

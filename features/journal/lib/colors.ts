@@ -1,9 +1,9 @@
 export const noteColors = [
-  "#4ADE80", // green
-  "#60A5FA", // blue
-  "#F472B6", // pink
-  "#FBBF24", // yellow
-  "#F87171", // red
-  "#A78BFA", // purple
-  "#F3F4F6", // light gray
+  "#E6F7E6",
+  "#E8F4FD",
+  "#F0E6F7",
+  "#FFF8E1",
+  "#E0F2F1",
+  "#F5F0FF",
+  "#F8FAFC",
 ];

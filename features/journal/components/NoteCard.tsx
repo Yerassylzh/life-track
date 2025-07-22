@@ -52,26 +52,28 @@ const NoteCard = React.memo(function NoteCard({
         }}
       >
         <View
-          className="flex-row justify-start items-center px-2 py-1 rounded-t-xl"
-          style={{ backgroundColor: hexToRgba(note.color, 0.15) }}
+          className="flex-row justify-start items-center px-2 py-1.5 rounded-t-xl"
+          style={{ backgroundColor: note.color }}
         >
           <InterText
-            className="font-semibold text-base mb-2"
-            customColor={hexToRgba(note.color, 1)}
+            className="font-semibold text-base"
+            customColor={hexToRgba(Colors["zinc-900"], 0.8)}
             numberOfLines={1}
             ellipsizeMode="tail"
           >
             {cropTitle(note.title)}
           </InterText>
         </View>
-        {imageUri && (
-          <Image
-            source={{ uri: imageUri }}
-            style={{ width: width - 43 - 16 - 12, aspectRatio: 1 }}
-            className="rounded-xl mb-2"
-            resizeMode="contain"
-          />
-        )}
+        <View className="items-center justify-center">
+          {imageUri && (
+            <Image
+              source={{ uri: imageUri }}
+              style={{ width: width - 43 - 16 * 2 - 12 * 2, aspectRatio: 1 }}
+              className="rounded-xl mb-2"
+              resizeMode="contain"
+            />
+          )}
+        </View>
         <InterText className="text-sm px-2 pb-2">{preview}</InterText>
       </View>
     </Pressable>
