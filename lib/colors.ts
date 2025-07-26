@@ -54,14 +54,13 @@ export const Colors = {
 };
 
 export const ColorPalette = [
-  "#2563EB",
-  "#059669",
-  "#7C3AED",
-  "#0891B2",
-  "#DC6803",
-  "#4F46E5",
-  "#0D9488",
-  "#7E22CE",
-  "#1D4ED8",
-  "#065F46",
+  Colors.primary,
+  "#FF6F61",
+  "#55E6A0",
+  "#FFEB3B",
+  "#4C8BF5",
+  "#FF7043",
+  "#A7D8D4",
+  "#D9C7FF",
+  "#FFD6C4",
 ];

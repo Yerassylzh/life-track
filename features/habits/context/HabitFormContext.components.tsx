@@ -23,7 +23,10 @@ export function ColorPickerBottomSheet({
             key={index}
             backgroundColor={color}
             isSelected={colorIndex === index}
-            onPress={() => setColorIndex(index)}
+            onPress={() => {
+              ref.current?.dismiss();
+              setColorIndex(index);
+            }}
           />
         ))}
       </View>
@@ -46,8 +49,8 @@ export function IconPickerBottomSheet({
             key={index}
             className="p-1"
             onPress={() => {
+              ref.current?.dismiss();
               setIconName(name);
-              ref.current?.close();
             }}
           >
             <DynamicIcon

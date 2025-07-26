@@ -1,10 +1,10 @@
 {
   "expo": {
-    "name": "life-track",
+    "name": "LifeTrack",
     "slug": "life-track",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/logo.png",
     "jsEngine": "hermes",
     "experimental": {
       "runtimeVersion": "exotic",
@@ -18,7 +18,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "foregroundImage": "./assets/images/logo.png",
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
@@ -31,13 +31,6 @@
     },
     "plugins": [
       "expo-router",
-      [
-        "react-native-google-mobile-ads",
-        {
-          "androidAppId": "ca-app-pub-3528814229848978~4985918508",
-          "android_app_id": "ca-app-pub-3528814229848978~4985918508"
-        }
-      ],
       [
         "expo-splash-screen",
         {

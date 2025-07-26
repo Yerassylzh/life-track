@@ -11,6 +11,8 @@ import { fileExists } from "@/lib/gallery";
 import { router } from "expo-router";
 import React, { useEffect, useState } from "react";
 
+// import { BannerAd, TestIds } from "react-native-google-mobile-ads";
+
 export default function JournalWrapper() {
   return (
     <JournalProvider>
@@ -19,9 +21,14 @@ export default function JournalWrapper() {
   );
 }
 
+// const adUnitId = __DEV__
+//   ? TestIds.ADAPTIVE_BANNER
+//   : "ca-app-pub-4326973674601582~1708339850";
+
 function JournalScreen() {
   const { notes } = useJournalContext();
   const [imageMap, setImageMap] = useState<Record<string, string | null>>({});
+  // const bannerRef = useRef<BannerAd>(null);
 
   // Preload first available image for each note (if exists)
   useEffect(() => {
@@ -52,6 +59,11 @@ function JournalScreen() {
   return (
     <AppBackground>
       <Header />
+      {/* <BannerAd
+        ref={bannerRef}
+        unitId={adUnitId}
+        size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
+      /> */}
       {notes && notes.length > 0 ? (
         <JournalTimeline notes={notes} imageMap={imageMap} />
       ) : (
