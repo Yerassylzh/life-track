@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useRef, useState } from "react";
+import { RichEditor } from "react-native-pell-rich-editor";
 import { noteColors } from "../lib/colors";
 
 export type JournalFormContextType = {
@@ -15,6 +16,7 @@ export type JournalFormContextType = {
   setColor: (color: string) => void;
   date: Date;
   setDate: (date: Date) => void;
+  editorRef: React.RefObject<RichEditor | null>;
 };
 
 const JournalFormContext = createContext<JournalFormContextType | undefined>(
@@ -40,6 +42,7 @@ export const JournalFormProvider: React.FC<{ children: React.ReactNode }> = ({
   const [images, setImages] = useState<string[]>([]);
   const [color, setColor] = useState(noteColors[0]);
   const [date, setDate] = useState<Date>(new Date());
+  const ref = useRef<RichEditor>(null);
 
   return (
     <JournalFormContext.Provider
@@ -57,6 +60,7 @@ export const JournalFormProvider: React.FC<{ children: React.ReactNode }> = ({
         setColor,
         date,
         setDate,
+        editorRef: ref,
       }}
     >
       {children}

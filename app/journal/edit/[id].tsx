@@ -19,6 +19,7 @@ export default function Edit() {
     richContent,
     images,
     color,
+    editorRef,
   } = useJournalFormContext();
 
   useEffect(() => {
@@ -28,20 +29,14 @@ export default function Edit() {
         setTitle(note.title);
         setPlainContent(note.plainContent);
         setRichContent(note.richContent);
+        editorRef.current?.setContentHTML(note.richContent);
         setImages(JSON.parse(note.images || "[]"));
         setColor(note.color);
         setDate(new Date(note.createdAt));
       }
     })();
-  }, [
-    id,
-    setColor,
-    setDate,
-    setImages,
-    setPlainContent,
-    setRichContent,
-    setTitle,
-  ]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id, editorRef]);
 
   useEffect(() => {
     if (!id) return;

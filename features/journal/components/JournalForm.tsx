@@ -35,17 +35,16 @@ export default function JournalForm({ onEdit, noteId }: Props) {
     title,
     setTitle,
     setPlainContent,
-    richContent,
     setRichContent,
     images,
     setImages,
     color,
     date,
+    editorRef,
   } = useJournalFormContext();
   const { showModal } = useChooseNoteBackgroundColorModal();
   const { setCustomInsetColor } = useScreenInsetsColor();
 
-  const ref = useRef<RichEditor>(null);
   const keyboardHeight = useKeyboardHeight();
 
   useEffect(() => {
@@ -90,13 +89,6 @@ export default function JournalForm({ onEdit, noteId }: Props) {
       },
     ]);
   }, [noteId]);
-
-  useEffect(() => {
-    if (ref.current) {
-      ref.current.setContentHTML(richContent);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const scrollRef = useRef<ScrollView>(null);
   const handleCursorPosition = useCallback((scrollY: number) => {
@@ -148,7 +140,7 @@ export default function JournalForm({ onEdit, noteId }: Props) {
           <SelectedImages />
 
           <RichEditor
-            ref={ref}
+            ref={editorRef}
             onChange={(content: string) => {
               setRichContent(content);
               setPlainContent(content.replace(/<[^>]*>/g, "") || "");
@@ -169,7 +161,7 @@ export default function JournalForm({ onEdit, noteId }: Props) {
             className="absolute z-10 bottom-0 bg-red-500 w-full"
             style={{ bottom: keyboardHeight }}
           >
-            <RichToolbar editor={ref} />
+            <RichToolbar editor={editorRef} />
           </View>
         )}
       </KeyboardAvoidingView>
