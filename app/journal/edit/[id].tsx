@@ -38,22 +38,6 @@ export default function Edit() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id, editorRef]);
 
-  useEffect(() => {
-    if (!id) return;
-    (async () => {
-      const note = await getNote(id);
-      if (note) {
-        setTitle(note.title);
-        setPlainContent(note.plainContent);
-        setRichContent(note.richContent);
-        setImages(JSON.parse(note.images || "[]"));
-        setColor(note.color);
-        setDate(new Date(note.createdAt));
-      }
-    })();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id]);
-
   const onEdit = useCallback(async () => {
     if (!id) return;
     if (!title.trim() && !plainContent.trim()) return;
