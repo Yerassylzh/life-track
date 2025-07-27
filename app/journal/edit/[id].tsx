@@ -19,7 +19,6 @@ export default function Edit() {
     richContent,
     images,
     color,
-    editorRef,
   } = useJournalFormContext();
 
   useEffect(() => {
@@ -29,14 +28,13 @@ export default function Edit() {
         setTitle(note.title);
         setPlainContent(note.plainContent);
         setRichContent(note.richContent);
-        editorRef.current?.setContentHTML(note.richContent);
         setImages(JSON.parse(note.images || "[]"));
         setColor(note.color);
         setDate(new Date(note.createdAt));
       }
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id, editorRef]);
+  }, [id]);
 
   const onEdit = useCallback(async () => {
     if (!id) return;
@@ -51,5 +49,7 @@ export default function Edit() {
     });
   }, [id, title, plainContent, richContent, images, color]);
 
-  return <JournalForm onEdit={onEdit} noteId={id} />;
+  return (
+    <JournalForm onEdit={onEdit} noteId={id} initialContentBody={richContent} />
+  );
 }

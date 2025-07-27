@@ -28,9 +28,14 @@ import SelectedImages from "./SelectedImages";
 type Props = {
   onEdit: () => void;
   noteId: string | null;
+  initialContentBody?: string;
 };
 
-export default function JournalForm({ onEdit, noteId }: Props) {
+export default function JournalForm({
+  onEdit,
+  noteId,
+  initialContentBody,
+}: Props) {
   const {
     title,
     setTitle,
@@ -40,12 +45,17 @@ export default function JournalForm({ onEdit, noteId }: Props) {
     setImages,
     color,
     date,
+    richContent,
     editorRef,
   } = useJournalFormContext();
   const { showModal } = useChooseNoteBackgroundColorModal();
   const { setCustomInsetColor } = useScreenInsetsColor();
 
   const keyboardHeight = useKeyboardHeight();
+
+  useEffect(() => {
+    editorRef.current?.setContentHTML(initialContentBody || "");
+  }, [initialContentBody, editorRef]);
 
   useEffect(() => {
     onEdit();
@@ -141,6 +151,9 @@ export default function JournalForm({ onEdit, noteId }: Props) {
 
           <RichEditor
             ref={editorRef}
+            onLoad={() => {
+              editorRef.current?.setContentHTML(richContent);
+            }}
             onChange={(content: string) => {
               setRichContent(content);
               setPlainContent(content.replace(/<[^>]*>/g, "") || "");
