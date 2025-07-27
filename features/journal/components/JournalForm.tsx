@@ -6,7 +6,7 @@ import { askForMediaLibraryPermission } from "@/lib/gallery";
 import * as ImagePicker from "expo-image-picker";
 import { router } from "expo-router";
 import { Camera, ChevronLeft, Shirt, Trash2 } from "lucide-react-native";
-import React, { useCallback, useEffect, useRef } from "react";
+import React, { useCallback, useEffect, useMemo, useRef } from "react";
 import {
   Alert,
   Dimensions,
@@ -52,14 +52,6 @@ export default function JournalForm({
   const { setCustomInsetColor } = useScreenInsetsColor();
 
   const keyboardHeight = useKeyboardHeight();
-
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      editorRef.current?.setContentHTML(initialContentBody || "");
-    }, 500);
-    return () => clearTimeout(timeout);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [initialContentBody]);
 
   useEffect(() => {
     onEdit();
@@ -162,6 +154,8 @@ export default function JournalForm({
               setRichContent(content);
               setPlainContent(content.replace(/<[^>]*>/g, "") || "");
             }}
+            // eslint-disable-next-line react-hooks/exhaustive-deps
+            initialContentHTML={useMemo(() => initialContentBody, [])}
             initialHeight={Dimensions.get("window").height * 0.8}
             placeholder="Start typing..."
             useContainer={true}

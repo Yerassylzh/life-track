@@ -3,7 +3,7 @@ import { useJournalFormContext } from "@/features/journal/context/JournalFormCon
 import { getNote } from "@/features/journal/lib/get";
 import { updateNote } from "@/features/journal/lib/update";
 import { useLocalSearchParams } from "expo-router";
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 
 export default function Edit() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -21,6 +21,8 @@ export default function Edit() {
     color,
   } = useJournalFormContext();
 
+  const [noteLoaded, setNoteLoaded] = useState(false);
+
   useEffect(() => {
     (async () => {
       const note = await getNote(id);
@@ -32,6 +34,7 @@ export default function Edit() {
         setColor(note.color);
         setDate(new Date(note.createdAt));
       }
+      setNoteLoaded(true);
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
@@ -48,6 +51,10 @@ export default function Edit() {
       color,
     });
   }, [id, title, plainContent, richContent, images, color]);
+
+  if (!noteLoaded) {
+    return null;
+  }
 
   return (
     <JournalForm onEdit={onEdit} noteId={id} initialContentBody={richContent} />
