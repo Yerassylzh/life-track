@@ -54,8 +54,12 @@ export default function JournalForm({
   const keyboardHeight = useKeyboardHeight();
 
   useEffect(() => {
-    editorRef.current?.setContentHTML(initialContentBody || "");
-  }, [initialContentBody, editorRef]);
+    const timeout = setTimeout(() => {
+      editorRef.current?.setContentHTML(initialContentBody || "");
+    }, 500);
+    return () => clearTimeout(timeout);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [initialContentBody]);
 
   useEffect(() => {
     onEdit();
