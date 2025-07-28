@@ -1,11 +1,12 @@
 import { usePreferredColorTheme } from "@/context/PrefferedColorTheme";
+import { Colors } from "@/lib/colors";
 import { cn } from "@/lib/tailwindClasses";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import Feather from "@expo/vector-icons/Feather";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import type { BottomTabBarProps } from "@react-navigation/bottom-tabs";
-import { BlurView } from "expo-blur";
 import React from "react";
+import { View } from "react-native";
 import TabBarButton from "./ui/TabBarButton";
 
 export default function TabBar({
@@ -30,21 +31,18 @@ export default function TabBar({
   };
 
   return (
-    <BlurView
+    <View
       style={{
         flexDirection: "row",
+        backgroundColor:
+          theme === "dark" ? Colors["gray-950"] : Colors["gray-50"],
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: -2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 6,
+        elevation: 8, // for Android
       }}
-      intensity={80}
-      tint={
-        theme === "light"
-          ? "systemChromeMaterialLight"
-          : "systemChromeMaterialDark"
-      }
-      className={cn(
-        "absolute bottom-0 items-center justify-evenly rounded-full",
-        "border-t-gray-800",
-        theme === "light" && "border-t-gray-200"
-      )}
+      className={cn("absolute bottom-0 items-center justify-evenly")}
     >
       {state.routes.map((route, index) => {
         const { options } = descriptors[route.key];
@@ -88,6 +86,6 @@ export default function TabBar({
           />
         );
       })}
-    </BlurView>
+    </View>
   );
 }

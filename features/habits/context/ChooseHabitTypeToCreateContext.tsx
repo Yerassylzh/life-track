@@ -56,7 +56,12 @@ export const ChooseHabitTypeToCreateProvider: React.FC<ProviderProps> = ({
     <ChooseHabitTypeToCreateContext.Provider value={{ showModal }}>
       {children}
       <ModalBottomSheet ref={ref}>
-        <ActionsFlowRenderer flow={flow} onRedirect={ref.current?.close} />
+        <ActionsFlowRenderer
+          flow={flow}
+          onRedirect={() => {
+            ref.current?.dismiss();
+          }}
+        />
       </ModalBottomSheet>
     </ChooseHabitTypeToCreateContext.Provider>
   );

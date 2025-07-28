@@ -9,7 +9,9 @@ import {
   BottomSheetScrollView,
   BottomSheetView,
 } from "@gorhom/bottom-sheet";
+import { View } from "lucide-react-native";
 import React, { ReactNode, RefObject, useCallback } from "react";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export interface ModalBottomSheetProps
   extends Omit<BottomSheetModalProps, "children"> {
@@ -42,6 +44,8 @@ const ModalBottomSheet = ({
     []
   );
 
+  const insets = useSafeAreaInsets();
+
   return (
     <BottomSheetModal
       ref={ref}
@@ -73,6 +77,12 @@ const ModalBottomSheet = ({
           style={{ paddingVertical: paddingY !== undefined ? paddingY : 40 }}
         >
           {children}
+          <View
+            style={{
+              width: "100%",
+              height: insets.bottom,
+            }}
+          />
         </BottomSheetView>
       </BottomSheetScrollView>
     </BottomSheetModal>
