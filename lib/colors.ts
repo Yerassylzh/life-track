@@ -60,7 +60,15 @@ export const ColorPalette = [
   "#FFEB3B",
   "#4C8BF5",
   "#FF7043",
-  "#A7D8D4",
-  "#D9C7FF",
-  "#FFD6C4",
+
+  "#FF6B6B", // Vivid Coral (energetic and warm)
+  "#4ECDC4", // Electric Teal (refreshing and bright)
+  "#FFD166", // Sunshine Yellow (optimistic and radiant)
+  "#6A67CE", // Electric Purple (vibrant and modern)
+  "#06D6A0", // Emerald Flash (luminous green)
+  "#FF9E6D", // Luminous Orange (fiery and bold)
+  "#118AB2", // Azure Burst (intense bright blue)
+  "#EF5DA8", // Magenta Pop (vibrant and playful)
+  "#FFD700", // Pure Gold (rich and premium)
+  "#00FFCC", // Cyan Blast (electric turquoise)
 ];

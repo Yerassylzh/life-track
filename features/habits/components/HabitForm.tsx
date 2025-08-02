@@ -91,18 +91,7 @@ function HabitForm({ habitToEdit, onSubmit, type }: HabitFormProps) {
       setIconName(habitToEdit.iconName as HabitIconNameType);
     };
     fillWithPreviousData();
-  }, [
-    habitToEdit,
-    setColorIndex,
-    setDaysOfWeek,
-    setDescription,
-    setIconName,
-    setMonthlyDays,
-    setReminder,
-    setRepeatType,
-    setTitle,
-    setWeeklyFreq,
-  ]);
+  }, [habitToEdit]);
 
   const validateFormData = useCallback(() => {
     if (title.length === 0) {

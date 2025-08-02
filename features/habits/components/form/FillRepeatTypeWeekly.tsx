@@ -47,6 +47,7 @@ function PlusButton() {
 
 function MinusButton() {
   const { colorIndex, setWeeklyFreq, weeklyFreq } = useHabitForm();
+
   return (
     <TouchableOpacity
       style={{

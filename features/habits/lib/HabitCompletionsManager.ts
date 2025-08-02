@@ -34,7 +34,6 @@ export class HabitCompletionsManager {
     }
 
     this.processCompletions();
-    // console.log(this.completionData);
   }
 
   isHabitCompletedAt(dateYMD: string): boolean | undefined {
@@ -60,7 +59,7 @@ export class HabitCompletionsManager {
   private processCompletionsDaily() {
     const chunks = this.getWeekChunks();
     const daysOfWeek: number[] = JSON.parse(this.habit.daysOfWeek); // [0..6] => [mon...sun]
-    const today = YMDToDate(dateToYMD(new Date()));
+    // const today = YMDToDate(dateToYMD(new Date()));
 
     for (const weekChunk of chunks) {
       let isWeekCompleted = daysOfWeek.every((monWeekday) => {
@@ -69,9 +68,9 @@ export class HabitCompletionsManager {
             ? monWeekday
             : getSundayBasedWeekday(monWeekday);
 
-        if (YMDToDate(weekChunk[weekday]) < today) {
-          return true; // Just skip. This problem stated at the end of file.
-        }
+        // if (YMDToDate(weekChunk[weekday]) < today) {
+        //   return true; // Just skip. This problem stated at the end of file.
+        // }
         return (
           this.completionData.has(weekChunk[weekday]) &&
           this.completionData.get(weekChunk[weekday]) ===
@@ -99,7 +98,6 @@ export class HabitCompletionsManager {
 
     for (const weekChunk of chunks) {
       let count = 0;
-      // console.log("\n\n\n");
       for (const weekdayYMD of weekChunk) {
         if (
           this.completionData.has(weekdayYMD) &&
