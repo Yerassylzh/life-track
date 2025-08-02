@@ -41,3 +41,6 @@ yarn-error.*
 app-example
 
 /lib/generated/prisma
+
+/android
+/ios

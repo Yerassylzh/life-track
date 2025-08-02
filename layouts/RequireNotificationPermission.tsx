@@ -1,5 +1,5 @@
 import * as Application from "expo-application";
-import * as IntentLauncher from "expo-intent-launcher"; // Only needed for direct Android notification settings
+import * as IntentLauncher from "expo-intent-launcher";
 import * as Linking from "expo-linking";
 import * as Notifications from "expo-notifications";
 import React, { useCallback, useEffect, useState } from "react";
