@@ -134,7 +134,6 @@ const CalendarView: React.FC<{ habit: HabitWithCompletions }> = ({ habit }) => {
               const completed = manager.isHabitCompletedAt(ymd);
               const notNeeded = manager.isHabitDoesntNeedToCompleteAt(ymd);
               const beforeCreation = ymd < dateToYMD(new Date(habit.createdAt));
-              console.log(ymd, beforeCreation, notNeeded, completed);
               const emptyColor =
                 theme === "dark"
                   ? "rgba(255,255,255,0.05)"

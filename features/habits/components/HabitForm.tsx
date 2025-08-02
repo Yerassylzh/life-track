@@ -76,6 +76,7 @@ function HabitForm({ habitToEdit, onSubmit, type }: HabitFormProps) {
       setTitle(habitToEdit.name);
       setDescription(habitToEdit.description);
       setColorIndex(ColorPalette.indexOf(habitToEdit.color));
+      setUnit(habitToEdit.unit || "");
       setRepeatType(habitToEdit.repeatType);
       setDaysOfWeek(JSON.parse(habitToEdit.daysOfWeek) as number[]);
       setMonthlyDays(JSON.parse(habitToEdit.monthlyDays) as number[]);
