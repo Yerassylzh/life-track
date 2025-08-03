@@ -1,28 +1,50 @@
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
-let BannerAd: any = null;
-let BannerAdSize: any = null;
-
-if (!__DEV__) {
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const admob = require("react-native-google-mobile-ads");
-  BannerAd = admob.BannerAd;
-  BannerAdSize = admob.BannerAdSize;
+interface AdMobComponents {
+  BannerAd: any;
+  BannerAdSize: any;
+  TestIds: any;
 }
 
-const adUnitId = "ca-app-pub-4326973674601582~1708339850";
+const IS_PUBLISHED = process.env.EXPO_PUBLIC_IS_PUBLISHED === "true";
+const IS_EXPOGO = process.env.EXPO_PUBLIC_IS_EXPO_GO === "true";
 
 export default function BannerAdmob() {
   const bannerRef = useRef<any>(null);
+  const [admobComponents, setAdmobComponents] =
+    useState<AdMobComponents | null>(null);
+
+  useEffect(() => {
+    if (IS_EXPOGO) return;
+    import("react-native-google-mobile-ads")
+      .then((admob) => {
+        setAdmobComponents({
+          BannerAd: admob.BannerAd,
+          BannerAdSize: admob.BannerAdSize,
+          TestIds: admob.TestIds,
+        });
+      })
+      .catch((error) => {
+        console.warn("Failed to load AdMob components:", error);
+      });
+  }, []);
+
+  if (IS_EXPOGO || !admobComponents) {
+    return null;
+  }
+
+  const { BannerAd, BannerAdSize, TestIds } = admobComponents;
+
+  const adUnitId =
+    IS_PUBLISHED && !__DEV__
+      ? process.env.EXPO_PUBLIC_ADMOB_ID
+      : TestIds.BANNER;
+
   return (
-    !__DEV__ &&
-    BannerAd &&
-    BannerAdSize && (
-      <BannerAd
-        ref={bannerRef}
-        unitId={adUnitId}
-        size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
-      />
-    )
+    <BannerAd
+      ref={bannerRef}
+      unitId={adUnitId}
+      size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
+    />
   );
 }
