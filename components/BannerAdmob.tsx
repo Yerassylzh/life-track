@@ -3,7 +3,6 @@ import { useEffect, useRef, useState } from "react";
 interface AdMobComponents {
   BannerAd: any;
   BannerAdSize: any;
-  TestIds: any;
 }
 
 const IS_PUBLISHED = process.env.EXPO_PUBLIC_IS_PUBLISHED === "true";
@@ -21,7 +20,6 @@ export default function BannerAdmob() {
         setAdmobComponents({
           BannerAd: admob.BannerAd,
           BannerAdSize: admob.BannerAdSize,
-          TestIds: admob.TestIds,
         });
       })
       .catch((error) => {
@@ -33,18 +31,17 @@ export default function BannerAdmob() {
     return null;
   }
 
-  const { BannerAd, BannerAdSize, TestIds } = admobComponents;
+  const { BannerAd, BannerAdSize } = admobComponents;
 
-  const adUnitId =
-    IS_PUBLISHED && !__DEV__
-      ? process.env.EXPO_PUBLIC_ADMOB_ID
-      : TestIds.BANNER;
+  const adUnitId = IS_PUBLISHED
+    ? process.env.EXPO_PUBLIC_ADMOB_ID
+    : process.env.EXPO_PUBLIC_ADMOB_TEST_ID;
 
   return (
     <BannerAd
       ref={bannerRef}
       unitId={adUnitId}
-      size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
+      size={BannerAdSize?.ANCHORED_ADAPTIVE_BANNER}
     />
   );
 }

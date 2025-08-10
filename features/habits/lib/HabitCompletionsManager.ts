@@ -124,12 +124,14 @@ export class HabitCompletionsManager {
   private processCompletionsMonthly() {
     const chunks = this.getMonthChunks();
     const monthlyDays = new Set(JSON.stringify(this.habit.monthlyDays));
-    const today = YMDToDate(dateToYMD(new Date()));
 
     for (const month of chunks) {
       let isMonthCompleted = true;
       for (const day of month) {
-        if (!monthlyDays.has(day) || YMDToDate(day) < today) {
+        if (
+          !monthlyDays.has(day) ||
+          YMDToDate(day) < YMDToDate(dateToYMD(this.habit.createdAt))
+        ) {
           continue;
         }
         if (
