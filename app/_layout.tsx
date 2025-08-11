@@ -22,22 +22,20 @@ import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 
 import { useDrizzleStudio } from "expo-drizzle-studio-plugin";
 import { Stack } from "expo-router";
-import React from "react";
+import React, { useEffect } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 export default function RootLayout() {
-  // useEffect(() => {
-  //   (async () => {
-  //     await deleteAllNotifications();
-  //     console.log(await getAllScheduledNotificationsAsync());
-  //   })();
-  // }, []);
-
-  // useEffect(() => {
-  //   console.log("Generating fake data");
-  //   generateFakeData();
-  //   console.log("Fake data generated");
-  // }, []);
+  useEffect(() => {
+    import("react-native-google-mobile-ads").then((mobileAds) => {
+      mobileAds
+        .default()
+        .initialize()
+        .then((adapterStatuses) => {
+          // Initialization complete!
+        });
+    });
+  }, []);
 
   useDrizzleStudio(expoDb);
 
