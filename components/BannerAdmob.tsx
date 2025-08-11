@@ -27,6 +27,8 @@ export default function BannerAdmob() {
       });
   }, []);
 
+  const [adFailed, setAdFailed] = useState(false);
+
   if (IS_EXPOGO || !admobComponents) {
     return null;
   }
@@ -38,10 +40,15 @@ export default function BannerAdmob() {
     : process.env.EXPO_PUBLIC_ADMOB_TEST_ID;
 
   return (
-    <BannerAd
-      ref={bannerRef}
-      unitId={adUnitId}
-      size={BannerAdSize?.ANCHORED_ADAPTIVE_BANNER}
-    />
+    !adFailed && (
+      <BannerAd
+        ref={bannerRef}
+        unitId={adUnitId}
+        size={BannerAdSize?.ANCHORED_ADAPTIVE_BANNER}
+        onAdFailedToLoad={(error: Error) => {
+          setAdFailed(true);
+        }}
+      />
+    )
   );
 }
