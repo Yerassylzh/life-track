@@ -2,7 +2,7 @@ import InterText from "@/components/ui/InterText";
 import Modal from "@/layouts/Modal";
 import { cn } from "@/lib/tailwindClasses";
 import React, { createContext, useCallback, useContext, useState } from "react";
-import { Pressable, View } from "react-native";
+import { TouchableOpacity, View } from "react-native";
 import { usePreferredColorTheme } from "./PrefferedColorTheme";
 
 export type Option = {
@@ -40,17 +40,18 @@ export const ChooseOptionModalProvider: React.FC<{
       <Modal visible={visible} onRequestClose={() => setVisible(false)}>
         <View
           className={cn(
-            "bg-white rounded-2xl p-4",
+            "bg-white rounded-2xl p-2",
             theme === "dark" ? "bg-zinc-900" : "bg-white"
           )}
         >
           {options.map((opt, idx) => (
-            <Pressable
+            <TouchableOpacity
               key={opt.optionName + idx}
               onPress={() => handleOptionPress(opt.onPress)}
               className={cn(
-                "py-3 px-2 border-b border-zinc-200 last:border-b-0",
-                theme === "dark" ? "border-zinc-700" : "border-zinc-200"
+                "py-3 px-2 border-b border-zinc-200",
+                theme === "dark" ? "border-zinc-700" : "border-zinc-200",
+                idx === options.length - 1 && "border-b-0"
               )}
             >
               <InterText
@@ -61,7 +62,7 @@ export const ChooseOptionModalProvider: React.FC<{
               >
                 {opt.optionName}
               </InterText>
-            </Pressable>
+            </TouchableOpacity>
           ))}
         </View>
       </Modal>
