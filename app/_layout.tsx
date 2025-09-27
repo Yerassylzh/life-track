@@ -22,18 +22,18 @@ import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 
 import { useDrizzleStudio } from "expo-drizzle-studio-plugin";
 import { Stack } from "expo-router";
-import React, { useEffect } from "react";
+import React from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
+import { MobileAds } from "yandex-mobile-ads";
+
 export default function RootLayout() {
-  useEffect(() => {
-    import("react-native-google-mobile-ads").then((mobileAds) => {
-      mobileAds
-        .default()
-        .initialize()
-        .then((adapterStatuses) => {
-          // Initialization complete!
-        });
+  React.useEffect(() => {
+    (async () => {
+      await MobileAds.initialize();
+      console.log("MobileAds initialized successfully");
+    })().catch((err) => {
+      console.log(err);
     });
   }, []);
 
