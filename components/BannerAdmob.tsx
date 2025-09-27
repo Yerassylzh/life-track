@@ -1,83 +1,49 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useState } from "react";
-import {
-  AdRequestConfiguration,
-  InterstitialAdLoader,
-} from "yandex-mobile-ads";
+import { Dimensions, View } from "react-native";
+import { AdRequest, BannerAdSize, BannerView } from "yandex-mobile-ads";
 
-const YANDEX_AD_UNIT_ID = process.env.YANDEX_AD_UNIT_ID as string;
+const YANDEX_AD_UNIT_ID = process.env.EXPO_PUBLIC_YANDEX_AD_UNIT_ID as string;
+const AD_HEIGHT = 70;
 
-let adRequestConfiguration = new AdRequestConfiguration({
-  adUnitId: YANDEX_AD_UNIT_ID,
-});
+let adRequest = new AdRequest({});
 
 export default function BannerAdmob() {
-  const [loader, setLoader] = useState<InterstitialAdLoader | null>(null);
-  const enterId = useEnterId();
-
-  useEffect(() => {
-    if (enterId == null || Number(enterId) % 3 !== 0) {
-      return;
-    }
-
-    console.log("Loader is setting up..");
-
-    (async () => {
-      let ldr = await InterstitialAdLoader.create();
-      setLoader(ldr);
-    })().catch((err) => {
-      console.log(err);
-    });
-  }, [enterId]);
-
-  useEffect(() => {
-    if (!loader) {
-      return;
-    }
-
-    (async () => {
-      await loader.loadAd(adRequestConfiguration).then((ad) => {
-        if (ad) {
-          ad.onAdShown = () => {
-            console.log("Did show");
-          };
-          ad.onAdFailedToShow = (error) => {
-            console.log(
-              `Did fail to show with error: ${JSON.stringify(error)}`
-            );
-          };
-          ad.onAdClicked = () => {
-            console.log("Did click");
-          };
-          ad.onAdDismissed = () => {
-            console.log("Did dismiss");
-          };
-          ad.onAdImpression = (impressionData) => {
-            console.log(
-              `Did track impression: ${JSON.stringify(impressionData)}`
-            );
-          };
-          ad.show();
-        }
-      });
-    })();
-  }, [loader]);
-
-  return null;
-}
-
-function useEnterId(): number | null {
-  const [enterId, setEnterId] = useState<number | null>(null);
+  const [adSize, setAdSize] = useState<BannerAdSize | null>(null);
 
   useEffect(() => {
     (async () => {
-      let id = await AsyncStorage.getItem("enterId");
-      if (id == null) {
-        id = "-1";
-      }
-      setEnterId(Number(id) + 1);
-      await AsyncStorage.setItem("enterId", (Number(id) + 1).toString());
+      setAdSize(
+        await BannerAdSize.inlineSize(Dimensions.get("window").width, AD_HEIGHT)
+      );
     })();
   }, []);
-  return enterId;
+
+  return (
+    adSize && (
+      <View
+        style={{ width: Dimensions.get("window").width, height: AD_HEIGHT }}
+      >
+        <BannerView
+          size={adSize!}
+          adUnitId={YANDEX_AD_UNIT_ID}
+          adRequest={adRequest}
+          onAdLoaded={() => console.log("Did load")}
+          onAdFailedToLoad={(event: any) =>
+            console.log(
+              `Did fail to load with error: ${JSON.stringify(event.nativeEvent)}`
+            )
+          }
+          onAdClicked={() => console.log("Did click")}
+          onLeftApplication={() => console.log("Did leave application")}
+          onReturnToApplication={() => console.log("Did return to application")}
+          onAdImpression={(event: any) =>
+            console.log(
+              `Did track impression: ${JSON.stringify(event.nativeEvent.impressionData)}`
+            )
+          }
+          onAdClose={() => console.log("Did close")}
+        />
+      </View>
+    )
+  );
 }
