@@ -1,49 +1,27 @@
-import { useEffect, useState } from "react";
-import { Dimensions, View } from "react-native";
-import { AdRequest, BannerAdSize, BannerView } from "yandex-mobile-ads";
+import { useRef } from "react";
+import {
+  BannerAd,
+  BannerAdSize,
+  TestIds,
+} from "react-native-google-mobile-ads";
 
-const YANDEX_AD_UNIT_ID = process.env.EXPO_PUBLIC_YANDEX_AD_UNIT_ID as string;
-const AD_HEIGHT = 70;
-
-let adRequest = new AdRequest({});
+const APP_ID = process.env.EXPO_PUBLIC_ADMOB_APP_ID as string;
+const adUnitId = TestIds.ADAPTIVE_BANNER;
 
 export default function BannerAdmob() {
-  const [adSize, setAdSize] = useState<BannerAdSize | null>(null);
-
-  useEffect(() => {
-    (async () => {
-      setAdSize(
-        await BannerAdSize.inlineSize(Dimensions.get("window").width, AD_HEIGHT)
-      );
-    })();
-  }, []);
+  const bannerRef = useRef<BannerAd>(null);
 
   return (
-    adSize && (
-      <View
-        style={{ width: Dimensions.get("window").width, height: AD_HEIGHT }}
-      >
-        <BannerView
-          size={adSize!}
-          adUnitId={YANDEX_AD_UNIT_ID}
-          adRequest={adRequest}
-          onAdLoaded={() => console.log("Did load")}
-          onAdFailedToLoad={(event: any) =>
-            console.log(
-              `Did fail to load with error: ${JSON.stringify(event.nativeEvent)}`
-            )
-          }
-          onAdClicked={() => console.log("Did click")}
-          onLeftApplication={() => console.log("Did leave application")}
-          onReturnToApplication={() => console.log("Did return to application")}
-          onAdImpression={(event: any) =>
-            console.log(
-              `Did track impression: ${JSON.stringify(event.nativeEvent.impressionData)}`
-            )
-          }
-          onAdClose={() => console.log("Did close")}
-        />
-      </View>
-    )
+    <BannerAd
+      ref={bannerRef}
+      unitId={adUnitId}
+      size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
+      onAdFailedToLoad={(e) => {
+        console.log("Ad failed to load: " + e);
+      }}
+      onAdImpression={() => {
+        console.log("Go an Impression on ad");
+      }}
+    />
   );
 }

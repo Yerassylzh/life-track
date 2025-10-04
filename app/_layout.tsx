@@ -22,19 +22,30 @@ import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 
 import { useDrizzleStudio } from "expo-drizzle-studio-plugin";
 import { Stack } from "expo-router";
-import React from "react";
+import React, { useEffect } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
-import { MobileAds } from "yandex-mobile-ads";
+import mobileAds from "react-native-google-mobile-ads";
 
 export default function RootLayout() {
-  React.useEffect(() => {
-    (async () => {
-      await MobileAds.initialize();
-      console.log("MobileAds initialized successfully");
-    })().catch((err) => {
-      console.log(err);
-    });
+  // React.useEffect(() => {
+  //   (async () => {
+  //     await MobileAds.initialize();
+  //     console.log("MobileAds initialized successfully");
+  //   })().catch((err) => {
+  //     console.log(err);
+  //   });
+  // }, []);
+
+  useEffect(() => {
+    mobileAds()
+      .initialize()
+      .then(() => {
+        console.log("Admob initialization complete");
+      })
+      .catch((e) => {
+        console.log("An error occured when initializing Admob: " + e);
+      });
   }, []);
 
   useDrizzleStudio(expoDb);
