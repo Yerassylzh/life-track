@@ -1,8 +1,8 @@
 import { useRef } from "react";
 import { BannerAd, BannerAdSize } from "react-native-google-mobile-ads";
 
-const APP_ID = process.env.EXPO_PUBLIC_ADMOB_APP_ID as string;
-const adUnitId = APP_ID;
+const AD_ID = process.env.EXPO_PUBLIC_ADMOB_AD_ID as string;
+const adUnitId = AD_ID;
 
 export default function BannerAdmob() {
   const bannerRef = useRef<BannerAd>(null);

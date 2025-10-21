@@ -47,3 +47,5 @@ app-example
 
 android/gradle.properties
 android/app/lifetrack.jks
+
+*.jks
