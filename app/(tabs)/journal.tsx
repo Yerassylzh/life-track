@@ -1,5 +1,5 @@
 import AppBackground from "@/components/AppBackground";
-import BannerAdmob from "@/components/BannerAdmob";
+import BannerYandexAd from "@/components/BannerYandexAd";
 import Add from "@/components/ui/Add";
 import NoActivities from "@/features/home/components/NoActivities";
 import Header from "@/features/journal/components/Header";
@@ -53,7 +53,7 @@ function JournalScreen() {
   return (
     <AppBackground>
       <Header />
-      <BannerAdmob />
+      <BannerYandexAd />
       {notes && notes.length > 0 ? (
         <JournalTimeline notes={notes} imageMap={imageMap} />
       ) : (

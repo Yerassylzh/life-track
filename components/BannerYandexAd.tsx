@@ -7,7 +7,7 @@ const AD_HEIGHT = 70;
 
 let adRequest = new AdRequest({});
 
-export default function BannerAdmob() {
+export default function BannerYandexAd() {
   const [adSize, setAdSize] = useState<BannerAdSize | null>(null);
 
   useEffect(() => {
